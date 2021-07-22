@@ -8,7 +8,7 @@ use yii\helpers\Html;
 use yii\bootstrap\Nav;
 use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
-use backend\assets\AppAsset;
+use frontend\modules\app\assets\AppAsset;
 use common\widgets\Alert;
 
 AppAsset::register($this);
@@ -71,7 +71,8 @@ AppAsset::register($this);
 <body>
 <?php $this->beginBody() ?>
 
-<?= $this->render('left') ?>
+<?= $this->render('left'); ?>
+
 <!-- Right Panel -->
 <div id="right-panel" class="right-panel">
     <!-- Header-->
@@ -185,9 +186,9 @@ AppAsset::register($this);
     </header>
     <!-- /#header -->
     <!-- Content -->
-    <div class="content">
-        <?= $content ?>
-    </div>
+
+    <?= $content ?>
+
     <!-- /.content -->
     <div class="clearfix"></div>
     <!-- Footer -->
@@ -206,7 +207,6 @@ AppAsset::register($this);
     <!-- /.site-footer -->
 </div>
 <!-- /#right-panel -->
-
 
 <?php $this->endBody() ?>
 </body>

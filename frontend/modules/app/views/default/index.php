@@ -1,25 +1,3 @@
-<?php
-
-/* @var $this yii\web\View */
-
-$this->title = Yii::t('app', 'Dashboard');
-
-
-$this->registerJsFile("https://cdn.jsdelivr.net/npm/chart.js@2.7.3/dist/Chart.bundle.min.js", ['depends' => 'backend\assets\AppAsset']);
-$this->registerJsFile("https://cdn.jsdelivr.net/npm/chartist@0.11.0/dist/chartist.min.js", ['depends' => 'backend\assets\AppAsset']);
-$this->registerJsFile("https://cdn.jsdelivr.net/npm/chartist-plugin-legend@0.6.2/chartist-plugin-legend.min.js", ['depends' => 'backend\assets\AppAsset']);
-$this->registerJsFile("https://cdn.jsdelivr.net/npm/jquery.flot@0.8.3/jquery.flot.min.js", ['depends' => 'backend\assets\AppAsset']);
-$this->registerJsFile("https://cdn.jsdelivr.net/npm/flot-pie@1.0.0/src/jquery.flot.pie.min.js", ['depends' => 'backend\assets\AppAsset']);
-$this->registerJsFile("https://cdn.jsdelivr.net/npm/flot-spline@0.0.1/js/jquery.flot.spline.min.js", ['depends' => 'backend\assets\AppAsset']);
-$this->registerJsFile("https://cdn.jsdelivr.net/npm/simpleweather@3.1.0/jquery.simpleWeather.min.js", ['depends' => 'backend\assets\AppAsset']);
-$this->registerJsFile("asset_files/js/init/weather-init.js", ['depends' => 'backend\assets\AppAsset']);
-$this->registerJsFile("https://cdn.jsdelivr.net/npm/moment@2.22.2/moment.min.js", ['depends' => 'backend\assets\AppAsset']);
-$this->registerJsFile("https://cdn.jsdelivr.net/npm/fullcalendar@3.9.0/dist/fullcalendar.min.js", ['depends' => 'backend\assets\AppAsset']);
-$this->registerJsFile("asset_files/js/init/fullcalendar-init.js", ['depends' => 'backend\assets\AppAsset']);
-
-$this->registerJsFile("backend/web/js/dashboard.js", ['depends' => 'backend\assets\AppAsset']);
-
-?>
 <!-- Animated -->
 <div class="animated fadeIn">
     <!-- Widgets  -->
@@ -117,32 +95,28 @@ $this->registerJsFile("backend/web/js/dashboard.js", ['depends' => 'backend\asse
                                 <h4 class="por-title">Visits</h4>
                                 <div class="por-txt">96,930 Users (40%)</div>
                                 <div class="progress mb-2" style="height: 5px;">
-                                    <div class="progress-bar bg-flat-color-1" role="progressbar" style="width: 40%;"
-                                         aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-flat-color-1" role="progressbar" style="width: 40%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
                             <div class="progress-box progress-2">
                                 <h4 class="por-title">Bounce Rate</h4>
                                 <div class="por-txt">3,220 Users (24%)</div>
                                 <div class="progress mb-2" style="height: 5px;">
-                                    <div class="progress-bar bg-flat-color-2" role="progressbar" style="width: 24%;"
-                                         aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-flat-color-2" role="progressbar" style="width: 24%;" aria-valuenow="25" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
                             <div class="progress-box progress-2">
                                 <h4 class="por-title">Unique Visitors</h4>
                                 <div class="por-txt">29,658 Users (60%)</div>
                                 <div class="progress mb-2" style="height: 5px;">
-                                    <div class="progress-bar bg-flat-color-3" role="progressbar" style="width: 60%;"
-                                         aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-flat-color-3" role="progressbar" style="width: 60%;" aria-valuenow="60" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
                             <div class="progress-box progress-2">
-                                <h4 class="por-title">Targeted Visitors</h4>
+                                <h4 class="por-title">Targeted  Visitors</h4>
                                 <div class="por-txt">99,658 Users (90%)</div>
                                 <div class="progress mb-2" style="height: 5px;">
-                                    <div class="progress-bar bg-flat-color-4" role="progressbar" style="width: 90%;"
-                                         aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
+                                    <div class="progress-bar bg-flat-color-4" role="progressbar" style="width: 90%;" aria-valuenow="90" aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
                         </div> <!-- /.card-body -->
@@ -181,13 +155,12 @@ $this->registerJsFile("backend/web/js/dashboard.js", ['depends' => 'backend\asse
                                     <td class="serial">1.</td>
                                     <td class="avatar">
                                         <div class="round-img">
-                                            <a href="#"><img class="rounded-circle" src="images/avatar/1.jpg"
-                                                             alt=""></a>
+                                            <a href="#"><img class="rounded-circle" src="images/avatar/1.jpg" alt=""></a>
                                         </div>
                                     </td>
-                                    <td> #5469</td>
-                                    <td><span class="name">Louis Stanley</span></td>
-                                    <td><span class="product">iMax</span></td>
+                                    <td> #5469 </td>
+                                    <td>  <span class="name">Louis Stanley</span> </td>
+                                    <td> <span class="product">iMax</span> </td>
                                     <td><span class="count">231</span></td>
                                     <td>
                                         <span class="badge badge-complete">Complete</span>
@@ -197,13 +170,12 @@ $this->registerJsFile("backend/web/js/dashboard.js", ['depends' => 'backend\asse
                                     <td class="serial">2.</td>
                                     <td class="avatar">
                                         <div class="round-img">
-                                            <a href="#"><img class="rounded-circle" src="images/avatar/2.jpg"
-                                                             alt=""></a>
+                                            <a href="#"><img class="rounded-circle" src="images/avatar/2.jpg" alt=""></a>
                                         </div>
                                     </td>
-                                    <td> #5468</td>
-                                    <td><span class="name">Gregory Dixon</span></td>
-                                    <td><span class="product">iPad</span></td>
+                                    <td> #5468 </td>
+                                    <td>  <span class="name">Gregory Dixon</span> </td>
+                                    <td> <span class="product">iPad</span> </td>
                                     <td><span class="count">250</span></td>
                                     <td>
                                         <span class="badge badge-complete">Complete</span>
@@ -213,13 +185,12 @@ $this->registerJsFile("backend/web/js/dashboard.js", ['depends' => 'backend\asse
                                     <td class="serial">3.</td>
                                     <td class="avatar">
                                         <div class="round-img">
-                                            <a href="#"><img class="rounded-circle" src="images/avatar/3.jpg"
-                                                             alt=""></a>
+                                            <a href="#"><img class="rounded-circle" src="images/avatar/3.jpg" alt=""></a>
                                         </div>
                                     </td>
-                                    <td> #5467</td>
-                                    <td><span class="name">Catherine Dixon</span></td>
-                                    <td><span class="product">SSD</span></td>
+                                    <td> #5467 </td>
+                                    <td>  <span class="name">Catherine Dixon</span> </td>
+                                    <td> <span class="product">SSD</span> </td>
                                     <td><span class="count">250</span></td>
                                     <td>
                                         <span class="badge badge-complete">Complete</span>
@@ -229,13 +200,12 @@ $this->registerJsFile("backend/web/js/dashboard.js", ['depends' => 'backend\asse
                                     <td class="serial">4.</td>
                                     <td class="avatar">
                                         <div class="round-img">
-                                            <a href="#"><img class="rounded-circle" src="images/avatar/4.jpg"
-                                                             alt=""></a>
+                                            <a href="#"><img class="rounded-circle" src="images/avatar/4.jpg" alt=""></a>
                                         </div>
                                     </td>
-                                    <td> #5466</td>
-                                    <td><span class="name">Mary Silva</span></td>
-                                    <td><span class="product">Magic Mouse</span></td>
+                                    <td> #5466 </td>
+                                    <td>  <span class="name">Mary Silva</span> </td>
+                                    <td> <span class="product">Magic Mouse</span> </td>
                                     <td><span class="count">250</span></td>
                                     <td>
                                         <span class="badge badge-pending">Pending</span>
@@ -245,13 +215,12 @@ $this->registerJsFile("backend/web/js/dashboard.js", ['depends' => 'backend\asse
                                     <td class="serial">5.</td>
                                     <td class="avatar pb-0">
                                         <div class="round-img">
-                                            <a href="#"><img class="rounded-circle" src="images/avatar/6.jpg"
-                                                             alt=""></a>
+                                            <a href="#"><img class="rounded-circle" src="images/avatar/6.jpg" alt=""></a>
                                         </div>
                                     </td>
-                                    <td> #5465</td>
-                                    <td><span class="name">Johnny Stephens</span></td>
-                                    <td><span class="product">Monitor</span></td>
+                                    <td> #5465 </td>
+                                    <td>  <span class="name">Johnny Stephens</span> </td>
+                                    <td> <span class="product">Monitor</span> </td>
                                     <td><span class="count">250</span></td>
                                     <td>
                                         <span class="badge badge-complete">Complete</span>
@@ -371,8 +340,7 @@ $this->registerJsFile("backend/web/js/dashboard.js", ['depends' => 'backend\asse
                                                     John Doe
                                                 </div>
                                                 <div class="meg">
-                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit.
-                                                    Perspiciatis sunt placeat velit ad reiciendis ipsam
+                                                    Lorem ipsum dolor sit amet, consectetur adipisicing elit. Perspiciatis sunt placeat velit ad reiciendis ipsam
                                                 </div>
                                             </div>
                                         </div>
@@ -456,11 +424,8 @@ $this->registerJsFile("backend/web/js/dashboard.js", ['depends' => 'backend\asse
                 <div class="modal-body"></div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-success save-event waves-effect waves-light">Create event
-                    </button>
-                    <button type="button" class="btn btn-danger delete-event waves-effect waves-light"
-                            data-dismiss="modal">Delete
-                    </button>
+                    <button type="button" class="btn btn-success save-event waves-effect waves-light">Create event</button>
+                    <button type="button" class="btn btn-danger delete-event waves-effect waves-light" data-dismiss="modal">Delete</button>
                 </div>
             </div>
         </div>
@@ -479,13 +444,11 @@ $this->registerJsFile("backend/web/js/dashboard.js", ['depends' => 'backend\asse
                         <div class="row">
                             <div class="col-md-6">
                                 <label class="control-label">Category Name</label>
-                                <input class="form-control form-white" placeholder="Enter name" type="text"
-                                       name="category-name"/>
+                                <input class="form-control form-white" placeholder="Enter name" type="text" name="category-name"/>
                             </div>
                             <div class="col-md-6">
                                 <label class="control-label">Choose Category Color</label>
-                                <select class="form-control form-white" data-placeholder="Choose a color..."
-                                        name="category-color">
+                                <select class="form-control form-white" data-placeholder="Choose a color..." name="category-color">
                                     <option value="success">Success</option>
                                     <option value="danger">Danger</option>
                                     <option value="info">Info</option>
@@ -499,9 +462,7 @@ $this->registerJsFile("backend/web/js/dashboard.js", ['depends' => 'backend\asse
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-default waves-effect" data-dismiss="modal">Close</button>
-                    <button type="button" class="btn btn-danger waves-effect waves-light save-category"
-                            data-dismiss="modal">Save
-                    </button>
+                    <button type="button" class="btn btn-danger waves-effect waves-light save-category" data-dismiss="modal">Save</button>
                 </div>
             </div>
         </div>

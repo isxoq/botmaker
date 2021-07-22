@@ -1,6 +1,6 @@
 <?php
 
-namespace backend\assets;
+namespace frontend\modules\app\assets;
 
 use yii\web\AssetBundle;
 
@@ -9,8 +9,8 @@ use yii\web\AssetBundle;
  */
 class AppAsset extends AssetBundle
 {
-    public $sourcePath = '@frontend/web';
-    public $baseUrl = 'frontend/web';
+    public $basePath = '@webroot';
+    public $baseUrl = '@web';
     public $css = [
         "https://i.imgur.com/QRAUqs9.png",
         "https://i.imgur.com/QRAUqs9.png",
@@ -20,8 +20,8 @@ class AppAsset extends AssetBundle
         "https://cdn.jsdelivr.net/gh/lykmapipo/themify-icons@0.1.2/css/themify-icons.css",
         "https://cdn.jsdelivr.net/npm/pixeden-stroke-7-icon@1.2.3/pe-icon-7-stroke/dist/pe-icon-7-stroke.min.css",
         "https://cdnjs.cloudflare.com/ajax/libs/flag-icon-css/3.2.0/css/flag-icon.min.css",
-        "asset_files/css/cs-skin-elastic.css",
-        "asset_files/css/style.css",
+        "assets/css/cs-skin-elastic.css",
+        "assets/css/style.css",
         "https://cdn.jsdelivr.net/npm/chartist@0.11.0/dist/chartist.min.css",
         "https://cdn.jsdelivr.net/npm/jqvmap@1.5.1/dist/jqvmap.min.css",
         "https://cdn.jsdelivr.net/npm/weathericons@2.1.0/css/weather-icons.css",
@@ -33,7 +33,7 @@ class AppAsset extends AssetBundle
         "https://cdn.jsdelivr.net/npm/popper.js@1.14.4/dist/umd/popper.min.js",
         "https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js",
         "https://cdn.jsdelivr.net/npm/jquery-match-height@0.7.2/dist/jquery.matchHeight.min.js",
-        "asset_files/js/main.js",
+        "assets/js/main.js",
 
 
     ];
