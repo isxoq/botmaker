@@ -1,9 +1,13 @@
 <?php
+
 namespace frontend\controllers;
 
+use common\models\TempNumber;
+use common\models\User;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
+use yii\base\BaseObject;
 use yii\base\InvalidArgumentException;
 use yii\web\BadRequestHttpException;
 use yii\web\Controller;
@@ -27,8 +31,8 @@ class SiteController extends Controller
     {
         return [
             'access' => [
-                'class' => AccessControl::className(),
-                'only' => ['logout', 'signup'],
+                'class' => AccessControl::class,
+                'only' => ['logout', 'signup', 'index'],
                 'rules' => [
                     [
                         'actions' => ['signup'],
@@ -36,7 +40,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout'],
+                        'actions' => ['logout', 'index'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -76,30 +80,7 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
-
-    /**
-     * Logs in a user.
-     *
-     * @return mixed
-     */
-    public function actionLogin()
-    {
-        if (!Yii::$app->user->isGuest) {
-            return $this->goHome();
-        }
-
-        $model = new LoginForm();
-        if ($model->load(Yii::$app->request->post()) && $model->login()) {
-            return $this->goBack();
-        } else {
-            $model->password = '';
-
-            return $this->render('login', [
-                'model' => $model,
-            ]);
-        }
-    }
-
+    
     /**
      * Logs out the current user.
      *
@@ -149,13 +130,21 @@ class SiteController extends Controller
      * Signs user up.
      *
      * @return mixed
+     * @throws \Exception
      */
-    public function actionSignup()
+    public function actionLogin()
     {
-        $model = new SignupForm();
-        if ($model->load(Yii::$app->request->post()) && $model->signup()) {
-            Yii::$app->session->setFlash('success', 'Thank you for registration. Please check your inbox for verification email.');
-            return $this->goHome();
+
+        $this->layout = "login";
+        $model = new TempNumber(['scenario' => TempNumber::SCENARIO_PHONE]);
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
+            $phone = clearPhone($model->phone);
+            TempNumber::deleteAll(['phone' => $model->phone]);
+            $model->generateCode();
+            $model->save();
+            return $this->redirect(['site/verify-code', 'phone' => $model->phone]);
         }
 
         return $this->render('signup', [
@@ -163,98 +152,67 @@ class SiteController extends Controller
         ]);
     }
 
-    /**
-     * Requests password reset.
-     *
-     * @return mixed
-     */
-    public function actionRequestPasswordReset()
-    {
-        $model = new PasswordResetRequestForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
 
-                return $this->goHome();
-            } else {
-                Yii::$app->session->setFlash('error', 'Sorry, we are unable to reset password for the provided email address.');
+    /**
+     * @throws \yii\web\NotFoundHttpException
+     */
+    public function actionVerifyCode($phone)
+    {
+        $this->layout = "login";
+        $verifyModel = TempNumber::findOne(['phone' => $phone]);
+
+        if (!$verifyModel) {
+            notFound();
+        }
+
+        $verifyModel->scenario = TempNumber::SCENARIO_VERIFY_CODE;
+
+        if ($verifyModel->load(Yii::$app->request->post()) && $verifyModel->validate()) {
+
+            $clearedPhone = clearPhone($verifyModel->phone);
+
+            if (!$verifyModel->verifyCode()) {
+                $verifyModel->addError('code', t('Code error'));
+                return $this->render('verifycode', [
+                    'model' => $verifyModel
+                ]);
             }
-        }
 
-        return $this->render('requestPasswordResetToken', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Resets password.
-     *
-     * @param string $token
-     * @return mixed
-     * @throws BadRequestHttpException
-     */
-    public function actionResetPassword($token)
-    {
-        try {
-            $model = new ResetPasswordForm($token);
-        } catch (InvalidArgumentException $e) {
-            throw new BadRequestHttpException($e->getMessage());
-        }
-
-        if ($model->load(Yii::$app->request->post()) && $model->validate() && $model->resetPassword()) {
-            Yii::$app->session->setFlash('success', 'New password saved.');
-
-            return $this->goHome();
-        }
-
-        return $this->render('resetPassword', [
-            'model' => $model,
-        ]);
-    }
-
-    /**
-     * Verify email address
-     *
-     * @param string $token
-     * @throws BadRequestHttpException
-     * @return yii\web\Response
-     */
-    public function actionVerifyEmail($token)
-    {
-        try {
-            $model = new VerifyEmailForm($token);
-        } catch (InvalidArgumentException $e) {
-            throw new BadRequestHttpException($e->getMessage());
-        }
-        if ($user = $model->verifyEmail()) {
-            if (Yii::$app->user->login($user)) {
-                Yii::$app->session->setFlash('success', 'Your email has been confirmed!');
-                return $this->goHome();
+            if ($verifyModel->isExpired()) {
+                $verifyModel->addError('code', t('Code expired'));
+                return $this->render('verifycode', [
+                    'model' => $verifyModel
+                ]);
             }
-        }
 
-        Yii::$app->session->setFlash('error', 'Sorry, we are unable to verify your account with provided token.');
-        return $this->goHome();
-    }
-
-    /**
-     * Resend verification email
-     *
-     * @return mixed
-     */
-    public function actionResendVerificationEmail()
-    {
-        $model = new ResendVerificationEmailForm();
-        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
-            if ($model->sendEmail()) {
-                Yii::$app->session->setFlash('success', 'Check your email for further instructions.');
-                return $this->goHome();
+            if ($verifyModel->verifyCode()) {
+                $user = User::findOne(['type' => User::TYPE_USER, 'username' => $clearedPhone]);
+                if (!$user) {
+                    $user = new User();
+                    $user->username = $clearedPhone;
+                    $user->email = $clearedPhone;
+                    $user->setPassword(Yii::$app->security->generateRandomString(8));
+                    $user->generateAuthKey();
+                    $user->status = User::STATUS_ACTIVE;
+                    $user->type = User::TYPE_USER;
+//                    $user->generateEmailVerificationToken();
+                    $user->save();
+                    Yii::$app->user->login($user);
+                }
+                Yii::$app->user->login($user);
+                $verifyModel->delete();
+                return $this->redirect(['site/index']);
             }
-            Yii::$app->session->setFlash('error', 'Sorry, we are unable to resend verification email for the provided email address.');
+
+            return $this->render('verifycode', [
+                'model' => $verifyModel
+            ]);
         }
 
-        return $this->render('resendVerificationEmail', [
-            'model' => $model
+        return $this->render('verifycode', [
+            'model' => $verifyModel
         ]);
+
     }
+
 }

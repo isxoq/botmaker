@@ -12,11 +12,37 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'modules' => [
+        'dashboard' => [
+            'class' => 'frontend\modules\dashboard\Dashboard',
+        ],
         'app' => [
             'class' => 'frontend\modules\app\Module',
         ],
     ],
     'components' => [
+        'assetManager' => [
+            'bundles' => [
+                'yii\web\JqueryAsset' => [
+//                    'sourcePath' => '@frontend/web/template/riode',
+//                  'baseUrl' => '@web/template/riode',
+                    'js' => [
+                        "https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js",
+                    ]
+
+                ],
+                'yii\bootstrap\BootstrapAsset' => [
+                    'sourcePath' => null,
+                    'css' => [
+                        'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.3/js/bootstrap.bundle.min.js'
+                    ],
+                    'js' => [
+                        'https://cdnjs.cloudflare.com/ajax/libs/bootstrap/4.5.3/js/bootstrap.min.js'
+                    ],
+                ],
+
+            ]
+        ],
+
         'request' => [
             'baseUrl' => "",
             'csrfParam' => '_csrf-frontend',

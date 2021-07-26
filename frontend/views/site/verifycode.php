@@ -8,7 +8,7 @@
 use yii\helpers\Html;
 use yii\bootstrap\ActiveForm;
 
-$this->title = t("Kirish | Ro'yhatdan o'tish");
+$this->title = t("Kodni tasdiqlash");
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -22,14 +22,17 @@ $this->params['breadcrumbs'][] = $this->title;
             </div>
             <div class="login-form">
                 <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
-
+                <?= $form->errorSummary($model) ?>
 
                 <?= $form->field($model, 'phone')->widget(\yii\widgets\MaskedInput::class, [
                     'mask' => '+\9\98(99) 999-99-99',
+                    'options' => [
+                        'readOnly' => true
+                    ]
                 ]); ?>
+                <?= $form->field($model, 'verify_code')->textInput(); ?>
 
-                <?= Html::submitButton('Login | Register', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
-
+                <?= Html::submitButton('Tasdiqlash', ['class' => 'btn btn-primary', 'name' => 'signup-button']) ?>
                 <?php ActiveForm::end(); ?>
             </div>
         </div>
