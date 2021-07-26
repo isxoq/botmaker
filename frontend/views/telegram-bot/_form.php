@@ -34,8 +34,8 @@ use yii\widgets\ActiveForm;
                 </div>
 
                 <div class="col-md-6">
-                    <p><?= t('Bot nomi') ?></p>
-                    <p><?= t('Bot foydalanuvchi nomi') ?></p>
+                    <p><?= t('Bot nomi') ?> <b id="bot_name"></b></p>
+                    <p><?= t('Bot foydalanuvchi nomi') ?> <b id="bot_username"></b></p>
                 </div>
             </diw>
         </div>
@@ -53,6 +53,8 @@ $('#telegrambot-token').on('keyup',function() {
     },
     'succes':function(data) {
       console.log(data)
+      $('#bot_name').text(data.result.first_name)
+      $('#bot_username').text(data.result.username)
     }
   })
 })
