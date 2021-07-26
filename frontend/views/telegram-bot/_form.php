@@ -15,7 +15,7 @@ use yii\widgets\ActiveForm;
                 <div class="col-md-6">
                     <?php $form = ActiveForm::begin(); ?>
 
-                    <?= $form->field($model, 'token')->textInput(['maxlength' => true]) ?>
+                    <?= $form->field($model, 'token')->textInput(['maxlength' => true, 'data-href' => \yii\helpers\Url::to(['telegram-bot/get-me'], true)]) ?>
 
                     <?= $form->field($model, 'type')->dropDownList(\frontend\models\TelegramBot::getTypes()) ?>
 
@@ -32,8 +32,10 @@ use yii\widgets\ActiveForm;
 
                     <?php ActiveForm::end(); ?>
                 </div>
+
                 <div class="col-md-6">
-                    <h3>Bot nomi</h3>
+                    <p><?= t('Bot nomi') ?></p>
+                    <p><?= t('Bot foydalanuvchi nomi') ?></p>
                 </div>
             </diw>
         </div>
@@ -43,7 +45,16 @@ use yii\widgets\ActiveForm;
 $this->registerJs(
     <<<JS
 $('#telegrambot-token').on('keyup',function() {
-  alert("salom")
+  $.ajax({
+    'url':$(this).attr('data-href'),
+    'type':"POST",
+    'data':{
+        'token':$(this).val()
+    },
+    'succes':function(data) {
+      console.log(data)
+    }
+  })
 })
 JS
 

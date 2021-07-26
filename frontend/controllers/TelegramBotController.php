@@ -8,6 +8,7 @@ use frontend\models\search\TelegramBotSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * TelegramBotController implements the CRUD actions for TelegramBot model.
@@ -68,9 +69,7 @@ class TelegramBotController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
-            dd(telegram_core([
-                'token' => $model->token,
-            ])->getMe());
+            dd();
 
             return $this->redirect(['view', 'id' => $model->id]);
         }
@@ -128,5 +127,17 @@ class TelegramBotController extends Controller
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
+    }
+
+    public function actionGetMe()
+    {
+        $this->enableCsrfValidation = false;
+        $token = Yii::$app->request->post('token');
+        Yii::$app->response->format = Response::FORMAT_JSON;
+
+        return telegram_core([
+            'token' => $token,
+        ])->getMe();
+
     }
 }
