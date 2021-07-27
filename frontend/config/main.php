@@ -12,11 +12,17 @@ return [
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'modules' => [
+        'gridview' => [
+            'class' => '\kartik\grid\Module'
+        ],
         'dashboard' => [
             'class' => 'frontend\modules\dashboard\Dashboard',
         ],
         'app' => [
             'class' => 'frontend\modules\app\Module',
+        ],
+        'ecommerce' => [
+            'class' => 'frontend\modules\ecommerce\Module',
         ],
     ],
     'components' => [
