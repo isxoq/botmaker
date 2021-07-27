@@ -10,6 +10,8 @@ Site:      ninja.uz
 Date Time: 7/26/2021 3:31 PM
 */
 
+use yii\helpers\Json;
+
 class TelegramApi extends \yii\base\Component
 {
 
@@ -30,6 +32,35 @@ class TelegramApi extends \yii\base\Component
         return $this->request($method = "getMe");
     }
 
+    public function getWebhook()
+    {
+        return $this->request($method = "getWebhookInfo");
+    }
+
+    public function setWebhook()
+    {
+
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://api.telegram.org/bot' . $this->token . '/setWebhook?url=' . $this->data['url'],
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+        ));
+
+        $response = curl_exec($curl);
+
+        curl_close($curl);
+
+        return Json::decode($response, false);
+
+    }
+
 
     protected function request($method)
     {
@@ -37,7 +68,7 @@ class TelegramApi extends \yii\base\Component
         $curl = curl_init();
 
         curl_setopt_array($curl, array(
-            CURLOPT_URL => 'https://api.telegram.org/' . $this->token . '/' . $method,
+            CURLOPT_URL => 'https://api.telegram.org/bot' . $this->token . '/' . $method,
             CURLOPT_RETURNTRANSFER => true,
             CURLOPT_ENCODING => '',
             CURLOPT_MAXREDIRS => 10,

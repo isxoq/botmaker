@@ -2,6 +2,7 @@
 
 namespace frontend\models;
 
+use common\models\BaseActiveRecord;
 use common\models\User;
 use Yii;
 
@@ -14,14 +15,22 @@ use Yii;
  * @property string|null $bot_username
  * @property string|null $bot_id
  * @property string $type
+ * @property string $typeName
+ * @property string $statusName
+ * @property string $name
+ * @property string $webhook
  * @property int|null $status
  *
  * @property User $user
  */
-class TelegramBot extends \yii\db\ActiveRecord
+class TelegramBot extends BaseActiveRecord
 {
 
     const TYPE_ECOMMERCE = 1;
+
+    const SCENARIO_CREATE = 'scenario_create';
+    const SCENARIO_UPDATE = 'scenario_update';
+    const SCENARIO_SETWEBHOOK = 'scenario_setwebhook';
 
     /**
      * {@inheritdoc}
@@ -31,6 +40,16 @@ class TelegramBot extends \yii\db\ActiveRecord
         return 'telegram_bot';
     }
 
+
+    public function scenarios()
+    {
+        return [
+            self::SCENARIO_CREATE => ['token', 'type', 'status'],
+            self::SCENARIO_UPDATE => ['token', 'type', 'status'],
+            self::SCENARIO_SETWEBHOOK => ['webhook'],
+        ];
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -38,10 +57,11 @@ class TelegramBot extends \yii\db\ActiveRecord
     {
         return [
             [['user_id', 'status'], 'integer'],
+            ['webhook', 'required'],
             [['type'], 'required'],
             [['token', 'bot_username', 'bot_id', 'type'], 'string', 'max' => 255],
             [['token'], 'unique'],
-            ['name', 'string'],
+            [['name', 'webhook'], 'string'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
         ];
     }
@@ -55,12 +75,25 @@ class TelegramBot extends \yii\db\ActiveRecord
             'id' => Yii::t('app', 'ID'),
             'user_id' => Yii::t('app', 'User ID'),
             'token' => Yii::t('app', 'Token'),
+            'name' => Yii::t('app', 'Name'),
             'bot_username' => Yii::t('app', 'Bot Username'),
             'bot_id' => Yii::t('app', 'Bot ID'),
             'type' => Yii::t('app', 'Type'),
             'status' => Yii::t('app', 'Status'),
         ];
     }
+
+
+    public function getWebhook()
+    {
+        $bot = telegram_core([
+            'token' => $this->token
+        ]);
+
+//        dd($bot->getWebhook());
+        return $bot->getWebhook();
+    }
+
 
     /**
      * Gets query for [[User]].
@@ -72,10 +105,28 @@ class TelegramBot extends \yii\db\ActiveRecord
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
 
+    /**
+     * Tiplar
+     * @return array
+     */
     public static function getTypes()
     {
         return [
             self::TYPE_ECOMMERCE => t('E Commerce')
         ];
+    }
+
+    /**
+     * Tip nomi
+     * @return array
+     */
+    public function getTypeName()
+    {
+        return self::getTypes()[$this->type];
+    }
+
+    public static function find(): \yii\db\ActiveQuery
+    {
+        return parent::find()->andWhere(['user_id' => \user()->id]);
     }
 }

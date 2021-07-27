@@ -15,18 +15,18 @@ use yii\web\NotFoundHttpException;
 class BaseActiveRecord extends \yii\db\ActiveRecord
 {
 
-    /**
-     * @param $condition
-     * @throws NotFoundHttpException
-     */
-    public static function findOrFail($condition)
-    {
-        $model = self::findOne($condition);
-        if ($model) {
-            return $model;
-        } else {
-            notFound();
-        }
 
+    public static function getStatuses()
+    {
+        return [
+            0 => t('Deactive'),
+            1 => t('Active'),
+        ];
     }
+
+    public function getStatusName()
+    {
+        return self::getStatuses()[$this->status];
+    }
+
 }

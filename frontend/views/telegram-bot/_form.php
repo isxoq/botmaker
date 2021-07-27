@@ -22,7 +22,7 @@ use yii\widgets\ActiveForm;
                     <?= $form->field($model, 'status')->dropDownList([
 
                         1 => t("Enabled"),
-                        2 => t("Disabled"),
+                        0 => t("Disabled"),
 
                     ]) ?>
 
@@ -51,8 +51,7 @@ $('#telegrambot-token').on('keyup',function() {
     'data':{
         'token':$(this).val()
     },
-    'succes':function(data) {
-      console.log(data)
+    'success':function(data) {
       $('#bot_name').text(data.result.first_name)
       $('#bot_username').text(data.result.username)
     }

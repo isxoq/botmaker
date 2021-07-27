@@ -16,7 +16,6 @@ $this->params['breadcrumbs'][] = $this->title;
     <h1><?= Html::encode($this->title) ?></h1>
 
     <hr>
-    <?php Pjax::begin(); ?>
 
 
     <?= ListView::widget([
@@ -25,14 +24,11 @@ $this->params['breadcrumbs'][] = $this->title;
             'class' => "row"
         ],
         'summary' => false,
-        'itemOptions' => ['class' => 'card col-md-2 ml-4'],
+        'itemOptions' => ['class' => 'card col-md-3 ml-4'],
         'itemView' => function ($model, $key, $index, $widget) {
             return $this->render('_card', ['model' => $model]);
         },
     ]) ?>
-
-
-    <?php Pjax::end(); ?>
 
 
     <p>

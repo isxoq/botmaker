@@ -65,13 +65,24 @@ class TelegramBotController extends Controller
      */
     public function actionCreate()
     {
-        $model = new TelegramBot();
+        $model = new TelegramBot(['scenario' => TelegramBot::SCENARIO_CREATE]);
 
         if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
-            dd();
 
-            return $this->redirect(['view', 'id' => $model->id]);
+            $bot = telegram_core([
+                'token' => $model->token,
+            ])->getMe();
+
+            $model->name = $bot->result->first_name;
+            $model->bot_username = $bot->result->username;
+            $model->user_id = user()->id;
+            $model->bot_id = strval($bot->result->id);
+            if (!$model->save()) {
+                dd($model->errors);
+            }
+
+            return $this->redirect(['index']);
         }
 
         return $this->render('create', [
@@ -89,9 +100,23 @@ class TelegramBotController extends Controller
     public function actionUpdate($id)
     {
         $model = $this->findModel($id);
+        $model->scenario = TelegramBot::SCENARIO_UPDATE;
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+        if ($model->load(Yii::$app->request->post())) {
+
+            $bot = telegram_core([
+                'token' => $model->token,
+            ])->getMe();
+
+            $model->name = $bot->result->first_name;
+            $model->bot_username = $bot->result->username;
+            $model->bot_id = strval($bot->result->id);
+            if (!$model->save()) {
+                dd($model->errors);
+            }
+
+            return $this->redirect(['index']);
+
         }
 
         return $this->render('update', [
@@ -112,6 +137,45 @@ class TelegramBotController extends Controller
 
         return $this->redirect(['index']);
     }
+
+    /**
+     * Webhook sozlash
+     * @param integer $id
+     * @return mixed
+     * @throws NotFoundHttpException if the model cannot be found
+     */
+    public function actionSetWebhook($id)
+    {
+        $model = $this->findModel($id);
+        $model->scenario = TelegramBot::SCENARIO_SETWEBHOOK;
+
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
+
+            $webhook = telegram_core([
+                'token' => $model->token,
+                'data' => [
+                    'url' => $model->webhook
+                ]
+            ])->setWebhook();
+
+            if (!$webhook->ok) {
+                $model->addError('webhook', $webhook->description);
+                return $this->render('_setWebhook', [
+                    'model' => $model,
+                ]);
+            } else {
+                $model->save();
+                return $this->redirect(['index']);
+
+            }
+
+        }
+
+        return $this->render('_setWebhook', [
+            'model' => $model
+        ]);
+    }
+
 
     /**
      * Finds the TelegramBot model based on its primary key value.
