@@ -68,7 +68,7 @@ class CategoryController extends Controller
         $model->bot_id = Yii::$app->controller->module->bot->id;
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index', 'bot_id' => Yii::$app->controller->module->bot->id]);
         }
 
         return $this->render('create', [
@@ -88,7 +88,7 @@ class CategoryController extends Controller
         $model = $this->findModel($id);
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
-            return $this->redirect(['view', 'id' => $model->id]);
+            return $this->redirect(['index', 'bot_id' => Yii::$app->controller->module->bot->id]);
         }
 
         return $this->render('update', [
@@ -107,7 +107,7 @@ class CategoryController extends Controller
     {
         $this->findModel($id)->delete();
 
-        return $this->redirect(['index']);
+        return $this->redirect(['index', 'bot_id' => Yii::$app->controller->module->bot->id]);
     }
 
     /**
