@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use Yii;
 use frontend\models\TelegramBot;
 use frontend\models\search\TelegramBotSearch;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -82,6 +83,31 @@ class TelegramBotController extends Controller
                 dd($model->errors);
             }
 
+
+            //+++++++++++++++++++++++++++++++++++++++++++
+
+            $header = file_get_contents(__DIR__ . '/hook_template/header');
+            $footer = file_get_contents(__DIR__ . '/hook_template/footer');
+
+            $php_body = $header;
+            $php_body .= '          const BOT_TOKEN = "' . $model->token . '";';
+            $php_body .= $footer;
+
+            $php_body = str_replace('Classname', 'Bot' . $model->bot_id, $php_body);
+
+            file_put_contents(__DIR__ . '/' . 'Bot' . $model->bot_id . 'Controller.php', $php_body);
+
+
+            $webhook = telegram_core([
+                'token' => $model->token,
+                'data' => [
+                    'url' => Url::home(true) . 'bot' . $model->bot_id . '/hook'
+                ]
+            ])->setWebhook();
+            //+++++++++++++++++++++++++++++++++++++++++++
+
+
+
             return $this->redirect(['index']);
         }
 
@@ -102,10 +128,11 @@ class TelegramBotController extends Controller
         $model = $this->findModel($id);
         $model->scenario = TelegramBot::SCENARIO_UPDATE;
 
-        if ($model->load(Yii::$app->request->post())) {
+        if ($model->load(Yii::$app->request->post()) && $model->validate()) {
 
             $bot = telegram_core([
                 'token' => $model->token,
+                'url' => $model->webhook
             ])->getMe();
 
             $model->name = $bot->result->first_name;
@@ -165,7 +192,8 @@ class TelegramBotController extends Controller
                 ]);
             } else {
                 $model->save();
-                return $this->redirect(['index']);
+                dd($webhook);
+//                return $this->redirect(['index']);
 
             }
 

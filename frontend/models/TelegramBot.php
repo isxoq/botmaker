@@ -127,6 +127,6 @@ class TelegramBot extends BaseActiveRecord
 
     public static function find(): \yii\db\ActiveQuery
     {
-        return parent::find()->andWhere(['user_id' => \user()->id]);
+        return parent::find()->andWhere(['telegram_bot.user_id' => \user()->id]);
     }
 }

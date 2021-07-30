@@ -1,0 +1,18 @@
+<?php
+
+namespace frontend\controllers;
+/*
+Project Name: botmaker.loc
+File Name: EcommerceApi.php
+Full Name: Isxoqjon Axmedov
+Phone:     +998936448111
+Site:      ninja.uz
+Date Time: 7/30/2021 3:47 PM
+*/
+
+use frontend\models\TelegramBot;
+use yii;
+
+class ClassnameController extends \yii\web\Controller
+{
+    public $enableCsrfValidation = false;

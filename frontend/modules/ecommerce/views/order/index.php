@@ -5,13 +5,12 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $searchModel frontend\modules\ecommerce\models\search\CategorySearch */
+/* @var $searchModel frontend\modules\ecommerce\models\search\OrderSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Categories');
+$this->title = Yii::t('app', 'Orders');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
 <div class="animated fadeIn">
     <div class="card">
         <div class="card-header">
@@ -21,20 +20,25 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="table-stats order-table ov-h">
             <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
+            <?php Pjax::begin(); ?>
+            <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
+
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
 
-//                    'id',
-//                    'bot_id',
-                    t('Ota kategoriya') => 'parent.name',
-                    'name',
-                    'description:ntext',
-                    //'order_id',
-//                    'image',
+                    'id',
+                    'bot_id',
+                    'created_at',
+                    'user_id',
                     'status',
+                    //'total_price',
+                    //'payment_status',
+                    //'payment_type',
+                    //'comment:ntext',
 
                     [
                         'class' => 'yii\grid\ActionColumn',
@@ -62,8 +66,9 @@ $this->params['breadcrumbs'][] = $this->title;
                     'class' => 'table'
                 ],
                 'layout' => '{items}{pager}{summary}'
-
             ]); ?>
+
+            <?php Pjax::end(); ?>
 
         </div> <!-- /.table-stats -->
     </div>

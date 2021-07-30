@@ -1,17 +1,16 @@
 <?php
 
-use common\components\Html;
+use yii\helpers\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $searchModel frontend\modules\ecommerce\models\search\CategorySearch */
+/* @var $searchModel frontend\modules\ecommerce\models\search\BotUserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Categories');
+$this->title = Yii::t('app', 'Bot Users');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
-
 <div class="animated fadeIn">
     <div class="card">
         <div class="card-header">
@@ -21,20 +20,23 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="table-stats order-table ov-h">
             <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
+            <?php Pjax::begin(); ?>
+            <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
 
-//                    'id',
-//                    'bot_id',
-                    t('Ota kategoriya') => 'parent.name',
-                    'name',
-                    'description:ntext',
-                    //'order_id',
-//                    'image',
-                    'status',
+                    'id',
+                    'bot_id',
+                    'user_id',
+                    'username',
+                    'phone',
+                    //'full_name',
+                    //'last_action_date',
+                    //'status',
 
                     [
                         'class' => 'yii\grid\ActionColumn',
@@ -64,6 +66,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'layout' => '{items}{pager}{summary}'
 
             ]); ?>
+
+            <?php Pjax::end(); ?>
 
         </div> <!-- /.table-stats -->
     </div>

@@ -47,6 +47,7 @@ function telegram_core($config = []): \common\components\TelegramApi
     ]);
 }
 
+
 function user(): ?\common\models\User
 {
     return \common\models\User::findOne(Yii::$app->user->id);

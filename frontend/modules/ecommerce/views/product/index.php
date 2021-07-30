@@ -5,10 +5,10 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $searchModel frontend\modules\ecommerce\models\search\CategorySearch */
+/* @var $searchModel frontend\modules\ecommerce\models\search\ProductSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
-$this->title = Yii::t('app', 'Categories');
+$this->title = Yii::t('app', 'Products');
 $this->params['breadcrumbs'][] = $this->title;
 ?>
 
@@ -21,20 +21,28 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="table-stats order-table ov-h">
             <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
+            <?php Pjax::begin(); ?>
+            <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
 
-//                    'id',
-//                    'bot_id',
-                    t('Ota kategoriya') => 'parent.name',
+                    'id',
                     'name',
-                    'description:ntext',
-                    //'order_id',
-//                    'image',
-                    'status',
+                    'category_id',
+                    'old_price',
+                    'price',
+                    [
+                        'attribute' => 'product_variant',
+                        'format' => 'raw',
+                        'value' => function ($model) {
+                            return Html::a("<i class='fa fa-eye'></i>", ['/ecommerce/product-variant/index', 'product_id' => $model->id], ['class' => 'btn-sm btn-warning']);
+                        }
+                    ],
+                    //'image',
 
                     [
                         'class' => 'yii\grid\ActionColumn',
@@ -64,6 +72,8 @@ $this->params['breadcrumbs'][] = $this->title;
                 'layout' => '{items}{pager}{summary}'
 
             ]); ?>
+
+            <?php Pjax::end(); ?>
 
         </div> <!-- /.table-stats -->
     </div>

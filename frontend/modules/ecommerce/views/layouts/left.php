@@ -23,6 +23,18 @@
                                 class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Mahsulotlar') ?>
                     </a>
                 </li>
+
+                <li class="<?= Yii::$app->controller->route == "/ecommerce/order/index" ? "active" : "" ?>">
+                    <a href="<?= \yii\helpers\Url::to(['/ecommerce/order/index', 'bot_id' => Yii::$app->request->get('bot_id')]) ?>"><i
+                                class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Buyurtmalar') ?>
+                    </a>
+                </li>
+
+                <li class="<?= Yii::$app->controller->route == "/ecommerce/bot-user/index" ? "active" : "" ?>">
+                    <a href="<?= \yii\helpers\Url::to(['/ecommerce/bot-user/index', 'bot_id' => Yii::$app->request->get('bot_id')]) ?>"><i
+                                class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Foydalanuvchilar') ?>
+                    </a>
+                </li>
                 <li class="menu-title">UI elements</li><!-- /.menu-title -->
                 <li class="menu-item-has-children dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"

@@ -21,20 +21,23 @@ class TelegramApi extends \yii\base\Component
     public function __construct($config = [])
     {
         $this->token = $config['token'];
-        if (isset($config['data'])) {
-            $this->data = $config['data'];
-        }
+        $this->data = $config['data'];
+
     }
 
+    public function sendMessage($data)
+    {
+        return $this->request('sendMessage', $data);
+    }
 
     public function getMe()
     {
-        return $this->request($method = "getMe");
+        return $this->request("getMe", null);
     }
 
     public function getWebhook()
     {
-        return $this->request($method = "getWebhookInfo");
+        return $this->request("getWebhookInfo", null);
     }
 
     public function setWebhook()
@@ -62,7 +65,7 @@ class TelegramApi extends \yii\base\Component
     }
 
 
-    protected function request($method)
+    protected function request($method, $data)
     {
 
         $curl = curl_init();
@@ -76,8 +79,9 @@ class TelegramApi extends \yii\base\Component
             CURLOPT_FOLLOWLOCATION => true,
             CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
             CURLOPT_CUSTOMREQUEST => 'POST',
-            CURLOPT_POSTFIELDS => \yii\helpers\Json::encode($this->data)
+            CURLOPT_POSTFIELDS => $data
         ));
+
 
         $response = curl_exec($curl);
 
