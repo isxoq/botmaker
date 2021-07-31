@@ -81,7 +81,7 @@ class EcommerceApiController extends \yii\web\Controller
             $this->bot_backward();
         }
 
-        $this->mainMenu();
+//        $this->mainMenu();
     }
 
     /**
