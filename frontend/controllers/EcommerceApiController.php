@@ -122,7 +122,7 @@ class EcommerceApiController extends \yii\web\Controller
             } else {
                 $keys[] = [['text' => $mainCategories[0]->name]];
 
-                if (count($mainCategories) > 2) {
+                if (count($mainCategories) >= 3) {
                     for ($i = 1; $i < count($mainCategories); $i += 2) {
                         $keys[] = [['text' => $mainCategories[$i]->name], ['text' => $mainCategories[$i + 1]]];
                     }
