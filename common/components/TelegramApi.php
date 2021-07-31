@@ -87,7 +87,12 @@ class TelegramApi extends \yii\base\Component
 
         curl_close($curl);
 
-        return \yii\helpers\Json::decode($response, false);
+        if (!is_null($response)) {
+
+            return \yii\helpers\Json::decode($response, false);
+        } else {
+            return \yii\helpers\Json::decode("{}", false);
+        }
 
     }
 }

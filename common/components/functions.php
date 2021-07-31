@@ -7,9 +7,9 @@
  * @param $word
  * @return string
  */
-function t($word)
+function t($word, $params = [])
 {
-    return Yii::t('app', $word);
+    return Yii::t('app', $word, $params);
 }
 
 
