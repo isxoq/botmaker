@@ -62,7 +62,7 @@ class Category extends \yii\db\ActiveRecord
 
     public function getParent()
     {
-        return self::find()->andWhere(['parent_id' => $this->id]);
+        return self::findOne(['id' => $this->parent_id]);
     }
 
 
@@ -75,5 +75,26 @@ class Category extends \yii\db\ActiveRecord
     {
         return $this->hasOne(TelegramBot::className(), ['id' => 'bot_id']);
     }
+
+    public function getSCategories()
+    {
+        return self::find()
+            ->andWhere(['parent_id' => $this->id])
+            ->all();
+    }
+
+    public static function getSubCategories($categoryName)
+    {
+        $category = self::findOne(['name' => $categoryName]);
+        return Category::find()
+            ->andWhere(['parent_id' => $category->id])
+            ->all();
+    }
+
+    public function getProducts()
+    {
+        return $this->hasMany(Product::class, ['category_id' => 'id']);
+    }
+
 
 }

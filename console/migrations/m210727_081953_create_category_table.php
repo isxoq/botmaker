@@ -16,7 +16,7 @@ class m210727_081953_create_category_table extends Migration
 
             'id' => $this->primaryKey(),
             'bot_id' => $this->integer(),
-            'parent_id' => $this->integer(),
+            'parent_id' => $this->integer()->defaultValue(0),
             'name' => $this->string(),
             'description' => $this->text(),
             'order_id' => $this->integer(),

@@ -123,9 +123,19 @@ class TelegramBotController extends Controller
             $model->name = $bot->result->first_name;
             $model->bot_username = $bot->result->username;
             $model->bot_id = strval($bot->result->id);
+            $model->webhook = Url::to(['ecommerce-api/hook', 'bot_id' => $model->bot_id], true);
+
             if (!$model->save()) {
                 dd($model->errors);
             }
+
+
+            telegram_core([
+                'token' => $model->token,
+                'data' => [
+                    'url' => $model->webhook
+                ]
+            ])->setWebhook();
 
             return $this->redirect(['index']);
 

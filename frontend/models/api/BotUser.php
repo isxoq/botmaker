@@ -2,7 +2,7 @@
 
 namespace frontend\models\api;
 
-use frontend\models\TelegramBot;
+use frontend\models\api\TelegramBot;
 use Yii;
 
 /**

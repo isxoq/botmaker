@@ -44,8 +44,8 @@ class TelegramBot extends BaseActiveRecord
     public function scenarios()
     {
         return [
-            self::SCENARIO_CREATE => ['token', 'type', 'status'],
-            self::SCENARIO_UPDATE => ['token', 'type', 'status'],
+            self::SCENARIO_CREATE => ['token', 'type', 'status', 'webhook'],
+            self::SCENARIO_UPDATE => ['token', 'type', 'status', 'webhook'],
             self::SCENARIO_SETWEBHOOK => ['webhook'],
         ];
     }
