@@ -340,6 +340,7 @@ class EcommerceApiController extends \yii\web\Controller
     protected function set_main_variables($from, $bot_id)
     {
 
+        Yii::$app->params['bot_id'] = $bot_id;
         $this->bot = TelegramBot::findOne(['bot_id' => $bot_id]);
         $bot_user = BotUser::findOne(['user_id' => $from->id]);
 

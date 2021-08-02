@@ -72,6 +72,6 @@ class Order extends \yii\db\ActiveRecord
 
     public static function find()
     {
-        return parent::find()->joinWith('bot')->andWhere(['telegram_bot.id' => Yii::$app->controller->module->bot->id]);
+        return parent::find()->joinWith('bot')->andWhere(['telegram_bot.id' => Yii::$app->params['bot_id']]);
     }
 }

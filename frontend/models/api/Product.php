@@ -72,4 +72,9 @@ class Product extends \yii\db\ActiveRecord
         return $this->hasMany(\frontend\models\api\ProductVariant::class, ['product_id' => 'id']);
     }
 
+    public static function find()
+    {
+        return parent::find()->joinWith('category')->andWhere(['telegram_bot.id' => Yii::$app->params['bot_id']]);
+    }
+
 }
