@@ -161,7 +161,7 @@ class EcommerceApiController extends \yii\web\Controller
 
     protected function categoryHandler($message)
     {
-        $subCategories = Category::getSubCategories($message->text);
+        $subCategories = Category::getSubCategories($message->text, $this->bot->id);
         if ($subCategories) {
 
             $this->setStep('in_category', strval(Category::findOne(['name' => $message->text])->id));

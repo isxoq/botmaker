@@ -84,9 +84,9 @@ class Category extends \yii\db\ActiveRecord
             ->all();
     }
 
-    public static function getSubCategories($categoryName)
+    public static function getSubCategories($categoryName, $bot_id)
     {
-        $category = self::findOne(['name' => $categoryName]);
+        $category = self::findOne(['name' => $categoryName, 'bot_id' => $bot_id]);
         return Category::find()
             ->andWhere(['parent_id' => $category->id])
             ->andWhere(['bot_id' => $category->bot_id])
