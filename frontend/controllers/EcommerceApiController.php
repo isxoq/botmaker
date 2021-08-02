@@ -341,7 +341,11 @@ class EcommerceApiController extends \yii\web\Controller
     {
 
         $this->bot = TelegramBot::findOne(['bot_id' => $bot_id]);
-        $bot_user = BotUser::findOne(['user_id' => $from->id]);
+        $bot_user = BotUser::find()
+            ->andWhere(['user_id' => $from->id])
+            ->joinWith('bot')
+            ->andWhere(['bot.id' => $this->bot->id])
+            ->one();
 
         if (!$bot_user) {
             $bot_user = new BotUser([
