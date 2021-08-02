@@ -96,10 +96,5 @@ class Category extends \yii\db\ActiveRecord
         return $this->hasMany(Product::class, ['category_id' => 'id']);
     }
 
-    public static function find()
-    {
-        return parent::find()->joinWith('bot')->andWhere(['telegram_bot.id' => Yii::$app->params['bot_id']]);
-    }
-
 
 }

@@ -15,6 +15,8 @@ use yii\widgets\ActiveForm;
                 <div class="col-md-6">
                     <?php $form = ActiveForm::begin(); ?>
 
+                    <?= $form->errorSummary($model); ?>
+
                     <?= $form->field($model, 'token')->textInput(['maxlength' => true, 'data-href' => \yii\helpers\Url::to(['telegram-bot/get-me'], true)]) ?>
 
                     <?= $form->field($model, 'type')->dropDownList(\frontend\models\TelegramBot::getTypes()) ?>

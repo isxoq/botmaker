@@ -70,8 +70,4 @@ class Order extends \yii\db\ActiveRecord
         return $this->hasOne(TelegramBot::className(), ['id' => 'bot_id']);
     }
 
-    public static function find()
-    {
-        return parent::find()->joinWith('bot')->andWhere(['telegram_bot.id' => Yii::$app->params['bot_id']]);
-    }
 }
