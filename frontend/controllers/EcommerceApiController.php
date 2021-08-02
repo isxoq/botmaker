@@ -164,7 +164,7 @@ class EcommerceApiController extends \yii\web\Controller
         $subCategories = Category::getSubCategories($message->text, $this->bot->id);
         if ($subCategories) {
 
-            $this->setStep('in_category', strval(Category::findOne(['name' => $message->text])->id));
+            $this->setStep('in_category', strval(Category::findOne(['name' => $message->text, 'bot_id' => $this->bot->id])->id));
             $this->telegram()->sendMessage([
                 'text' => $message->text,
                 'chat_id' => $this->bot_user->user_id,
