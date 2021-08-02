@@ -80,6 +80,7 @@ class Category extends \yii\db\ActiveRecord
     {
         return self::find()
             ->andWhere(['parent_id' => $this->id])
+            ->andWhere(['bot_id' => $this->bot_id])
             ->all();
     }
 
@@ -88,6 +89,7 @@ class Category extends \yii\db\ActiveRecord
         $category = self::findOne(['name' => $categoryName]);
         return Category::find()
             ->andWhere(['parent_id' => $category->id])
+            ->andWhere(['bot_id' => $category->bot_id])
             ->all();
     }
 
