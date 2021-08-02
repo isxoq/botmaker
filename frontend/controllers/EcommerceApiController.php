@@ -298,7 +298,7 @@ class EcommerceApiController extends \yii\web\Controller
 
         $mainCategories = Category::find()
             ->andWhere(['bot_id' => $this->bot->id])
-            ->andWhere(['=', 'parent_id', ""])
+            ->andWhere(['IS', 'parent_id', null])
             ->all();
 
 
