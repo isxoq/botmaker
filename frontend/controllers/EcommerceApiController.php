@@ -10,6 +10,7 @@ Site:      ninja.uz
 Date Time: 7/30/2021 3:47 PM
 */
 
+use frontend\models\api\Cart;
 use frontend\models\api\Category;
 use frontend\models\api\Product;
 use frontend\models\api\ProductVariant;
@@ -30,7 +31,16 @@ class EcommerceApiController extends \yii\web\Controller
 {
     public $enableCsrfValidation = false;
 
+    /**
+     * Bot malumotini saqlash
+     * @var
+     */
     public $bot;
+
+    /**
+     * Ayni vaqtdagi foydalanuvchi
+     * @var
+     */
     public $bot_user;
 
     /**
@@ -51,9 +61,13 @@ class EcommerceApiController extends \yii\web\Controller
         $callback_query = $update->callback_query;
 
 
-        $this->set_main_variables($from, $bot_id);
+        $this->set_main_variables($from, $bot_id, $callback_query);
 
 
+        if ($callback_query) {
+            $this->callbackHandler($callback_query);
+            return;
+        }
         if ($message) {
             $this->messageHandler($message);
             return;
@@ -64,6 +78,31 @@ class EcommerceApiController extends \yii\web\Controller
 
     }
 
+
+    /**
+     * Callback handler
+     * @param $callback_query
+     */
+    protected function callbackHandler($callback_query)
+    {
+
+        $json = json_decode($callback_query->data);
+        if ($json) {
+            if ($json->action == "delete_from_cart") {
+                $this->deleteFromCart($json);
+                $this->updateCartInfo($callback_query);
+            }
+        }
+
+        print_r($this->telegram()->sendMessage([
+            'text' => $callback_query->data,
+            'chat_id' => $this->bot_user->user_id
+        ]));
+
+        $this->telegram()->answerCallback([
+            'callback_query_id' => $callback_query->id
+        ]);
+    }
 
     /**
      * Message tipidagi malumotlar bn ishlash
@@ -82,6 +121,23 @@ class EcommerceApiController extends \yii\web\Controller
         if ($message->text == t('Orqaga')) {
             $this->sendStep();
             $this->bot_backward();
+            return;
+        }
+
+        if ($message->text == t('Savat')) {
+            $this->sendCartInfo();
+            return;
+        }
+
+        if (str_contains($message->text, '❌')) {
+
+//            $this->deleteFromCart(str_replace('❌ ', "", $message->text));
+            $this->sendCartInfo();
+
+            $this->telegram()->sendMessage([
+                'text' => "Del click@",
+                'chat_id' => $this->bot_user->user_id
+            ]);
             return;
         }
 
@@ -109,9 +165,175 @@ class EcommerceApiController extends \yii\web\Controller
             return;
         }
 
+        if ($this->bot_user->old_step == "product" || $this->bot_user->old_step == "product_variant") {
+            if ($message->text == t('Savatcha')) {
+
+            } else {
+                if (!is_numeric($message->text)) {
+                    $this->telegram()->sendMessage([
+                        'text' => t('Please send number!'),
+                        'chat_id' => $this->bot_user->user_id,
+                    ]);
+                    return;
+                }
+                if ($this->bot_user->old_step == "product") {
+                    $this->addToCart(intval($this->bot_user->old_step_data), null, intval($message->text));
+                } else if ($this->bot_user->old_step == "product_variant") {
+                    $productVariant = ProductVariant::findOne(intval($this->bot_user->old_step_data));
+                    $this->addToCart(intval($productVariant->product->id), intval($this->bot_user->old_step_data), intval($message->text));
+                }
+                $this->setStep('main_categories', '');
+                $this->sendMainCategories();
+            }
+            return;
+        }
+
 //        $this->mainMenu();
     }
 
+    /**
+     * Cart update
+     * @param $callback_query
+     */
+    protected function updateCartInfo($callback_query)
+    {
+
+        if (!$this->getCart()) {
+            $this->mainMenu();
+            return;
+        }
+
+        $text = t('Savatcha') . PHP_EOL . PHP_EOL;
+
+        $total = 0;
+        foreach ($this->getCart() as $item) {
+            if ($item->productVariant) {
+                $text .= "<b>" . $item->product->name . " (" . $item->productVariant->name . ")</b>" . PHP_EOL;
+                $text .= $item->quantity . "*" . $item->productVariant->price . " = " . $item->quantity * $item->productVariant->price . PHP_EOL;
+                $total += $item->productVariant->price;
+            } else {
+                $text .= "<b>" . $item->product->name . "</b>" . PHP_EOL;
+                $text .= $item->quantity . "*" . $item->product->price . " = " . $item->quantity * $item->product->price . PHP_EOL;
+                $total += $item->product->price;
+            }
+        }
+
+        $text .= PHP_EOL . PHP_EOL;
+        $text .= t('Jami') . $total;
+
+
+        $delKeys = [];
+        foreach ($this->getCart() as $item) {
+            if ($item->productVariant) {
+                $delKeys[] = [['text' => "❌ " . $item->product->name . " (" . $item->productVariant->name . ")", 'callback_data' => json_encode([
+                    'action' => 'delete_from_cart',
+                    'type' => 'pv',
+                    'p_id' => $item->product->id,
+                    'id' => $item->productVariant->id
+                ])]];
+            } else {
+                $delKeys[] = [['text' => "❌ " . $item->product->name, 'callback_data' => json_encode([
+                    'action' => 'delete_from_cart',
+                    'type' => 'p',
+                    'id' => $item->product->id
+                ])]];
+            }
+        }
+
+        $this->telegram()->editMessageText([
+            'chat_id' => $callback_query->message->chat->id,
+            'message_id' => $callback_query->message->message_id,
+            'text' => $text,
+            'parse_mode' => "html"
+        ]);
+        $this->telegram()->editMessageReplyMarkup([
+            'chat_id' => $callback_query->message->chat->id,
+            'message_id' => $callback_query->message->message_id,
+            'reply_markup' => json_encode([
+                'inline_keyboard' => $delKeys,
+            ])
+        ]);
+
+    }
+
+    /**
+     * Savat malumotlarini jonatish
+     */
+    protected function sendCartInfo()
+    {
+
+
+        $text = t('Savatcha') . PHP_EOL . PHP_EOL;
+
+        $total = 0;
+        foreach ($this->getCart() as $item) {
+            if ($item->productVariant) {
+                $text .= "<b>" . $item->product->name . " (" . $item->productVariant->name . ")</b>" . PHP_EOL;
+                $text .= $item->quantity . "*" . $item->productVariant->price . " = " . $item->quantity * $item->productVariant->price . PHP_EOL;
+                $total += $item->productVariant->price;
+            } else {
+                $text .= "<b>" . $item->product->name . "</b>" . PHP_EOL;
+                $text .= $item->quantity . "*" . $item->product->price . " = " . $item->quantity * $item->product->price . PHP_EOL;
+                $total += $item->product->price;
+            }
+        }
+
+        $text .= PHP_EOL . PHP_EOL;
+        $text .= t('Jami') . $total;
+
+
+        $delKeys = [];
+        foreach ($this->getCart() as $item) {
+            if ($item->productVariant) {
+                $delKeys[] = [['text' => "❌ " . $item->product->name . " (" . $item->productVariant->name . ")", 'callback_data' => json_encode([
+                    'action' => 'delete_from_cart',
+                    'type' => 'pv',
+                    'p_id' => $item->product->id,
+                    'id' => $item->productVariant->id
+                ])]];
+            } else {
+                $delKeys[] = [['text' => "❌ " . $item->product->name, 'callback_data' => json_encode([
+                    'action' => 'delete_from_cart',
+                    'type' => 'p',
+                    'id' => $item->product->id
+                ])]];
+            }
+        }
+
+        if (!$this->getCart()) {
+            $this->telegram()->sendMessage([
+                'text' => t('Savat bom bosh'),
+                'chat_id' => $this->bot_user->user_id,
+            ]);
+            return;
+        }
+        $this->telegram()->sendMessage([
+            'text' => $text,
+            'chat_id' => $this->bot_user->user_id,
+            'parse_mode' => "html",
+            'reply_markup' => json_encode([
+                'inline_keyboard' => $delKeys,
+            ])
+        ]);
+        $this->telegram()->sendMessage([
+            'text' => t('Select'),
+            'chat_id' => $this->bot_user->user_id,
+            'parse_mode' => "html",
+            'reply_markup' => json_encode([
+                'keyboard' => [
+                    [['text' => t('Orqaga')], ['text' => t('Rasmiylashtirish')]],
+                    [['text' => t("Clear all")], ['text' => t('Bosh menyu')]]
+                ],
+                'resize_keyboard' => true
+            ])
+        ]);
+
+    }
+
+    /**
+     * Mahsulot variantlarini jo'natish
+     * @param $message
+     */
     protected function sendProductVariantInfo($message)
     {
         $product_variant = ProductVariant::findOne(['name' => $message->text]);
@@ -119,6 +341,10 @@ class EcommerceApiController extends \yii\web\Controller
         $this->sendProductDetail($product_variant);
     }
 
+    /**
+     * Mahsulot haqida malumot yuborish
+     * @param $message
+     */
     protected function sendProductInfo($message)
     {
         $product = Product::findOne(['name' => $message->text]);
@@ -337,11 +563,17 @@ class EcommerceApiController extends \yii\web\Controller
      * Asosiy o'zgaruvchilarni oladi
      * @param $from
      */
-    protected function set_main_variables($from, $bot_id)
+    protected function set_main_variables($from, $bot_id, $callback_query = null)
     {
 
         $this->bot = TelegramBot::findOne(['bot_id' => $bot_id]);
+
         $bot_user = BotUser::findOne(['user_id' => $from->id, 'bot_id' => $this->bot->id]);
+
+        if ($callback_query) {
+            $bot_user = BotUser::findOne(['user_id' => $callback_query->from->id, 'bot_id' => $this->bot->id]);
+        }
+
 
         if (!$bot_user) {
             $bot_user = new BotUser([
@@ -417,5 +649,69 @@ class EcommerceApiController extends \yii\web\Controller
             'token' => $this->bot->token,
         ]);
     }
+
+
+    protected function addToCart($product_id, $variant_id, $quantity)
+    {
+        $cart = Cart::find()
+            ->andWhere([
+                'product_id' => $product_id,
+                'product_variant_id' => $variant_id,
+                'bot_id' => $this->bot->id,
+                'bot_user_id' => $this->bot_user->id,
+            ])->one();
+
+        if ($cart) {
+            $cart->quantity += $quantity;
+            $cart->save();
+        } else {
+            $cart = new Cart([
+                'product_id' => $product_id,
+                'product_variant_id' => $variant_id,
+                'bot_id' => $this->bot->id,
+                'bot_user_id' => $this->bot_user->id,
+                'quantity' => $quantity
+            ]);
+            $cart->save();
+        }
+
+
+    }
+
+    protected function getCart()
+    {
+        return Cart::find()
+            ->andWhere([
+                'bot_id' => $this->bot->id,
+                'bot_user_id' => $this->bot_user->id,
+            ])->all();
+    }
+
+    protected function deleteFromCart($data)
+    {
+
+        if ($data->type == "p") {
+            $cart = Cart::find()
+                ->andWhere([
+                    'product_id' => $data->id,
+//                    'product_variant_id' => $variant_id,
+                    'bot_id' => $this->bot->id,
+                    'bot_user_id' => $this->bot_user->id,
+                ])->one();
+            $cart->delete();
+        }
+
+        if ($data->type == "pv") {
+            $cart = Cart::find()
+                ->andWhere([
+                    'product_id' => $data->p_id,
+                    'product_variant_id' => $data->id,
+                    'bot_id' => $this->bot->id,
+                    'bot_user_id' => $this->bot_user->id,
+                ])->one();
+            $cart->delete();
+        }
+    }
+
 }
 

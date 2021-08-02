@@ -25,6 +25,21 @@ class TelegramApi extends \yii\base\Component
 
     }
 
+    public function editMessageText($data)
+    {
+        return $this->request('editMessageText', $data);
+    }
+
+    public function editMessageReplyMarkup($data)
+    {
+        return $this->request('editMessageReplyMarkup', $data);
+    }
+
+    public function answerCallback($data)
+    {
+        return $this->request('answerCallbackQuery', $data);
+    }
+
     public function sendMessage($data)
     {
         return $this->request('sendMessage', $data);
