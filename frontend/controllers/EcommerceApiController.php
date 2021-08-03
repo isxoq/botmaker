@@ -188,7 +188,7 @@ class EcommerceApiController extends \yii\web\Controller
             return;
         }
 
-//        $this->mainMenu();
+        $this->mainMenu();
     }
 
     /**
