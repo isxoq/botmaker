@@ -876,7 +876,7 @@ class EcommerceApiController extends \yii\web\Controller
         $keys[] = [['text' => t('Orqaga')], ['text' => t('Bosh menyu')]];
 
         $this->telegram()->sendMessage([
-            'text' => "Kategoriyalar",
+            'text' => t('Kategoriyalar'),
             'chat_id' => $this->bot_user->user_id,
             'parse_mode' => "html",
             'reply_markup' => json_encode([
