@@ -356,6 +356,10 @@ class EcommerceApiController extends \yii\web\Controller
                     $this->addToCart(intval($productVariant->product->id), intval($this->bot_user->old_step_data), intval($message->text));
                 }
                 $this->setStep('main_categories', '');
+                $this->telegram()->sendMessage([
+                    'chat_id'=>$this->bot_user->user_id,
+                    'text'=>t('added to cart')
+                ]);
                 $this->sendMainCategories();
             }
             return;
