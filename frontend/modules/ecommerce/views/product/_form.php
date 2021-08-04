@@ -33,7 +33,7 @@ use yii\widgets\ActiveForm;
         'language' => 'ru',
         'controller' => 'elfinder', // вставляем название контроллера, по умолчанию равен elfinder
         'path' => 'product', // будет открыта папка из настроек контроллера с добавлением указанной под деритории
-        'filter' => 'image/jpg',    // фильтр файлов, можно задать массив фильтров https://github.com/Studio-42/elFinder/wiki/Client-configuration-options#wiki-onlyMimes
+        'filter' => 'image/jpeg',    // фильтр файлов, можно задать массив фильтров https://github.com/Studio-42/elFinder/wiki/Client-configuration-options#wiki-onlyMimes
         'template' => '<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
         'options' => ['class' => 'form-control'],
         'buttonOptions' => ['class' => 'btn btn-primary'],
