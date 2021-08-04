@@ -69,7 +69,7 @@ class OrderSearch extends Order
         ]);
 
         $query->andFilterWhere(['like', 'comment', $this->comment]);
-        $query->andFilterWhere(['!=', 'status', self::STATUS_ORDERING]);
+        $query->andFilterWhere(['!=', 'order.status', self::STATUS_ORDERING]);
 
         return $dataProvider;
     }
