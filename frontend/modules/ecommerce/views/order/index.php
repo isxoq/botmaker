@@ -33,6 +33,7 @@ $this->params['breadcrumbs'][] = $this->title;
 //                    'id',
                     'created_at:datetime',
                     'user.full_name',
+                    'user.phone',
                     'orderStatus' => [
                         'attribute' => 'orderStatus',
                         'format' => 'raw',
