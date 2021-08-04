@@ -131,6 +131,59 @@ class EcommerceApiController extends \yii\web\Controller
             return;
         }
 
+
+        if ($this->bot_user->old_step == "set_language") {
+
+            if ($message->text == t('Orqaga')) {
+                $this->settingHandler();
+                return;
+            }
+            if ($message->text == t('Uzbek')) {
+                $this->bot_user->lang = "uz";
+                $this->bot_user->save();
+                Yii::$app->language = 'uz';
+                $this->mainMenu();
+            } elseif ($message->text == t('Russian')) {
+                $this->bot_user->lang = "ru";
+                $this->bot_user->save();
+                Yii::$app->language = 'ru';
+                $this->mainMenu();
+            } else {
+                $this->sendError();
+            }
+            return;
+        }
+        if ($this->bot_user->old_step == "settings") {
+
+            if ($message->text == t('Orqaga')) {
+                $this->mainMenu();
+                return;
+            }
+
+            if ($message->text == t('Change language')) {
+                $this->setStep('set_language', '');
+                $this->telegram()->sendMessage([
+                    'text' => t('Tilni tanlang'),
+                    'chat_id' => $this->bot_user->user_id,
+                    'parse_mode' => "html",
+                    'reply_markup' => json_encode([
+                        'keyboard' => [
+                            [['text' => t('Uzbek')]],
+                            [['text' => t('Russian')]],
+                            [['text' => t('Orqaga')]],
+                        ],
+                        'resize_keyboard' => true
+                    ])
+                ]);
+                return;
+            }
+        }
+
+        if ($message->text == t('Settings')) {
+            $this->settingHandler();
+            return;
+        }
+
         if ($message->text == t('Cancel order')) {
             $this->mainMenu();
             return;
@@ -367,6 +420,23 @@ class EcommerceApiController extends \yii\web\Controller
 
 
         $this->mainMenu();
+    }
+
+    protected function settingHandler()
+    {
+        $this->setStep('settings', '');
+        $this->telegram()->sendMessage([
+            'text' => t('Sozlamalar'),
+            'chat_id' => $this->bot_user->user_id,
+            'parse_mode' => "html",
+            'reply_markup' => json_encode([
+                'keyboard' => [
+                    [['text' => t('Change language')]],
+                    [['text' => t('Orqaga')]],
+                ],
+                'resize_keyboard' => true
+            ])
+        ]);
     }
 
     protected function sendUserOrders()
@@ -1052,7 +1122,6 @@ class EcommerceApiController extends \yii\web\Controller
             $bot_user = BotUser::findOne(['user_id' => $callback_query->from->id, 'bot_id' => $this->bot->id]);
         }
 
-
         if (!$bot_user) {
             $bot_user = new BotUser([
                 'bot_id' => $this->bot->id,
@@ -1061,6 +1130,7 @@ class EcommerceApiController extends \yii\web\Controller
                 'user_id' => strval($from->id),
                 'username' => $from->username,
                 'full_name' => $from->first_name . " " . $from->last_name,
+                'lang' => 'uz'
             ]);
             if (!$bot_user->save()) {
                 var_dump($bot_user->errors);
@@ -1068,7 +1138,7 @@ class EcommerceApiController extends \yii\web\Controller
         }
 
         $this->bot_user = $bot_user;
-        Yii::$app->language = 'uz';
+        Yii::$app->language = $bot_user->lang;
 
     }
 

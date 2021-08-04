@@ -37,7 +37,7 @@ class BotUser extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['old_step_data', 'old_step'], 'string'],
+            [['old_step_data', 'old_step', 'lang'], 'string'],
             [['bot_id', 'last_action_date', 'status'], 'integer'],
             [['user_id', 'username', 'phone', 'full_name'], 'string', 'max' => 255],
             [['bot_id'], 'exist', 'skipOnError' => true, 'targetClass' => TelegramBot::className(), 'targetAttribute' => ['bot_id' => 'id']],
