@@ -12,10 +12,12 @@ Date Time: 7/30/2021 3:47 PM
 
 use frontend\models\api\Cart;
 use frontend\models\api\Category;
+use frontend\models\api\Order;
 use frontend\models\api\Product;
 use frontend\models\api\ProductVariant;
 use frontend\models\api\TelegramBot;
 use frontend\models\api\BotUser;
+use Geocodio\Geocodio;
 use yii;
 use yii\base\BaseObject;
 
@@ -64,6 +66,7 @@ class EcommerceApiController extends \yii\web\Controller
         $this->set_main_variables($from, $bot_id, $callback_query);
 
 
+
         if ($callback_query) {
             $this->callbackHandler($callback_query);
             return;
@@ -104,6 +107,15 @@ class EcommerceApiController extends \yii\web\Controller
         ]);
     }
 
+
+    protected function sendError($message = "xato")
+    {
+        $this->telegram()->sendMessage([
+            'text' => $message,
+            'chat_id' => $this->bot_user->user_id,
+        ]);
+    }
+
     /**
      * Message tipidagi malumotlar bn ishlash
      * @param $message
@@ -111,15 +123,155 @@ class EcommerceApiController extends \yii\web\Controller
      */
     protected function messageHandler($message)
     {
+
+        if ($message->text == t('Cancel order')) {
+            $this->mainMenu();
+            return;
+        }
+
+        if ($this->bot_user->old_step == "setPhone") {
+
+            if ($message->contact) {
+
+                $phone = str_replace('+', "", $message->contact->phone_number);
+                $this->bot_user->phone = $phone;
+                $this->bot_user->save();
+            } else {
+
+                preg_match('/998\d{2}\d{7}/', $message->text, $match);
+
+                if ($match && strlen($message->text) == 12) {
+                    $this->bot_user->phone = $message->text;
+                    $this->bot_user->save();
+                } else {
+                    $this->telegram()->sendMessage([
+                        'text' => t('please send correct number', [
+                            ]) . PHP_EOL . "<b>998xxyyyyyyy</b>",
+                        'chat_id' => $this->bot_user->user_id,
+                        'parse_mode' => "html"
+                    ]);
+                    return;
+                }
+            }
+
+            $this->setStep('get_delivery_type', '');
+            $this->getDeliveryType();
+
+        }
+
+        if ($this->bot_user->old_step == "get_delivery_type") {
+            $id = Order::getDeliveryTypeId($message->text);
+            if (!$id) {
+                $this->sendError();
+                return;
+            }
+            $order = Order::findOne([
+                'bot_id' => $this->bot->id,
+                'user_id' => $this->bot_user->id,
+                'status' => Order::STATUS_ORDERING
+            ]);
+            $order->delivery_type = $id;
+            $order->save();
+            $this->setStep('get_payment_type', '');
+            $this->getPaymentType();
+            return;
+        }
+
+        if ($this->bot_user->old_step == "confirm_order") {
+            if ($message->text == t("Bosh menyu")) {
+                $this->mainMenu();
+            } elseif ($message->text == t("Verify Order")) {
+
+                $order = Order::findOne([
+                    'bot_id' => $this->bot->id,
+                    'user_id' => $this->bot_user->id,
+                    'status' => Order::STATUS_ORDERING
+                ]);
+
+                $order->status = Order::STATUS_PROCESSING;
+                $order->save();
+                $this->telegram()->sendMessage([
+                    'text' => t('Order saved'),
+                    'parse_mode' => "html",
+                    'chat_id' => $this->bot_user->user_id,
+                ]);
+                $this->clearCart();
+                $this->mainMenu();
+            }
+            return;
+        }
+
+        if ($this->bot_user->old_step == "get_payment_type") {
+            $id = Order::getPaymentTypeId($message->text);
+            if (!$id) {
+                $this->sendError();
+                return;
+            }
+            $order = Order::findOne([
+                'bot_id' => $this->bot->id,
+                'user_id' => $this->bot_user->id,
+                'status' => Order::STATUS_ORDERING
+            ]);
+            $order->payment_type = $id;
+            $order->save();
+            $this->setStep('get_address', '');
+
+            if ($order->delivery_type == Order::DELIVERY_TYPE_OWN) {
+                $this->confirmOrder();
+            } else {
+                $this->getAddress();
+            }
+
+            return;
+        }
+
+        if ($this->bot_user->old_step == "get_address") {
+
+            $address = $message->text;
+
+            if ($message->location) {
+                $latlong = $message->location->latitude . "," . $message->location->longitude;
+                $address = $this->getLocationAddress($latlong);
+            }
+
+            $order = Order::findOne([
+                'bot_id' => $this->bot->id,
+                'user_id' => $this->bot_user->id,
+                'status' => Order::STATUS_ORDERING
+            ]);
+            $order->delivery_address = $address;
+            $order->save();
+            $this->setStep('confirm_order', '');
+            $this->confirmOrder();
+
+            return;
+        }
+
+        if ($message->text == t('Rasmiylashtirish')) {
+            $this->startOrder($message);
+            return;
+        }
+
+        if ($message->text == t('/start')) {
+            $this->telegram()->sendMessage([
+                'text' => t('Welcome {name}!', [
+                    'name' => $this->bot_user->full_name
+                ]),
+                'chat_id' => $this->bot_user->user_id,
+            ]);
+            $this->mainMenu();
+            return;
+        }
+
         if ($message->text == t('Buyurtma berish')) {
             $this->setStep('main_categories');
-            $this->sendStep();
+
             $this->sendMainCategories();
             return;
         }
 
         if ($message->text == t('Orqaga')) {
-            $this->sendStep();
+
             $this->bot_backward();
             return;
         }
@@ -148,19 +300,19 @@ class EcommerceApiController extends \yii\web\Controller
         }
 
         if ($this->bot_user->old_step == "main_categories" || $this->bot_user->old_step == "in_category") {
-            $this->sendStep();
+
             $this->categoryHandler($message);
             return;
         }
 
         if ($this->bot_user->old_step == "products") {
-            $this->sendStep();
+
             $this->sendProductInfo($message);
             return;
         }
 
         if ($this->bot_user->old_step == "product_variants") {
-            $this->sendStep();
+
             $this->sendProductVariantInfo($message);
             return;
         }
@@ -188,7 +340,183 @@ class EcommerceApiController extends \yii\web\Controller
             return;
         }
 
+
         $this->mainMenu();
+    }
+
+    protected function confirmOrder()
+    {
+        $order = Order::findOne([
+            'bot_id' => $this->bot->id,
+            'user_id' => $this->bot_user->id,
+            'status' => Order::STATUS_ORDERING
+        ]);
+        $text = t('Phone') . $this->bot_user->phone . PHP_EOL;
+        $text .= t('Order Payment type') . $order->paymentType . PHP_EOL;
+        $text .= t('Order address') . $order->delivery_address . PHP_EOL;
+        $text .= t('Order Delivery type') . $order->deliveryType . PHP_EOL . PHP_EOL;
+
+        $total = 0;
+        foreach ($this->getCart() as $item) {
+            if ($item->productVariant) {
+                $text .= "<b>" . $item->product->name . " (" . $item->productVariant->name . ")</b>" . PHP_EOL;
+                $text .= $item->quantity . "*" . $item->productVariant->price . " = " . $item->quantity * $item->productVariant->price . PHP_EOL;
+                $total += $item->productVariant->price;
+            } else {
+                $text .= "<b>" . $item->product->name . "</b>" . PHP_EOL;
+                $text .= $item->quantity . "*" . $item->product->price . " = " . $item->quantity * $item->product->price . PHP_EOL;
+                $total += $item->product->price;
+            }
+        }
+
+        $text .= PHP_EOL . PHP_EOL;
+        $text .= t('Jami') . $total;
+
+        $this->telegram()->sendMessage([
+            'text' => $text,
+            'chat_id' => $this->bot_user->user_id,
+            'parse_mode' => "html",
+            'reply_markup' => json_encode([
+                'keyboard' => [
+                    [['text' => t('Verify Order')]],
+                    [['text' => t('Order Comment')]],
+                    [['text' => t("Cancel order")], ['text' => t('Bosh menyu')]]
+                ],
+                'resize_keyboard' => true
+            ])
+        ]);
+
+    }
+
+    protected function getLocationAddress($latlong)
+    {
+        $curl = curl_init();
+
+        curl_setopt_array($curl, array(
+            CURLOPT_URL => 'https://maps.googleapis.com/maps/api/geocode/json?latlng=' . $latlong . '&key=AIzaSyDSi71B2Dkf5GZ1ISXxIRa6hlYqH0QtYiU',
+            CURLOPT_RETURNTRANSFER => true,
+            CURLOPT_ENCODING => '',
+            CURLOPT_MAXREDIRS => 10,
+            CURLOPT_TIMEOUT => 0,
+            CURLOPT_FOLLOWLOCATION => true,
+            CURLOPT_HTTP_VERSION => CURL_HTTP_VERSION_1_1,
+            CURLOPT_CUSTOMREQUEST => 'GET',
+            CURLOPT_HTTPHEADER => array(
+                'Accept-Language: uz'
+            ),
+        ));
+
+        $response = curl_exec($curl);
+        curl_close($curl);
+
+        $json = yii\helpers\Json::decode($response, false);
+        return $json->results[1]->formatted_address;
+    }
+
+    protected function startOrder($message)
+    {
+        $cart = $this->getCart();
+        if (!$cart) {
+            $this->telegram()->sendMessage([
+                'text' => t('Savat bosh avval bozor qiling!'),
+                'chat_id' => $this->bot_user->user_id,
+            ]);
+        } else {
+
+            $order = Order::findOne([
+                'bot_id' => $this->bot->id,
+                'user_id' => $this->bot_user->id,
+                'status' => Order::STATUS_ORDERING
+            ]);
+
+            if (!$order) {
+                $order = new Order([
+                    'bot_id' => $this->bot->id,
+                    'user_id' => $this->bot_user->id,
+                    'status' => Order::STATUS_ORDERING
+                ]);
+                $order->save();
+            }
+
+            if (!$this->bot_user->phone) {
+                $this->setUserPhone();
+                return;
+            }
+
+            $this->setStep('get_delivery_type', '');
+            $this->getDeliveryType();
+
+        }
+
+    }
+
+
+    protected function getAddress()
+    {
+        $this->telegram()->sendMessage([
+            'text' => t('send delivery address'),
+            'chat_id' => $this->bot_user->user_id,
+            'parse_mode' => "html",
+            'reply_markup' => json_encode([
+                'keyboard' => [
+                    [['text' => t('send location'), 'request_location' => true]],
+                    [['text' => t('Cancel order')]]
+                ],
+                'resize_keyboard' => true
+            ])
+        ]);
+    }
+
+    protected function getDeliveryType()
+    {
+        foreach (Order::deliveryTypes() as $deliveryTypeKey => $value) {
+            $keys[0][] = ['text' => $value];
+        }
+        $keys[1] = [['text' => t("Cancel order")]];
+
+        $this->telegram()->sendMessage([
+            'text' => t('start order'),
+            'chat_id' => $this->bot_user->user_id,
+            'parse_mode' => "html",
+            'reply_markup' => json_encode([
+                'keyboard' => $keys,
+                'resize_keyboard' => true
+            ])
+        ]);
+    }
+
+    protected function getPaymentType()
+    {
+        foreach (Order::paymentTypes() as $deliveryTypeKey => $value) {
+            $keys[0][] = ['text' => $value];
+        }
+        $keys[1] = [['text' => t("Cancel order")]];
+
+        $this->telegram()->sendMessage([
+            'text' => t('start order'),
+            'chat_id' => $this->bot_user->user_id,
+            'parse_mode' => "html",
+            'reply_markup' => json_encode([
+                'keyboard' => $keys,
+                'resize_keyboard' => true
+            ])
+        ]);
+    }
+
+    protected function setUserPhone()
+    {
+        $this->setStep('setPhone', '');
+        $this->telegram()->sendMessage([
+            'text' => t('Please send your phone number!'),
+            'chat_id' => $this->bot_user->user_id,
+            'parse_mode' => "html",
+            'reply_markup' => json_encode([
+                'keyboard' => [
+                    [['text' => t('Send my phone'), 'request_contact' => true]]
+                ],
+                'resize_keyboard' => true
+            ])
+        ]);
     }
 
     /**
@@ -590,6 +918,8 @@ class EcommerceApiController extends \yii\web\Controller
         }
 
         $this->bot_user = $bot_user;
+        Yii::$app->language = 'uz';
+
     }
 
     protected function sendMessage($data)
@@ -685,6 +1015,14 @@ class EcommerceApiController extends \yii\web\Controller
                 'bot_id' => $this->bot->id,
                 'bot_user_id' => $this->bot_user->id,
             ])->all();
+    }
+
+    protected function clearCart()
+    {
+        Cart::deleteAll([
+            'bot_id' => $this->bot->id,
+            'bot_user_id' => $this->bot_user->id,
+        ]);
     }
 
     protected function deleteFromCart($data)

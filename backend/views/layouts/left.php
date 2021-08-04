@@ -12,6 +12,12 @@
                                 class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Telegram Bots') ?>
                     </a>
                 </li>
+
+                <li class="<?= Yii::$app->controller->route == "translationmanager/source-message" ? "active" : "" ?>">
+                    <a href="<?= \yii\helpers\Url::to(['translationmanager/source-message']) ?>"><i
+                                class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Translations') ?>
+                    </a>
+                </li>
                 <li class="menu-title">UI elements</li><!-- /.menu-title -->
                 <li class="menu-item-has-children dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"

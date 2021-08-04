@@ -25,7 +25,7 @@ class m210730_065105_create_order_table extends Migration
         ]);
 
         $this->addForeignKey('order_bot_id_fk', 'order', 'bot_id', 'telegram_bot', 'id', 'RESTRICT');
-        $this->addForeignKey('order_user_id_fk', 'order', 'user_id', 'user', 'id', 'RESTRICT');
+        $this->addForeignKey('order_user_id_fk', 'order', 'user_id', 'bot_user', 'id', 'RESTRICT');
     }
 
     /**

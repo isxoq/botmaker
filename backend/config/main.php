@@ -12,7 +12,11 @@ return [
     'controllerNamespace' => 'backend\controllers',
     'bootstrap' => ['log'],
     'language' => "ru",
-    'modules' => [],
+    'modules' => [
+        'translatemanager' => [
+            'class' => 'backend\modules\translatemanager\Module',
+        ],
+    ],
     'components' => [
         'request' => [
             'baseUrl' => '/admin',

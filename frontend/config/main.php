@@ -62,6 +62,15 @@ return [
         ]
     ],
     'components' => [
+        'i18n' => [
+            'translations' => [
+                'app*' => [
+                    'class' => 'yii\i18n\DbMessageSource',
+//                    'cachingDuration' => 86400,
+//                    'enableCaching' => false,
+                ],
+            ],
+        ],
         'assetManager' => [
             'bundles' => [
                 'yii\web\JqueryAsset' => [
