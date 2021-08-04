@@ -13,8 +13,8 @@
                     </a>
                 </li>
 
-                <li class="<?= Yii::$app->controller->route == "translationmanager/source-message" ? "active" : "" ?>">
-                    <a href="<?= \yii\helpers\Url::to(['translationmanager/source-message']) ?>"><i
+                <li class="<?= Yii::$app->controller->route == "translatemanager/source-message" ? "active" : "" ?>">
+                    <a href="<?= \yii\helpers\Url::to(['translatemanager/source-message']) ?>"><i
                                 class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Translations') ?>
                     </a>
                 </li>
