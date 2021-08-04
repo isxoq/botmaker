@@ -417,7 +417,7 @@ class EcommerceApiController extends \yii\web\Controller
         $cart = $this->getCart();
         if (!$cart) {
             $this->telegram()->sendMessage([
-                'text' => t('Savat bosh avval bozor qiling!'),
+                'text' => t('Savat bom bosh'),
                 'chat_id' => $this->bot_user->user_id,
             ]);
         } else {
