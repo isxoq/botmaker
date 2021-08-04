@@ -357,8 +357,8 @@ class EcommerceApiController extends \yii\web\Controller
                 }
                 $this->setStep('main_categories', '');
                 $this->telegram()->sendMessage([
-                    'chat_id'=>$this->bot_user->user_id,
-                    'text'=>t('added to cart')
+                    'chat_id' => $this->bot_user->user_id,
+                    'text' => t('added to cart')
                 ]);
                 $this->sendMainCategories();
             }
@@ -838,7 +838,7 @@ class EcommerceApiController extends \yii\web\Controller
             ]);
         } else {
             $this->telegram()->sendMessage([
-                'text' => $product->name,
+                'text' => $text,
                 'chat_id' => $this->bot_user->user_id,
                 'parse_mode' => "html",
                 'reply_markup' => json_encode([
