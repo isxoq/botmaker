@@ -30,13 +30,28 @@ $this->params['breadcrumbs'][] = $this->title;
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
 
-                    'id',
-                    'bot_id',
-                    'created_at',
-                    'user_id',
-                    'status',
-                    //'total_price',
-                    //'payment_status',
+//                    'id',
+                    'created_at:datetime',
+                    'user.full_name',
+                    'orderStatus' => [
+                        'attribute' => 'orderStatus',
+                        'format' => 'raw',
+                        'value' => function ($model) {
+                            return $this->render('__selectRow', [
+                                'model' => $model
+                            ]);
+                        }
+                    ],
+                    'total_price:integer',
+                    'orderPaymentStatus' => [
+                        'attribute' => 'orderPaymentStatus',
+                        'format' => 'raw',
+                        'value' => function ($model) {
+                            return $this->render('__selectPaymentRow', [
+                                'model' => $model
+                            ]);
+                        }
+                    ],
                     //'payment_type',
                     //'comment:ntext',
 

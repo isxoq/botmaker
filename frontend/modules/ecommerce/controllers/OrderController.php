@@ -8,6 +8,7 @@ use frontend\modules\ecommerce\models\search\OrderSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\Response;
 
 /**
  * OrderController implements the CRUD actions for Order model.
@@ -27,6 +28,51 @@ class OrderController extends Controller
                 ],
             ],
         ];
+    }
+
+
+    public function actionChangeStatus()
+    {
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $order_id = Yii::$app->request->post('order_id');
+        $status_id = Yii::$app->request->post('status');
+
+        $order = $this->findModel($order_id);
+        $order->status = $status_id;
+        if ($order->save()) {
+            return [
+                'success' => true
+            ];
+        } else {
+            return [
+                'success' => true
+            ];
+        }
+
+
+    }
+
+    public function actionChangePaymentStatus()
+    {
+
+        Yii::$app->response->format = Response::FORMAT_JSON;
+        $order_id = Yii::$app->request->post('order_id');
+        $status_id = Yii::$app->request->post('status');
+
+        $order = $this->findModel($order_id);
+        $order->payment_status = $status_id;
+        if ($order->save()) {
+            return [
+                'success' => true
+            ];
+        } else {
+            return [
+                'success' => false
+            ];
+        }
+
+
     }
 
     /**
