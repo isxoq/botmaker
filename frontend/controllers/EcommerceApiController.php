@@ -216,6 +216,7 @@ class EcommerceApiController extends \yii\web\Controller
             $this->setStep('get_address', '');
 
             if ($order->delivery_type == Order::DELIVERY_TYPE_OWN) {
+                $this->setStep('confirm_order', '');
                 $this->confirmOrder();
             } else {
                 $this->getAddress();
