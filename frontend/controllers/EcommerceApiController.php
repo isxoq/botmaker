@@ -775,7 +775,7 @@ class EcommerceApiController extends \yii\web\Controller
 
     protected function sendProductVariantDetail($product_variant)
     {
-        $text = "<b>" . $product_variant->name . "</b>" . PHP_EOL . PHP_EOL;
+        $text = "<b>" . $product_variant->product->name . " (" . $product_variant->name . ")</b>" . PHP_EOL . PHP_EOL;
 
         if ($product_variant->old_price) {
             $text .= t("narx") . "<s>" . $product_variant->old_price . "</s> " . $product_variant->price . PHP_EOL . PHP_EOL;
