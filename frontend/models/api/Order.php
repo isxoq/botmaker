@@ -18,8 +18,8 @@ use Yii;
  * @property int|null $payment_status
  * @property int|null $payment_type
  * @property string|null $comment
-// * @property int|null $paymentType
-// * @property int|null $deliveryType
+ * // * @property int|null $paymentType
+ * // * @property int|null $deliveryType
  * @property string|null $delivery_address
  *
  * @property TelegramBot $bot
@@ -40,6 +40,9 @@ class Order extends \yii\db\ActiveRecord
 
     const DELIVERY_TYPE_TO_ADDRESS = 5;
     const DELIVERY_TYPE_OWN = 6;
+
+    const STATUS_PAYMENT_NO_PAY = 15;
+    const STATUS_PAYMENT_PAYED = 16;
 
     /**
      * {@inheritdoc}
@@ -139,6 +142,36 @@ class Order extends \yii\db\ActiveRecord
     public function getDeliveryType()
     {
         return self::deliveryTypes()[$this->delivery_type];
+    }
+
+    public static function getOrderStatuses()
+    {
+        return [
+            self::STATUS_PROCESSING => t('Processing'),
+            self::STATUS_VERIFIED => t('Verified'),
+            self::STATUS_BEING_DONE => t('Being done'),
+            self::STATUS_SUCCESS => t('Success'),
+            self::STATUS_CANCELLED => t('Cancelled'),
+        ];
+    }
+
+    public function getOrderStatus()
+    {
+        return self::getOrderStatuses()[$this->status];
+    }
+
+
+    public static function getOrderPaymentStatuses()
+    {
+        return [
+            self::STATUS_PAYMENT_NO_PAY => t('Not payed'),
+            self::STATUS_PAYMENT_PAYED => t('payed'),
+        ];
+    }
+
+    public function getOrderPaymentStatus()
+    {
+        return self::getOrderPaymentStatuses()[$this->payment_status];
     }
 
 }

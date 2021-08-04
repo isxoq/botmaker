@@ -45,6 +45,16 @@ class TelegramApi extends \yii\base\Component
         return $this->request('sendMessage', $data);
     }
 
+    public function deleteMessage($data)
+    {
+        return $this->request('deleteMessage', $data);
+    }
+
+    public function sendPhoto($data)
+    {
+        return $this->request('sendPhoto', $data);
+    }
+
     public function getMe()
     {
         return $this->request("getMe", null);

@@ -91,15 +91,18 @@ class EcommerceApiController extends \yii\web\Controller
         $json = json_decode($callback_query->data);
         if ($json) {
             if ($json->action == "delete_from_cart") {
+                if (!$this->getCart()) {
+                    $this->telegram()->deleteMessage([
+                        'chat_id' => $callback_query->from->id,
+                        'message_id' => $callback_query->message->message_id
+                    ]);
+                    $this->mainMenu();
+                    return;
+                }
                 $this->deleteFromCart($json);
                 $this->updateCartInfo($callback_query);
             }
         }
-
-        print_r($this->telegram()->sendMessage([
-            'text' => $callback_query->data,
-            'chat_id' => $this->bot_user->user_id
-        ]));
 
         $this->telegram()->answerCallback([
             'callback_query_id' => $callback_query->id
@@ -123,8 +126,23 @@ class EcommerceApiController extends \yii\web\Controller
     protected function messageHandler($message)
     {
 
+        if ($message->text == t('My Orders')) {
+            $this->sendUserOrders();
+            return;
+        }
+
         if ($message->text == t('Cancel order')) {
             $this->mainMenu();
+            return;
+        }
+
+        if ($message->text == t('Clear all')) {
+            $this->clearCart();
+            $this->telegram()->sendMessage([
+                'text' => t('Cart empty'),
+                'chat_id' => $this->bot_user->user_id,
+            ]);
+            $this->sendMainCategories();
             return;
         }
 
@@ -188,6 +206,9 @@ class EcommerceApiController extends \yii\web\Controller
                 ]);
 
                 $order->status = Order::STATUS_PROCESSING;
+                $order->created_at = time();
+                $order->payment_status = Order::STATUS_PAYMENT_NO_PAY;
+                $order->total_price = $this->getCartTotal();
                 $order->save();
                 $this->telegram()->sendMessage([
                     'text' => t('Order saved'),
@@ -342,6 +363,42 @@ class EcommerceApiController extends \yii\web\Controller
 
 
         $this->mainMenu();
+    }
+
+    protected function sendUserOrders()
+    {
+
+        $this->telegram()->sendMessage([
+            'text' => t('your orders'),
+            'chat_id' => $this->bot_user->user_id,
+        ]);
+        $orders = Order::find()
+            ->andWhere([
+                'bot_id' => $this->bot->id,
+                'user_id' => $this->bot_user->id,
+            ])
+            ->andWhere(['!=', 'status', Order::STATUS_ORDERING])
+            ->all();
+        if (!$orders) {
+            $this->telegram()->sendMessage([
+                'text' => t('no orders'),
+                'chat_id' => $this->bot_user->user_id,
+            ]);
+        } else {
+            foreach ($orders as $order) {
+                $text = t('order id') . $order->id . PHP_EOL;
+                $text .= t('total_amount') . $order->total_price . PHP_EOL;
+                $text .= t('datetime') . date('d.m.Y h:i:s', $order->created_at) . PHP_EOL;
+                $text .= t('status') . $order->orderStatus . PHP_EOL;
+                $text .= t('payment status') . $order->orderPaymentStatus . PHP_EOL;
+                $this->telegram()->sendMessage([
+                    'text' => $text,
+                    'chat_id' => $this->bot_user->user_id,
+                ]);
+            }
+        }
+
+
     }
 
     protected function confirmOrder()
@@ -527,6 +584,10 @@ class EcommerceApiController extends \yii\web\Controller
     {
 
         if (!$this->getCart()) {
+            $this->telegram()->deleteMessage([
+                'chat_id' => $callback_query->from->id,
+                'message_id' => $callback_query->message->message_id
+            ]);
             $this->mainMenu();
             return;
         }
@@ -665,8 +726,12 @@ class EcommerceApiController extends \yii\web\Controller
     protected function sendProductVariantInfo($message)
     {
         $product_variant = ProductVariant::findOne(['name' => $message->text]);
+        if (!$product_variant) {
+            $this->sendError(t('product variant not found'));
+            return;
+        }
         $this->setStep('product_variant', strval($product_variant->id));
-        $this->sendProductDetail($product_variant);
+        $this->sendProductVariantDetail($product_variant);
     }
 
     /**
@@ -676,17 +741,31 @@ class EcommerceApiController extends \yii\web\Controller
     protected function sendProductInfo($message)
     {
         $product = Product::findOne(['name' => $message->text]);
+        if (!$product) {
+            $this->sendError(t('product not found'));
+            return;
+        }
         if ($product->productVariants) {
+
             $this->setStep('product_variants', strval($product->id));
-            $this->telegram()->sendMessage([
-                'text' => $message->text,
-                'chat_id' => $this->bot_user->user_id,
-                'parse_mode' => "html",
-                'reply_markup' => json_encode([
-                    'keyboard' => $this->generateButtons($product->productVariants),
-                    'resize_keyboard' => true
-                ])
-            ]);
+            $text = "<b>" . $product->name . "</b>" . PHP_EOL . PHP_EOL;
+            $text .= $product->description . PHP_EOL . PHP_EOL;
+            $text .= t('Iltimos, variantlardan birini tanlang');
+
+            if ($product->image) {
+                $this->telegram()->sendPhoto([
+                    'photo' => yii\helpers\Url::to([$product->image], true),
+//                    'photo' => "https://i.ytimg.com/vi/WapKfi8L6yE/maxresdefault.jpg",
+                    'caption' => $text,
+                    'chat_id' => $this->bot_user->user_id,
+                    'parse_mode' => "html",
+                    'reply_markup' => json_encode([
+                        'keyboard' => $this->generateButtons($product->productVariants),
+                        'resize_keyboard' => true
+                    ])
+                ]);
+            }
+
         } else {
             $this->setStep('product', strval($product->id));
             $this->sendProductDetail($product);
@@ -694,11 +773,20 @@ class EcommerceApiController extends \yii\web\Controller
 
     }
 
-
-    protected function sendProductDetail($product)
+    protected function sendProductVariantDetail($product_variant)
     {
+        $text = "<b>" . $product_variant->name . "</b>" . PHP_EOL . PHP_EOL;
+
+        if ($product_variant->old_price) {
+            $text .= t("narx") . "<s>" . $product_variant->old_price . "</s> " . $product_variant->price . PHP_EOL . PHP_EOL;
+        } else {
+            $text .= t("narx") . $product_variant->price . PHP_EOL . PHP_EOL;
+        }
+
+        $text .= t('Buyurtma uchun sonni tanlang yoki yuboring');
+
         $this->telegram()->sendMessage([
-            'text' => $product->name,
+            'text' => $text,
             'chat_id' => $this->bot_user->user_id,
             'parse_mode' => "html",
             'reply_markup' => json_encode([
@@ -706,11 +794,61 @@ class EcommerceApiController extends \yii\web\Controller
                     [['text' => 1], ['text' => 2], ['text' => 3]],
                     [['text' => 4], ['text' => 5], ['text' => 6]],
                     [['text' => 7], ['text' => 8], ['text' => 9]],
-                    [['text' => t('Savatcha')], ['text' => t('Orqaga')]],
+                    [['text' => t('Savat')], ['text' => t('Orqaga')]],
                 ],
                 'resize_keyboard' => true
             ])
         ]);
+    }
+
+    protected function sendProductDetail($product)
+    {
+
+        $text = "<b>" . $product->name . "</b>" . PHP_EOL . PHP_EOL;
+        if ($product->old_price) {
+            $text .= t("narx") . "<s>" . $product->old_price . "</s> " . $product->price . PHP_EOL . PHP_EOL;
+        } else {
+            $text .= t("narx") . $product->price . PHP_EOL . PHP_EOL;
+        }
+
+        $text .= $product->description . PHP_EOL . PHP_EOL;
+        $text .= t('Buyurtma uchun sonni tanlang yoki yuboring');
+
+        if ($product->image) {
+            echo yii\helpers\Url::to([$product->image], true);
+            $this->telegram()->sendPhoto([
+                'photo' => yii\helpers\Url::to([$product->image], true),
+//                'photo' => "https://i.ytimg.com/vi/WapKfi8L6yE/maxresdefault.jpg",
+                'caption' => $text,
+                'chat_id' => $this->bot_user->user_id,
+                'parse_mode' => "html",
+                'reply_markup' => json_encode([
+                    'keyboard' => [
+                        [['text' => 1], ['text' => 2], ['text' => 3]],
+                        [['text' => 4], ['text' => 5], ['text' => 6]],
+                        [['text' => 7], ['text' => 8], ['text' => 9]],
+                        [['text' => t('Savat')], ['text' => t('Orqaga')]],
+                    ],
+                    'resize_keyboard' => true
+                ])
+            ]);
+        } else {
+            $this->telegram()->sendMessage([
+                'text' => $product->name,
+                'chat_id' => $this->bot_user->user_id,
+                'parse_mode' => "html",
+                'reply_markup' => json_encode([
+                    'keyboard' => [
+                        [['text' => 1], ['text' => 2], ['text' => 3]],
+                        [['text' => 4], ['text' => 5], ['text' => 6]],
+                        [['text' => 7], ['text' => 8], ['text' => 9]],
+                        [['text' => t('Savat')], ['text' => t('Orqaga')]],
+                    ],
+                    'resize_keyboard' => true
+                ])
+            ]);
+        }
+
     }
 
     protected function categoryHandler($message)
@@ -730,8 +868,16 @@ class EcommerceApiController extends \yii\web\Controller
             ]);
         } else {
             $category = Category::findOne(['name' => $message->text]);
-            $this->setStep('products', strval($category->id));
-            $this->sendProducts($category);
+            if ($category) {
+                if ($category->products) {
+                    $this->setStep('products', strval($category->id));
+                    $this->sendProducts($category);
+                } else {
+                    $this->sendError(t('products not found'));
+                }
+            } else {
+                $this->sendError(t('category not found'));
+            }
         }
     }
 
@@ -1006,6 +1152,20 @@ class EcommerceApiController extends \yii\web\Controller
         }
 
 
+    }
+
+    protected function getCartTotal()
+    {
+        $total = 0;
+        $carts = Cart::find()
+            ->andWhere([
+                'bot_id' => $this->bot->id,
+                'bot_user_id' => $this->bot_user->id,
+            ])->all();
+        foreach ($carts as $cart) {
+            $total += $cart->quantity * $cart->product->price;
+        }
+        return $total;
     }
 
     protected function getCart()
