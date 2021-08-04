@@ -66,7 +66,6 @@ class EcommerceApiController extends \yii\web\Controller
         $this->set_main_variables($from, $bot_id, $callback_query);
 
 
-
         if ($callback_query) {
             $this->callbackHandler($callback_query);
             return;
@@ -938,8 +937,8 @@ class EcommerceApiController extends \yii\web\Controller
 
         $this->telegram()->sendMessage([
             'text' => t('Welcome {name}', [
-                    'name' => $this->bot_user->full_name
-                ]) . " Your step: " . $this->bot_user->old_step,
+                'name' => $this->bot_user->full_name
+            ]),
             'chat_id' => $this->bot_user->user_id,
             'parse_mode' => "html",
             'reply_markup' => json_encode([
