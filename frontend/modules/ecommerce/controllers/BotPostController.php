@@ -142,7 +142,7 @@ class BotPostController extends Controller
                     telegram_core(['token' => Yii::$app->controller->module->bot->token])->sendPhoto([
                         'chat_id' => $user->user_id,
                         'caption' => $post->caption,
-                        'photo' => Url::to([$post->image], false),
+                        'photo' => Url::to([$post->image], true),
                         'parse_mode' => "html"
                     ]);
                 });
