@@ -2,6 +2,8 @@
 
 /* @var $this yii\web\View */
 
+use frontend\models\BotUserVisit;
+
 $this->title = Yii::t('app', 'Dashboard');
 
 
@@ -21,6 +23,15 @@ $this->registerJsFile("frontend/web/js/dashboard.js", ['depends' => 'frontend\as
 
 
 //dd(Yii::$app->controller->module);
+
+$total_revenue = \frontend\modules\ecommerce\models\Order::find()->andWhere(['order.status' => \frontend\modules\ecommerce\models\Order::STATUS_SUCCESS])->sum('total_price');
+$sales = \frontend\modules\ecommerce\models\Order::find()->andWhere(['=', 'order.status', \frontend\modules\ecommerce\models\Order::STATUS_SUCCESS])->count();
+$bot_users_count = \frontend\modules\ecommerce\models\BotUser::find()->count();
+$today_visit = BotUserVisit::find()->andWhere([
+    'bot_id' => Yii::$app->controller->module->bot->id,
+])->andWhere(['between', 'datetime', strtotime(date('Y-m-d 00:00:00')), strtotime(date('Y-m-d 23:59:59'))])->count();
+
+
 ?>
 
 
@@ -37,8 +48,10 @@ $this->registerJsFile("frontend/web/js/dashboard.js", ['depends' => 'frontend\as
                         </div>
                         <div class="stat-content">
                             <div class="text-left dib">
-                                <div class="stat-text">$<span class="count">23569</span></div>
-                                <div class="stat-heading">Revenue</div>
+                                <div class="stat-text"><span
+                                            class="count"><?= $total_revenue ?></span>
+                                </div>
+                                <div class="stat-heading"><?= t('Revenue') ?></div>
                             </div>
                         </div>
                     </div>
@@ -55,8 +68,8 @@ $this->registerJsFile("frontend/web/js/dashboard.js", ['depends' => 'frontend\as
                         </div>
                         <div class="stat-content">
                             <div class="text-left dib">
-                                <div class="stat-text"><span class="count">3435</span></div>
-                                <div class="stat-heading">Sales</div>
+                                <div class="stat-text"><span class="count"><?= $sales ?></span></div>
+                                <div class="stat-heading"><?= t('Sales') ?></div>
                             </div>
                         </div>
                     </div>
@@ -73,8 +86,8 @@ $this->registerJsFile("frontend/web/js/dashboard.js", ['depends' => 'frontend\as
                         </div>
                         <div class="stat-content">
                             <div class="text-left dib">
-                                <div class="stat-text"><span class="count">349</span></div>
-                                <div class="stat-heading">Templates</div>
+                                <div class="stat-text"><span class="count"><?= $today_visit ?></span></div>
+                                <div class="stat-heading"><?= t('Today visits') ?></div>
                             </div>
                         </div>
                     </div>
@@ -91,8 +104,8 @@ $this->registerJsFile("frontend/web/js/dashboard.js", ['depends' => 'frontend\as
                         </div>
                         <div class="stat-content">
                             <div class="text-left dib">
-                                <div class="stat-text"><span class="count">2986</span></div>
-                                <div class="stat-heading">Clients</div>
+                                <div class="stat-text"><span class="count"><?= $bot_users_count ?></span></div>
+                                <div class="stat-heading"><?= t('Clients') ?></div>
                             </div>
                         </div>
                     </div>
@@ -111,8 +124,8 @@ $this->registerJsFile("frontend/web/js/dashboard.js", ['depends' => 'frontend\as
                 <div class="row">
                     <div class="col-lg-8">
                         <div class="card-body">
-                            <!-- <canvas id="TrafficChart"></canvas>   -->
-                            <div id="traffic-chart" class="traffic-chart"></div>
+                            <canvas id="TrafficChart"></canvas>
+                            <!--                            <div id="traffic-chart" class="traffic-chart"></div>-->
                         </div>
                     </div>
                     <div class="col-lg-4">

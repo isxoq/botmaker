@@ -17,6 +17,7 @@ use frontend\models\api\Product;
 use frontend\models\api\ProductVariant;
 use frontend\models\api\TelegramBot;
 use frontend\models\api\BotUser;
+use frontend\models\BotUserVisit;
 use Geocodio\Geocodio;
 use yii;
 use yii\base\BaseObject;
@@ -1139,6 +1140,24 @@ class EcommerceApiController extends \yii\web\Controller
 
         $this->bot_user = $bot_user;
         Yii::$app->language = $bot_user->lang;
+
+        $visit = BotUserVisit::find()->andWhere([
+            'bot_id' => $this->bot->id,
+            'bot_user_id' => $bot_user->id
+        ])->andWhere(['between', 'datetime', strtotime(date('Y-m-d 00:00:00')), strtotime(date('Y-m-d 23:59:59'))])->one();
+
+
+        if (!$visit) {
+            $visit = new BotUserVisit([
+                'bot_id' => $this->bot->id,
+                'bot_user_id' => $bot_user->id,
+                'datetime' => time(),
+            ]);
+            $visit->save();
+        }
+
+        $visit->use_count += 1;
+        $visit->save();
 
     }
 

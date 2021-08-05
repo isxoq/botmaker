@@ -91,7 +91,7 @@ jQuery(document).ready(function ($) {
     // Traffic Chart using chartist
     if ($('#traffic-chart').length) {
         var chart = new Chartist.Line('#traffic-chart', {
-            labels: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
+            labels: ['bhjb', 'Feb', 'Mar', 'Apr', 'May', 'Jun'],
             series: [
                 [0, 18000, 35000, 25000, 22000, 0],
                 [0, 33000, 15000, 20000, 15000, 300],
