@@ -395,6 +395,19 @@ class EcommerceApiController extends \yii\web\Controller
         if ($this->bot_user->old_step == "product" || $this->bot_user->old_step == "product_variant") {
             if ($message->text == t('Savatcha')) {
 
+            } elseif ($message->text == t('Add to cart')) {
+                if ($this->bot_user->old_step == "product") {
+                    $this->addToCart(intval($this->bot_user->old_step_data), null, 1);
+                } else if ($this->bot_user->old_step == "product_variant") {
+                    $productVariant = ProductVariant::findOne(intval($this->bot_user->old_step_data));
+                    $this->addToCart(intval($productVariant->product->id), intval($this->bot_user->old_step_data), 1);
+                }
+                $this->setStep('main_categories', '');
+                $this->telegram()->sendMessage([
+                    'chat_id' => $this->bot_user->user_id,
+                    'text' => t('added to cart')
+                ]);
+                $this->sendMainCategories();
             } else {
                 if (!is_numeric($message->text)) {
                     $this->telegram()->sendMessage([
@@ -829,8 +842,8 @@ class EcommerceApiController extends \yii\web\Controller
 
             if ($product->image) {
                 $this->telegram()->sendPhoto([
-                    'photo' => yii\helpers\Url::to([$product->image], true),
-//                    'photo' => "https://i.ytimg.com/vi/WapKfi8L6yE/maxresdefault.jpg",
+//                    'photo' => yii\helpers\Url::to([$product->image], true),
+                    'photo' => "https://i.ytimg.com/vi/WapKfi8L6yE/maxresdefault.jpg",
                     'caption' => $text,
                     'chat_id' => $this->bot_user->user_id,
                     'parse_mode' => "html",
@@ -858,10 +871,61 @@ class EcommerceApiController extends \yii\web\Controller
             $text .= t("narx") . $product_variant->price . PHP_EOL . PHP_EOL;
         }
 
-        $text .= t('Buyurtma uchun sonni tanlang yoki yuboring');
+        $messageText = t('Buyurtma uchun sonni tanlang yoki yuboring');
+
+        if ($product_variant->product->product_type == \frontend\modules\ecommerce\models\Product::TYPE_DIGITAL) {
+            $messageText = t('Buyurtma uchun savatga tugmasini bosing');
+            $this->sendProductVariantCartButtons($text, $messageText, $product_variant);
+        } else {
+            $this->sendProductVariantCartButtons($text, $messageText, $product_variant);
+        }
+
+    }
+
+    protected function sendProductDetail($product)
+    {
+
+        $text = "<b>" . $product->name . "</b>" . PHP_EOL . PHP_EOL;
+        if ($product->old_price) {
+            $text .= t("narx") . "<s>" . $product->old_price . "</s> " . $product->price . PHP_EOL . PHP_EOL;
+        } else {
+            $text .= t("narx") . $product->price . PHP_EOL . PHP_EOL;
+        }
+
+        $text .= $product->description . PHP_EOL . PHP_EOL;
+        $messageText = t('Buyurtma uchun sonni tanlang yoki yuboring');
+
+        if ($product->product_type == \frontend\modules\ecommerce\models\Product::TYPE_DIGITAL) {
+            $messageText = t('Buyurtma uchun savatga tugmasini bosing');
+            $this->sendProductCartButtons($text, $messageText, $product);
+        } else {
+            $this->sendProductCartButtons($text, $messageText, $product);
+        }
+
+
+    }
+
+    protected function sendProductVariantCartButtons($text, $messageText, $product_variant)
+    {
+        echo "Ass";
+        if ($product_variant->product->product_type == \frontend\modules\ecommerce\models\Product::TYPE_DIGITAL) {
+            $this->telegram()->sendMessage([
+                'text' => $text . $messageText,
+                'chat_id' => $this->bot_user->user_id,
+                'parse_mode' => "html",
+                'reply_markup' => json_encode([
+                    'keyboard' => [
+                        [['text' => t('Add to cart')]],
+                        [['text' => t('Savat')], ['text' => t('Orqaga')]],
+                    ],
+                    'resize_keyboard' => true
+                ])
+            ]);
+            return;
+        }
 
         $this->telegram()->sendMessage([
-            'text' => $text,
+            'text' => $text . $messageText,
             'chat_id' => $this->bot_user->user_id,
             'parse_mode' => "html",
             'reply_markup' => json_encode([
@@ -876,25 +940,47 @@ class EcommerceApiController extends \yii\web\Controller
         ]);
     }
 
-    protected function sendProductDetail($product)
+    protected function sendProductCartButtons($text, $messageText, $product)
     {
+        if ($product->product_type == \frontend\modules\ecommerce\models\Product::TYPE_DIGITAL) {
+            if ($product->image) {
+                $this->telegram()->sendPhoto([
+                    'photo' => yii\helpers\Url::to([$product->image], true),
+//                'photo' => "https://i.ytimg.com/vi/WapKfi8L6yE/maxresdefault.jpg",
+                    'caption' => $text . $messageText,
+                    'chat_id' => $this->bot_user->user_id,
+                    'parse_mode' => "html",
+                    'reply_markup' => json_encode([
+                        'keyboard' => [
+                            [['text' => t('Add to cart')]],
+                            [['text' => t('Savat')], ['text' => t('Orqaga')]],
+                        ],
+                        'resize_keyboard' => true
+                    ])
+                ]);
+            } else {
+                $this->telegram()->sendMessage([
+                    'text' => $text . $messageText,
+                    'chat_id' => $this->bot_user->user_id,
+                    'parse_mode' => "html",
+                    'reply_markup' => json_encode([
+                        'keyboard' => [
+                            [['text' => t('Add to cart')]],
+                            [['text' => t('Savat')], ['text' => t('Orqaga')]],
+                        ],
+                        'resize_keyboard' => true
+                    ])
+                ]);
+            }
 
-        $text = "<b>" . $product->name . "</b>" . PHP_EOL . PHP_EOL;
-        if ($product->old_price) {
-            $text .= t("narx") . "<s>" . $product->old_price . "</s> " . $product->price . PHP_EOL . PHP_EOL;
-        } else {
-            $text .= t("narx") . $product->price . PHP_EOL . PHP_EOL;
+            return;
         }
 
-        $text .= $product->description . PHP_EOL . PHP_EOL;
-        $text .= t('Buyurtma uchun sonni tanlang yoki yuboring');
-
         if ($product->image) {
-            echo yii\helpers\Url::to([$product->image], true);
             $this->telegram()->sendPhoto([
                 'photo' => yii\helpers\Url::to([$product->image], true),
 //                'photo' => "https://i.ytimg.com/vi/WapKfi8L6yE/maxresdefault.jpg",
-                'caption' => $text,
+                'caption' => $text . $messageText,
                 'chat_id' => $this->bot_user->user_id,
                 'parse_mode' => "html",
                 'reply_markup' => json_encode([
@@ -909,7 +995,7 @@ class EcommerceApiController extends \yii\web\Controller
             ]);
         } else {
             $this->telegram()->sendMessage([
-                'text' => $text,
+                'text' => $text . $messageText,
                 'chat_id' => $this->bot_user->user_id,
                 'parse_mode' => "html",
                 'reply_markup' => json_encode([
@@ -923,7 +1009,6 @@ class EcommerceApiController extends \yii\web\Controller
                 ])
             ]);
         }
-
     }
 
     protected function categoryHandler($message)
