@@ -842,8 +842,8 @@ class EcommerceApiController extends \yii\web\Controller
 
             if ($product->image) {
                 $this->telegram()->sendPhoto([
-//                    'photo' => yii\helpers\Url::to([$product->image], true),
-                    'photo' => "https://i.ytimg.com/vi/WapKfi8L6yE/maxresdefault.jpg",
+                    'photo' => yii\helpers\Url::to([$product->image], true),
+//                    'photo' => "https://i.ytimg.com/vi/WapKfi8L6yE/maxresdefault.jpg",
                     'caption' => $text,
                     'chat_id' => $this->bot_user->user_id,
                     'parse_mode' => "html",

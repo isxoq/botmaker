@@ -46,4 +46,41 @@ class BotUserVisit extends \yii\db\ActiveRecord
             'use_count' => Yii::t('app', 'Use Count'),
         ];
     }
+
+    public static function dayVisits($day)
+    {
+        $today_visit = self::find()
+            ->andWhere(['bot_id' => Yii::$app->controller->module->bot->id,])
+            ->andWhere(['between', 'datetime', strtotime($day['start']), strtotime($day['end'])])
+            ->count();
+        return $today_visit;
+    }
+
+    public static function visits()
+    {
+        $days = [];
+        $labels = [];
+
+        for ($i = 0; $i <= 6; $i++) {
+            $labels[] = date('Y-m-d', strtotime("-{$i} days"));
+            $days[] = [
+                'start' => date('Y-m-d 00:00:00', strtotime("-{$i} days")),
+                'end' => date('Y-m-d 23:59:59', strtotime("-{$i} days"))
+            ];
+        }
+        $visits = [];
+        $days = array_reverse($days);
+
+        foreach ($days as $day) {
+            $visits[] = BotUserVisit::dayVisits($day);
+        }
+
+        $labels = json_encode(array_reverse($labels));
+        $visits = json_encode($visits);
+        return [
+            'labels' => $labels,
+            'visits' => $visits,
+            'label' => t('Visits')
+        ];
+    }
 }

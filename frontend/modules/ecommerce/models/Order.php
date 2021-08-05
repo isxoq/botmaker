@@ -2,6 +2,7 @@
 
 namespace frontend\modules\ecommerce\models;
 
+use frontend\models\BotUserVisit;
 use frontend\models\TelegramBot;
 
 use Yii;
@@ -186,6 +187,52 @@ class Order extends \yii\db\ActiveRecord
         return parent::find()->joinWith('bot')->andWhere(['telegram_bot.id' => Yii::$app->controller->module->bot->id]);
     }
 
+    public static function weeklyOrders()
+    {
+        $days = [];
+        $labels = [];
+
+        for ($i = 0; $i <= 6; $i++) {
+            $labels[] = date('Y-m-d', strtotime("-{$i} days"));
+            $days[] = [
+                'start' => date('Y-m-d 00:00:00', strtotime("-{$i} days")),
+                'end' => date('Y-m-d 23:59:59', strtotime("-{$i} days"))
+            ];
+        }
+        $orders = [];
+        $days = array_reverse($days);
+
+        foreach ($days as $day) {
+            $orders[] = self::dayOrders($day);
+        }
+
+        $labels = json_encode(array_reverse($labels));
+        $orders = json_encode($orders);
+        return [
+            'labels' => $labels,
+            'orders' => $orders,
+            'label' => t('Sales')
+        ];
+    }
+
+
+    public static function dayOrders($day)
+    {
+        $today_visit = self::find()
+            ->andWhere(['!=', 'order.status', self::STATUS_ORDERING])
+            ->andWhere(['between', 'order.created_at', strtotime($day['start']), strtotime($day['end'])])
+            ->count();
+        return $today_visit;
+    }
+
+    public static function latestOrders()
+    {
+        return self::find()
+            ->andWhere(['!=', 'order.status', self::STATUS_ORDERING])
+            ->orderBy('order.created_at DESC')
+            ->limit(5)
+            ->all();
+    }
 }
 
 
