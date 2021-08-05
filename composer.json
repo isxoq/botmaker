@@ -27,7 +27,8 @@
     "kartik-v/yii2-widget-switchinput": "dev-master",
     "johnitvn/yii2-ajaxcrud": "~2.1",
     "mihaildev/yii2-elfinder": "*",
-    "kartik-v/yii2-dynagrid": "dev-master"
+    "kartik-v/yii2-dynagrid": "dev-master",
+    "vxm/yii2-async": "^1.0"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",

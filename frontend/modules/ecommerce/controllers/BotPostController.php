@@ -2,18 +2,18 @@
 
 namespace frontend\modules\ecommerce\controllers;
 
-use vxm\async\Pool;
-use Yii;
 use frontend\modules\ecommerce\models\BotUser;
-use frontend\modules\ecommerce\models\search\BotUserSearch;
+use Yii;
+use frontend\modules\ecommerce\models\BotPost;
+use frontend\modules\ecommerce\models\BotPostSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
 
 /**
- * BotUserController implements the CRUD actions for BotUser model.
+ * BotPostController implements the CRUD actions for BotPost model.
  */
-class BotUserController extends Controller
+class BotPostController extends Controller
 {
     /**
      * {@inheritdoc}
@@ -31,12 +31,12 @@ class BotUserController extends Controller
     }
 
     /**
-     * Lists all BotUser models.
+     * Lists all BotPost models.
      * @return mixed
      */
     public function actionIndex()
     {
-        $searchModel = new BotUserSearch();
+        $searchModel = new BotPostSearch();
         $dataProvider = $searchModel->search(Yii::$app->request->queryParams);
 
         return $this->render('index', [
@@ -46,7 +46,7 @@ class BotUserController extends Controller
     }
 
     /**
-     * Displays a single BotUser model.
+     * Displays a single BotPost model.
      * @param integer $id
      * @return mixed
      * @throws NotFoundHttpException if the model cannot be found
@@ -59,16 +59,17 @@ class BotUserController extends Controller
     }
 
     /**
-     * Creates a new BotUser model.
+     * Creates a new BotPost model.
      * If creation is successful, the browser will be redirected to the 'view' page.
      * @return mixed
      */
     public function actionCreate()
     {
-        $model = new BotUser();
+        $model = new BotPost();
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index', 'bot_id' => Yii::$app->controller->module->bot->id]);
+
         }
 
         return $this->render('create', [
@@ -77,7 +78,7 @@ class BotUserController extends Controller
     }
 
     /**
-     * Updates an existing BotUser model.
+     * Updates an existing BotPost model.
      * If update is successful, the browser will be redirected to the 'view' page.
      * @param integer $id
      * @return mixed
@@ -89,6 +90,7 @@ class BotUserController extends Controller
 
         if ($model->load(Yii::$app->request->post()) && $model->save()) {
             return $this->redirect(['index', 'bot_id' => Yii::$app->controller->module->bot->id]);
+
         }
 
         return $this->render('update', [
@@ -97,7 +99,7 @@ class BotUserController extends Controller
     }
 
     /**
-     * Deletes an existing BotUser model.
+     * Deletes an existing BotPost model.
      * If deletion is successful, the browser will be redirected to the 'index' page.
      * @param integer $id
      * @return mixed
@@ -106,34 +108,39 @@ class BotUserController extends Controller
     public function actionDelete($id)
     {
         $this->findModel($id)->delete();
+
         return $this->redirect(['index', 'bot_id' => Yii::$app->controller->module->bot->id]);
+
     }
 
     /**
-     * Finds the BotUser model based on its primary key value.
+     * Finds the BotPost model based on its primary key value.
      * If the model is not found, a 404 HTTP exception will be thrown.
      * @param integer $id
-     * @return BotUser the loaded model
+     * @return BotPost the loaded model
      * @throws NotFoundHttpException if the model cannot be found
      */
     protected function findModel($id)
     {
-        if (($model = BotUser::findOne($id)) !== null) {
+        if (($model = BotPost::findOne($id)) !== null) {
             return $model;
         }
 
         throw new NotFoundHttpException(Yii::t('app', 'The requested page does not exist.'));
     }
 
-    public function actionPost()
+    public function actionSendPost($id)
     {
-
-
-//        Yii::$app->async->run(function () {
-//            echo "ASdasd";
-//        });
-//        dd(exec('ping'));
-
-        return $this->render('__post');
+        $post = BotPost::findOne($id);
+        $users = BotUser::find()->all();
+//        dd($users);
+        foreach ($users as $user) {
+            Yii::$app->async->run(function () use ($user, $post) {
+                telegram_core(['token' => Yii::$app->controller->module->bot->token])->sendMessage([
+                    'chat_id' => $user->user_id,
+                    'text' => $post->caption
+                ]);
+            });
+        }
     }
 }

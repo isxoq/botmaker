@@ -9,7 +9,7 @@ $params = array_merge(
 return [
     'id' => 'app-frontend',
     'basePath' => dirname(__DIR__),
-    'language'=>'ru',
+    'language' => 'ru',
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
     'modules' => [
@@ -63,6 +63,10 @@ return [
         ]
     ],
     'components' => [
+        'async' => [
+            'class' => 'vxm\async\Async',
+            'appConfigFile' => '@app/config/main.php' // optional when you need to use yii feature in async process.
+        ],
         'i18n' => [
             'translations' => [
                 'app*' => [

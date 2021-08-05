@@ -35,6 +35,12 @@
                                 class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Foydalanuvchilar') ?>
                     </a>
                 </li>
+
+                <li class="<?= Yii::$app->controller->route == "ecommerce/bot-post" ? "active" : "" ?>">
+                    <a href="<?= \yii\helpers\Url::to(['/ecommerce/bot-post', 'bot_id' => Yii::$app->request->get('bot_id')]) ?>"><i
+                                class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Posting') ?>
+                    </a>
+                </li>
                 <li class="menu-title">UI elements</li><!-- /.menu-title -->
                 <li class="menu-item-has-children dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
