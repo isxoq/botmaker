@@ -6,6 +6,7 @@ use frontend\modules\ecommerce\models\BotUser;
 use Yii;
 use frontend\modules\ecommerce\models\BotPost;
 use frontend\modules\ecommerce\models\BotPostSearch;
+use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -134,10 +135,25 @@ class BotPostController extends Controller
         $post = BotPost::findOne($id);
         $users = BotUser::find()->all();
 //        dd($users);
+
+        if ($post->image) {
+            foreach ($users as $user) {
+                Yii::$app->async->run(function () use ($user, $post) {
+                    telegram_core(['token' => Yii::$app->controller->module->bot->token])->sendPhoto([
+                        'chat_id' => $user->user_id,
+                        'caption' => $post->caption,
+                        'photo' => Url::to([$post->image], false),
+                        'parse_mode' => "html"
+                    ]);
+                });
+            }
+            return 1;
+        }
         foreach ($users as $user) {
             Yii::$app->async->run(function () use ($user, $post) {
                 telegram_core(['token' => Yii::$app->controller->module->bot->token])->sendMessage([
                     'chat_id' => $user->user_id,
+                    'parse_mode' => "html",
                     'text' => $post->caption
                 ]);
             });
