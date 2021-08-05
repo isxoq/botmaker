@@ -12,6 +12,7 @@ use Yii;
  * @property int $category_id
  * @property int|null $old_price
  * @property int $price
+ * @property int $product_type
  * @property string|null $description
  * @property string|null $image
  *
@@ -19,6 +20,10 @@ use Yii;
  */
 class Product extends \yii\db\ActiveRecord
 {
+
+    const TYPE_DIGITAL = 1;
+    const TYPE_COUNTABLE = 2;
+
     /**
      * {@inheritdoc}
      */
@@ -33,8 +38,8 @@ class Product extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            [['name', 'category_id', 'price'], 'required'],
-            [['category_id', 'old_price', 'price'], 'integer'],
+            [['name', 'category_id', 'price', 'product_type'], 'required'],
+            [['category_id', 'old_price', 'price', 'product_type'], 'integer'],
             [['description'], 'string'],
             [['name', 'image'], 'string', 'max' => 255],
             [['category_id'], 'exist', 'skipOnError' => true, 'targetClass' => Category::className(), 'targetAttribute' => ['category_id' => 'id']],

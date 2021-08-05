@@ -51,7 +51,7 @@ $today_visit = BotUserVisit::find()->andWhere([
                                 <div class="stat-text"><span
                                             class="count"><?= $total_revenue ?></span>
                                 </div>
-                                <div class="stat-heading"><?= t('Revenue') ?></div>
+                                <div class="stat-heading"><?= t('Total Revenue') ?></div>
                             </div>
                         </div>
                     </div>
@@ -69,7 +69,7 @@ $today_visit = BotUserVisit::find()->andWhere([
                         <div class="stat-content">
                             <div class="text-left dib">
                                 <div class="stat-text"><span class="count"><?= $sales ?></span></div>
-                                <div class="stat-heading"><?= t('Sales') ?></div>
+                                <div class="stat-heading"><?= t('Total Sales') ?></div>
                             </div>
                         </div>
                     </div>
@@ -105,7 +105,7 @@ $today_visit = BotUserVisit::find()->andWhere([
                         <div class="stat-content">
                             <div class="text-left dib">
                                 <div class="stat-text"><span class="count"><?= $bot_users_count ?></span></div>
-                                <div class="stat-heading"><?= t('Clients') ?></div>
+                                <div class="stat-heading"><?= t('Total Clients') ?></div>
                             </div>
                         </div>
                     </div>
