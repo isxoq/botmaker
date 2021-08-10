@@ -830,7 +830,7 @@ class EcommerceApiController extends \yii\web\Controller
     {
         $product = Product::find()
             ->joinWith('category')
-            ->andWhere(['name' => $message->text, 'category.bot_id' => $this->bot->id])
+            ->andWhere(['product.name' => $message->text, 'category.bot_id' => $this->bot->id])
             ->one();
         if (!$product) {
             $this->sendError(t('product not found'));
