@@ -622,7 +622,7 @@ class EcommerceApiController extends \yii\web\Controller
         $keys[1] = [['text' => t("Cancel order")]];
 
         $this->telegram()->sendMessage([
-            'text' => t('start order'),
+            'text' => t('select delivery type'),
             'chat_id' => $this->bot_user->user_id,
             'parse_mode' => "html",
             'reply_markup' => json_encode([
@@ -640,7 +640,7 @@ class EcommerceApiController extends \yii\web\Controller
         $keys[1] = [['text' => t("Cancel order")]];
 
         $this->telegram()->sendMessage([
-            'text' => t('start order'),
+            'text' => t('select payment type'),
             'chat_id' => $this->bot_user->user_id,
             'parse_mode' => "html",
             'reply_markup' => json_encode([
