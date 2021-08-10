@@ -207,6 +207,7 @@ class EcommerceApiController extends \yii\web\Controller
                 $phone = str_replace('+', "", $message->contact->phone_number);
                 $this->bot_user->phone = $phone;
                 $this->bot_user->save();
+
             } else {
 
                 preg_match('/998\d{2}\d{7}/', $message->text, $match);
@@ -227,6 +228,7 @@ class EcommerceApiController extends \yii\web\Controller
 
             $this->setStep('get_delivery_type', '');
             $this->getDeliveryType();
+            return;
 
         }
 
