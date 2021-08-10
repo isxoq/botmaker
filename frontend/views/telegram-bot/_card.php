@@ -28,7 +28,7 @@ Date Time: 7/26/2021 2:41 PM
                             class="text-success"><?= t('Webhook faol') ?></b> <?= $model->webhook ?> <?= \yii\helpers\Html::a("<i class='fa fa-edit'></i>", ['telegram-bot/set-webhook', 'id' => $model->id]) ?>
                 </div>
             <?php else: ?>
-                <div class="location text-sm-center">  <?= \yii\helpers\Html::a(t('Webhook sozlash'), ['telegram-bot/set-webhook', 'id' => $model->id]) ?></div>
+<!--                <div class="location text-sm-center">  --><?//= \yii\helpers\Html::a(t('Webhook sozlash'), ['telegram-bot/set-webhook', 'id' => $model->id]) ?><!--</div>-->
             <?php endif; ?>
         </div>
     </a>
