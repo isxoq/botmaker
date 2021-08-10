@@ -828,7 +828,10 @@ class EcommerceApiController extends \yii\web\Controller
      */
     protected function sendProductInfo($message)
     {
-        $product = Product::findOne(['name' => $message->text]);
+        $product = Product::find()
+            ->joinWith('category')
+            ->andWhere(['name' => $message->text, 'category.bot_id' => $this->bot->id])
+            ->one();
         if (!$product) {
             $this->sendError(t('product not found'));
             return;
