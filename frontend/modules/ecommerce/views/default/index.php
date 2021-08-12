@@ -136,12 +136,12 @@ $today_visit = BotUserVisit::find()->andWhere([
                             <div class="progress-box progress-1">
                                 <h4 class="por-title"><?= t('Today visits') ?></h4>
                                 <div class="por-txt"><?= $today_visit ?>
-                                    (<?= round($today_visit / $bot_users_count * 100) ?>%)
+                                    (<?= round($bot_users_count ? $today_visit / $bot_users_count * 100 : 0) ?>%)
                                 </div>
                                 <div class="progress mb-2" style="height: 5px;">
                                     <div class="progress-bar bg-flat-color-1" role="progressbar"
                                          style="width: <?= round($today_visit / $bot_users_count * 100) ?>%;"
-                                         aria-valuenow="<?= round($today_visit / $bot_users_count * 100) ?>"
+                                         aria-valuenow="<?= round($bot_users_count ? $today_visit / $bot_users_count * 100 : 0) ?>"
                                          aria-valuemin="0" aria-valuemax="100"></div>
                                 </div>
                             </div>
