@@ -54,14 +54,14 @@ class EcommerceApiController extends \yii\web\Controller
     {
         $raw = Yii::$app->request->rawBody;
         $update = yii\helpers\Json::decode($raw, false);
-        $message = $update->message;
-        $from = $update->message->from;
-        $edited_message = $update->edited_message;
-        $channel_post = $update->channel_post;
-        $edited_channel_post = $update->edited_channel_post;
-        $inline_query = $update->inline_query;
-        $chosen_inline_result = $update->chosen_inline_result;
-        $callback_query = $update->callback_query;
+        $message = $update->message ?? null;
+        $from = $update->message->from ?? null;
+        $edited_message = $update->edited_message ?? null;
+        $channel_post = $update->channel_post ?? null;
+        $edited_channel_post = $update->edited_channel_post ?? null;
+        $inline_query = $update->inline_query ?? null;
+        $chosen_inline_result = $update->chosen_inline_result ?? null;
+        $callback_query = $update->callback_query ?? null;
 
 
         $this->set_main_variables($from, $bot_id, $callback_query);
