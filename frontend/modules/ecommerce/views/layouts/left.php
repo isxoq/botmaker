@@ -9,7 +9,7 @@
                                 class="menu-icon fa fa-reply"></i><?= Yii::t('app', 'Bosh sahifa') ?> </a>
                 </li>
                 <li class="<?= Yii::$app->controller->route == "ecommerce/default/index" ? "active" : "" ?>">
-                    <a href="<?= \yii\helpers\Url::to(['ecommerce/default/index']) ?>"><i
+                    <a href="<?= \yii\helpers\Url::to(['ecommerce/default/index', 'bot_id' => Yii::$app->controller->module->bot->id]) ?>"><i
                                 class="menu-icon fa fa-laptop"></i><?= Yii::t('app', 'Dashboard') ?> </a>
                 </li>
 

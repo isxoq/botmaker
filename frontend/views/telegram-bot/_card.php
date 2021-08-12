@@ -28,6 +28,7 @@ Date Time: 7/26/2021 2:41 PM
 
         </div>
         <hr>
+        <?= $model->availableDays ?>
         <?= $model->isAvailable ? t('Faol holatda') : t('Puli tugagan') ?>
     </div>
 </a>

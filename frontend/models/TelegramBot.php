@@ -137,4 +137,9 @@ class TelegramBot extends BaseActiveRecord
         return $this->active_to >= time();
     }
 
+    public function getavailableDays()
+    {
+        return ($this->active_to - time()) / 3600 / 24;
+    }
+
 }
