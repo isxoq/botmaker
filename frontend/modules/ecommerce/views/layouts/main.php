@@ -79,10 +79,10 @@ AppAsset::register($this);
         <div class="top-left">
             <div class="navbar-header">
                 <a class="navbar-brand" href="/"><img
-                            src="<?= \yii\helpers\Url::to('/frontend/web/images/logo2.svg', true) ?>"
+                            src="<?= \yii\helpers\Url::to('/images/logo2.svg', true) ?>"
                             alt="Logo"></a>
                 <a class="navbar-brand hidden" href="/"><img
-                            src="<?= \yii\helpers\Url::to('/frontend/web/images/logo2.svg', true) ?>" alt="Logo"></a>
+                            src="<?= \yii\helpers\Url::to('/images/logo2.svg', true) ?>" alt="Logo"></a>
                 <a id="menuToggle" class="menutoggle"><i class="fa fa-bars"></i></a>
             </div>
         </div>
