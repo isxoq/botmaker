@@ -79,6 +79,7 @@ class TelegramBotController extends Controller
             $model->bot_username = $bot->result->username;
             $model->user_id = user()->id;
             $model->bot_id = strval($bot->result->id);
+            $model->active_to = strtotime('+14 days');
             $model->webhook = Url::to(['ecommerce-api/hook', 'bot_id' => $model->bot_id], true);
             if (!$model->save()) {
                 dd($model->errors);

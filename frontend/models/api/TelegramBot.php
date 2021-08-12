@@ -4,6 +4,7 @@ namespace frontend\models\api;
 
 use common\models\BaseActiveRecord;
 use common\models\User;
+use frontend\models\BotOrder;
 use Yii;
 
 /**
@@ -31,6 +32,7 @@ class TelegramBot extends BaseActiveRecord
     const SCENARIO_CREATE = 'scenario_create';
     const SCENARIO_UPDATE = 'scenario_update';
     const SCENARIO_SETWEBHOOK = 'scenario_setwebhook';
+    const SCENARIO_CHANGE_STATE = 'scenario_changestate';
 
     /**
      * {@inheritdoc}
@@ -47,6 +49,7 @@ class TelegramBot extends BaseActiveRecord
             self::SCENARIO_CREATE => ['token', 'type', 'status'],
             self::SCENARIO_UPDATE => ['token', 'type', 'status'],
             self::SCENARIO_SETWEBHOOK => ['webhook'],
+            self::SCENARIO_CHANGE_STATE => ['active_to'],
         ];
     }
 
@@ -123,6 +126,18 @@ class TelegramBot extends BaseActiveRecord
     public function getTypeName()
     {
         return self::getTypes()[$this->type];
+    }
+
+    public static function addPeriod($order_id)
+    {
+        $order = BotOrder::findOne($order_id);
+        $bot = TelegramBot::findOne($order->bot_id);
+
+        $bot->scenario = TelegramBot::SCENARIO_CHANGE_STATE;
+
+        $bot->active_to += $order->month * 30 * 24 * 3600;
+        $bot->save();
+
     }
 
 }

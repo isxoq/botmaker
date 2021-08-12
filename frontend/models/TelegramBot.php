@@ -10,6 +10,7 @@ use Yii;
  * This is the model class for table "telegram_bot".
  *
  * @property int $id
+ * @property int $active_to
  * @property int|null $user_id
  * @property string|null $token
  * @property string|null $bot_username
@@ -56,7 +57,8 @@ class TelegramBot extends BaseActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'status'], 'integer'],
+            [['active_to'], 'required'],
+            [['user_id', 'status', 'active_to'], 'integer'],
             ['webhook', 'required'],
             [['type'], 'required'],
             [['token', 'bot_username', 'bot_id', 'type'], 'string', 'max' => 255],
@@ -129,4 +131,10 @@ class TelegramBot extends BaseActiveRecord
     {
         return parent::find()->andWhere(['telegram_bot.user_id' => \user()->id]);
     }
+
+    public function getIsAvailable()
+    {
+        return $this->active_to >= time();
+    }
+
 }
