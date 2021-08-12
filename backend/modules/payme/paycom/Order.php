@@ -10,7 +10,6 @@ namespace backend\modules\payme\paycom;
  * CREATE TABLE bot_order
  * (
  *     id          INT AUTO_INCREMENT PRIMARY KEY,
- *     product_ids VARCHAR(255)   NOT NULL,
  *     amount      DECIMAL(18, 2) NOT NULL,
  *     state       TINYINT(1)     NOT NULL,
  *     user_id     INT            NOT NULL,
@@ -41,11 +40,6 @@ class Order extends Database
      * Order ID
      */
     public $id;
-
-    /**
-     * IDs of the selected products/services
-     */
-    public $product_ids;
 
     /**
      * Total price of the selected products/services
@@ -174,7 +168,6 @@ class Order extends Database
 
                     $this->id = 1 * $row['id'];
                     $this->amount = 1 * $row['amount'];
-                    $this->product_ids = json_decode($row['product_ids'], true);
                     $this->state = 1 * $row['state'];
                     $this->user_id = 1 * $row['user_id'];
                     $this->phone = $row['phone'];
@@ -232,10 +225,9 @@ class Order extends Database
             // todo: Set customer ID
             // $this->user_id = 1 * SomeSessionManager::get('user_id');
 
-            $sql = "insert into bot_order set product_ids = :pProdIds, amount = :pAmount, state = :pState, user_id = :pUserId, phone = :pPhone";
+            $sql = "insert into bot_order set amount = :pAmount, state = :pState, user_id = :pUserId, phone = :pPhone";
             $sth = $db->prepare($sql);
             $is_success = $sth->execute([
-                ':pProdIds' => json_encode($this->product_ids),
                 ':pAmount' => $this->amount,
                 ':pState' => $this->state,
                 ':pUserId' => $this->user_id,
