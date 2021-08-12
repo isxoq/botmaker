@@ -43,7 +43,7 @@ function telegram_core($config = []): \common\components\TelegramApi
 {
     return new common\components\TelegramApi([
         'token' => $config['token'],
-        'data' => $config['data'],
+        'data' => $config['data'] ?? [],
     ]);
 }
 
