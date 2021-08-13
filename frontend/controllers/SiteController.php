@@ -80,7 +80,7 @@ class SiteController extends Controller
     {
         return $this->render('index');
     }
-    
+
     /**
      * Logs out the current user.
      *
@@ -90,7 +90,7 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
 
-        return $this->goHome();
+        return $this->redirect(['site/landing']);
     }
 
     /**
@@ -215,4 +215,9 @@ class SiteController extends Controller
 
     }
 
+    public function actionLanding()
+    {
+        $this->layout = 'blog';
+        return $this->render('landing');
+    }
 }

@@ -12,6 +12,7 @@ return [
     'language' => 'ru',
     'bootstrap' => ['log'],
     'controllerNamespace' => 'frontend\controllers',
+    'defaultRoute' => 'site/landing',
     'modules' => [
         'dynagrid' => [
             'class' => '\kartik\dynagrid\Module',
