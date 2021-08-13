@@ -66,6 +66,24 @@ AppAsset::register($this);
             height: 160px;
         }
 
+        .table-stats .table td, .summary {
+            color: #78909c;
+            font-family: 'Open Sans';
+        }
+
+        .summary {
+            margin: 20px;
+            font-size: 15px;
+        }
+
+
+        .empty {
+            color: #78909c;
+            font-family: 'Open Sans';
+            margin: 20px;
+        }
+
+
     </style>
 </head>
 <body>
