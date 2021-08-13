@@ -140,4 +140,9 @@ class TelegramBot extends BaseActiveRecord
 
     }
 
+    public function getIsAvailable()
+    {
+        return $this->active_to >= time();
+    }
+
 }
