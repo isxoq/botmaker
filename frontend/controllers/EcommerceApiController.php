@@ -1212,6 +1212,7 @@ class EcommerceApiController extends \yii\web\Controller
                 'text' => t('Bot temporary blocked'),
                 'chat_id' => $this->bot_user->user_id,
             ]);
+            return;
         }
 
 
