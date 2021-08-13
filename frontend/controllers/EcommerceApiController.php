@@ -1207,17 +1207,17 @@ class EcommerceApiController extends \yii\web\Controller
 
         $this->bot = TelegramBot::findOne(['bot_id' => $bot_id]);
 
-        if (!$this->bot->isAvailable) {
-            $this->telegram()->sendMessage([
-                'text' => t('Bot temporary blocked'),
-                'chat_id' => $this->bot_user->user_id,
-            ]);
-            return;
-        }
-
 
         $bot_user = BotUser::findOne(['user_id' => $from->id, 'bot_id' => $this->bot->id]);
 
+
+        if (!$this->bot->isAvailable) {
+            $this->telegram()->sendMessage([
+                'text' => t('Bot temporary blocked'),
+                'chat_id' => $bot_user->user_id,
+            ]);
+            exit();
+        }
         if ($callback_query) {
             $bot_user = BotUser::findOne(['user_id' => $callback_query->from->id, 'bot_id' => $this->bot->id]);
         }
