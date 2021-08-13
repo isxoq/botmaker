@@ -25,12 +25,14 @@ class BotOrderController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
+                'only' => ['view', 'index', 'create', 'update', 'delete'],
                 'rules' => [
                     [
                         'actions' => ['view', 'index', 'create', 'update', 'delete'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
+
                 ],
             ],
             'verbs' => [
