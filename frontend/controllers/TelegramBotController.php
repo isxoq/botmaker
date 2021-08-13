@@ -26,6 +26,7 @@ class TelegramBotController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
+                'only' => ['view', 'index', 'create', 'update', 'delete'],
                 'rules' => [
                     [
                         'actions' => ['view', 'index', 'create', 'update', 'delete'],
