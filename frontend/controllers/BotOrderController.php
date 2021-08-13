@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use Yii;
 use frontend\models\BotOrder;
 use frontend\models\BotOrderSearch;
+use yii\filters\AccessControl;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
@@ -15,12 +16,23 @@ use yii\web\Response;
  */
 class BotOrderController extends Controller
 {
+
     /**
      * {@inheritdoc}
      */
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => ['view', 'index', 'create', 'update', 'delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [
@@ -29,6 +41,7 @@ class BotOrderController extends Controller
             ],
         ];
     }
+
 
     /**
      * Lists all BotOrder models.

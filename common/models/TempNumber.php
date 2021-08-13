@@ -2,6 +2,7 @@
 
 namespace common\models;
 
+use backend\modules\eskizsms\components\SendEskizSms;
 use cebe\markdown\block\TableTrait;
 use Faker\Provider\Base;
 use Yii;
@@ -90,8 +91,14 @@ class TempNumber extends ActiveRecord
      */
     public function generateCode()
     {
-        $this->code = random_int(12345, 12345);
+        $this->code = random_int(11111, 99999);
         $this->code_expire_at = time() + 120;
+
+        SendEskizSms::SendSms($this->phone, t('Your code for verify in {host}: {code}', [
+            'host' => Yii::$app->request->hostInfo,
+            'code' => $this->code
+        ]));
+
     }
 
     public function verifyCode(): bool

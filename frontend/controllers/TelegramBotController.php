@@ -5,6 +5,7 @@ namespace frontend\controllers;
 use Yii;
 use frontend\models\TelegramBot;
 use frontend\models\search\TelegramBotSearch;
+use yii\filters\AccessControl;
 use yii\helpers\Url;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
@@ -16,12 +17,23 @@ use yii\web\Response;
  */
 class TelegramBotController extends Controller
 {
+
     /**
      * {@inheritdoc}
      */
     public function behaviors()
     {
         return [
+            'access' => [
+                'class' => AccessControl::class,
+                'rules' => [
+                    [
+                        'actions' => ['view', 'index', 'create', 'update', 'delete'],
+                        'allow' => true,
+                        'roles' => ['@'],
+                    ],
+                ],
+            ],
             'verbs' => [
                 'class' => VerbFilter::className(),
                 'actions' => [

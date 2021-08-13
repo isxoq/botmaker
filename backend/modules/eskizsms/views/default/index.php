@@ -1,12 +1,20 @@
+<?php
+
+
+$sms = \backend\modules\eskizsms\models\EskizSms::find()->one();
+
+?>
+
 <div class="eskizsms-default-index">
-    <h1><?= $this->context->action->uniqueId ?></h1>
-    <p>
-        This is the view content for action "<?= $this->context->action->id ?>".
-        The action belongs to the controller "<?= get_class($this->context) ?>"
-        in the "<?= $this->context->module->id ?>" module.
-    </p>
-    <p>
-        You may customize this page by editing the following file:<br>
-        <code><?= __FILE__ ?></code>
-    </p>
+    <h3><?= $sms->username ?></h3>
+    <h3> ********** </h3>
+    <h3>Token: <?= substr($sms->key, 0, 15) ?></h3>
+    <hr>
+    <?= \yii\helpers\Html::a(t('update'), \yii\helpers\Url::to(['default/update'], true), [
+        'class' => 'btn btn-primary'
+    ]) ?>
+
+    <?= \yii\helpers\Html::a(t('update token'), \yii\helpers\Url::to(['default/update-token'], true), [
+        'class' => 'btn btn-warning'
+    ]) ?>
 </div>

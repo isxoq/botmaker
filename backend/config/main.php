@@ -13,6 +13,9 @@ return [
     'bootstrap' => ['log'],
     'language' => "ru",
     'modules' => [
+        'eskizsms' => [
+            'class' => 'backend\modules\eskizsms\Module',
+        ],
         'translatemanager' => [
             'class' => 'backend\modules\translatemanager\Module',
         ],
