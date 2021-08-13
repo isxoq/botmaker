@@ -15,7 +15,7 @@
 
                 <li class="<?= Yii::$app->controller->route == "/ecommerce/category/index" ? "active" : "" ?>">
                     <a href="<?= \yii\helpers\Url::to(['/ecommerce/category/index', 'bot_id' => Yii::$app->request->get('bot_id')]) ?>"><i
-                                class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Kategoriyalar') ?>
+                                class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Categories') ?>
                     </a>
                 </li>
                 <li class="<?= Yii::$app->controller->route == "/ecommerce/product/index" ? "active" : "" ?>">
