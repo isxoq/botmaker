@@ -19,8 +19,13 @@ use Yii;
  * @property string $typeName
  * @property string $statusName
  * @property string $name
+ * @property string $about_image
+ * @property string $about_text
  * @property string $webhook
  * @property int|null $status
+ * @property int|null $min_order_price
+ * @property int|null $delivery_price
+ * @property int|null $is_active
  *
  * @property User $user
  */
@@ -58,10 +63,10 @@ class TelegramBot extends BaseActiveRecord
     {
         return [
             [['active_to'], 'required'],
-            [['user_id', 'status', 'active_to'], 'integer'],
+            [['user_id', 'status', 'active_to', 'delivery_price', 'min_order_price', 'is_active'], 'integer'],
             ['webhook', 'required'],
             [['type'], 'required'],
-            [['token', 'bot_username', 'bot_id', 'type'], 'string', 'max' => 255],
+            [['token', 'bot_username', 'bot_id', 'type', 'about_image', 'about_text'], 'string', 'max' => 255],
             [['token'], 'unique'],
             [['name', 'webhook'], 'string'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],

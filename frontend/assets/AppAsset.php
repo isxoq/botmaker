@@ -33,6 +33,7 @@ class AppAsset extends AssetBundle
 //        "https://cdn.jsdelivr.net/npm/bootstrap@4.1.3/dist/js/bootstrap.min.js",
         "https://cdn.jsdelivr.net/npm/jquery-match-height@0.7.2/dist/jquery.matchHeight.min.js",
         "asset_files/js/main.js",
+        'https://cdn.jsdelivr.net/npm/sweetalert2@11'
 
 
     ];

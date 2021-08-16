@@ -56,40 +56,91 @@ Date Time: 8/13/2021 4:27 PM
 
                 <div class="col-lg-6">
                     <div class="card">
-                        <div class="card-header"><strong>Company</strong><small> Form</small></div>
-                        <div class="card-body card-block">
-                            <div class="form-group"><label for="company"
-                                                           class=" form-control-label">Company</label><input
-                                        type="text" id="company" placeholder="Enter your company name"
-                                        class="form-control">
-                            </div>
-                            <div class="form-group"><label for="vat" class=" form-control-label">VAT</label><input
-                                        type="text" id="vat" placeholder="DE1234567890" class="form-control"></div>
-                            <div class="form-group"><label for="street" class=" form-control-label">Street</label><input
-                                        type="text" id="street" placeholder="Enter street name" class="form-control">
-                            </div>
-                            <div class="row form-group">
-                                <div class="col-8">
-                                    <div class="form-group"><label for="city"
-                                                                   class=" form-control-label">City</label><input
-                                                type="text" id="city" placeholder="Enter your city"
-                                                class="form-control">
-                                    </div>
-                                </div>
-                                <div class="col-8">
-                                    <div class="form-group"><label for="postal-code" class=" form-control-label">Postal
-                                            Code</label><input type="text" id="postal-code" placeholder="Postal Code"
-                                                               class="form-control"></div>
-                                </div>
-                            </div>
-                            <div class="form-group"><label for="country"
-                                                           class=" form-control-label">Country</label><input
-                                        type="text" id="country" placeholder="Country name" class="form-control"></div>
+                        <div class="card-header">
+                            <strong class="card-title"><?= t("Delivery settings") ?></strong>
                         </div>
-                    </div>
+                        <div class="card-body">
+                            <!-- Credit Card -->
+                            <div id="pay-invoice">
+                                <div class="card-body">
+                                    <div class="form-group has-success">
+                                        <label for="cc-name"
+                                               class="control-label mb-1"><?= t('Delivery Price') ?></label>
+                                        <input id="delivery_price"
+                                               value="<?= Yii::$app->controller->module->bot->delivery_price ?>"
+                                               name="delivery_price" type="number"
+                                               class="form-control cc-name valid" data-val="true"
+                                               data-val-required="Please enter the name on card" autocomplete="cc-name"
+                                               aria-required="true" aria-invalid="false" aria-describedby="cc-name">
+                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name"
+                                              data-valmsg-replace="true"></span>
+                                    </div>
+
+                                    <div class="form-group has-success">
+                                        <label for="cc-name"
+                                               class="control-label mb-1"><?= t('Min Order Price For Free Delivery') ?></label>
+                                        <input id="min_delivery_price" name="min_delivery_price"
+                                               value="<?= Yii::$app->controller->module->bot->min_order_price ?>"
+                                               type="number"
+                                               class="form-control cc-name valid" data-val="true"
+                                               data-val-required="Please enter the name on card" autocomplete="cc-name"
+                                               aria-required="true" aria-invalid="false" aria-describedby="cc-name">
+                                        <span class="help-block field-validation-valid" data-valmsg-for="cc-name"
+                                              data-valmsg-replace="true"></span>
+                                    </div>
+                                    <div class="btn btn-primary"
+                                         id="update-delivery-settings"><?= t('Update Settings') ?></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div> <!-- .card -->
                 </div>
 
 
+            </div>
+
+            <div class="row">
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong class="card-title"><?= t("About Bot") ?></strong>
+                        </div>
+                        <div class="card-body">
+                            <!-- Credit Card -->
+                            <div id="pay-invoice">
+                                <img id="pimage" src="<?= Yii::$app->controller->module->bot->about_image ?>" alt="">
+                                <div class="card-body">
+                                    <form action="#" id="fileUploadForm">
+                                        <div class="form-group has-success">
+                                            <label for="cc-name"
+                                                   class="control-label mb-1"><?= t('Min Order Price For Free Delivery') ?></label>
+                                            <input id="about_image" name="about_image"
+                                                   value="<?= Yii::$app->controller->module->bot->about_image ?>"
+                                                   type="file"
+                                                   class="form-control cc-name valid"
+                                                   aria-required="true" aria-invalid="false" aria-describedby="cc-name">
+                                            <span class="help-block field-validation-valid" data-valmsg-for="cc-name"
+                                                  data-valmsg-replace="true"></span>
+                                        </div>
+                                        <div class="form-group has-success">
+                                            <label for="description"
+                                                   class="control-label mb-1"><?= t('Bot haqida') ?></label>
+                                            <textarea class="form-control" name="about_description" id="description"
+                                                      cols="30"
+                                                      rows="10"><?= Yii::$app->controller->module->bot->about_text ?></textarea>
+
+                                        </div>
+
+                                    </form>
+                                    <div class="btn btn-primary"
+                                         id="update-about-settings"><?= t('Update Settings') ?></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div> <!-- .card -->
+                </div>
             </div>
 
 
@@ -97,21 +148,101 @@ Date Time: 8/13/2021 4:27 PM
     </div>
 
 <?php
-$apiUrl = \yii\helpers\Url::to(['bot-setting/update-setting', 'bot_id' => Yii::$app->controller->module->bot->id]);
+$apiUrlBot = \yii\helpers\Url::to(['bot-setting/update-setting', 'bot_id' => Yii::$app->controller->module->bot->id]);
+$apiUrlDelivery = \yii\helpers\Url::to(['bot-setting/update-setting-delivery', 'bot_id' => Yii::$app->controller->module->bot->id]);
+$apiUrlAbout = \yii\helpers\Url::to(['bot-setting/update-setting-about', 'bot_id' => Yii::$app->controller->module->bot->id]);
 
 $js = <<<JS
         $(document).on('click','#update-bot-settings',function() {
+            Swal.showLoading()
             $.ajax({
-                url:'{$apiUrl}',
+                url:'{$apiUrlBot}',
                 type:'POST',
                 data:{
                     'botToken':$('#bot-token').val(),
                     'botName':$('#bot-name').val()
                 },
                 success:function(data) {
-                  console.log(data)
+                   Swal.hideLoading()
+                    Swal.fire(
+                      'OK!',
+                      "Muvaffaqiyatli o'zgartirildi",
+                      'success'
+                    )
+                },
+                error:function(data) {
+                  Swal.fire(
+                      'Error!',
+                      "Xatolik!",
+                      'error'
+                    )
                 }
             })
+        })
+        
+         $(document).on('click','#update-delivery-settings',function() {
+            Swal.showLoading()
+            $.ajax({
+                url:'{$apiUrlDelivery}',
+                type:'POST',
+                data:{
+                    'delivery_price':$('#delivery_price').val(),
+                    'min_delivery_price':$('#min_delivery_price').val(),
+                },
+                success:function(data) {
+                   Swal.hideLoading()
+                    Swal.fire(
+                      'OK!',
+                      "Muvaffaqiyatli o'zgartirildi",
+                      'success'
+                    )
+                },
+                error:function(data) {
+                  Swal.fire(
+                      'Error!',
+                      "Xatolik!",
+                      'error'
+                    )
+                }
+            })
+        })
+        
+         $(document).on('click','#update-about-settings',function() {
+            Swal.showLoading()
+            
+            
+             var form = $('#fileUploadForm')[0];
+            var data = new FormData(form);
+
+        $.ajax({
+            type: "POST",
+            enctype: 'multipart/form-data',
+            url: "{$apiUrlAbout}",
+            data: data,
+            processData: false,
+            contentType: false,
+            cache: false,
+            timeout: 600000,
+            success: function (data) {
+                console.log(data)
+                $('#pimage').attr('src',data.about_image)
+                  Swal.hideLoading()
+                    Swal.fire(
+                      'OK!',
+                      "Muvaffaqiyatli o'zgartirildi",
+                      'success'
+                    )
+            },
+            error: function (e) {
+                 Swal.fire(
+                      'Error!',
+                      "Xatolik!",
+                      'error'
+                    )
+
+            }
+        });
+        
         })
 JS;
 

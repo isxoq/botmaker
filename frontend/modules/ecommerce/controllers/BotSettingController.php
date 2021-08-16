@@ -14,7 +14,9 @@ namespace frontend\modules\ecommerce\controllers;
 
 use backend\modules\payme\paycom\Response;
 use frontend\models\api\TelegramBot;
+use yii\helpers\FileHelper;
 use yii\helpers\Url;
+use yii\web\UploadedFile;
 
 class BotSettingController extends \yii\web\Controller
 {
@@ -50,6 +52,64 @@ class BotSettingController extends \yii\web\Controller
         ])->setWebhook();
 
         return $webhook;
+
+    }
+
+    public function actionUpdateSettingDelivery()
+    {
+
+        $bot = TelegramBot::findOne(\Yii::$app->controller->module->bot->id);
+
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $delivery_price = \Yii::$app->request->post('delivery_price');
+        $min_delivery_price = \Yii::$app->request->post('min_delivery_price');
+
+        if (!is_numeric($delivery_price) || !is_numeric($min_delivery_price)) {
+
+            \Yii::$app->response->statusCode = 400;
+            return 0;
+
+        }
+
+        $bot->scenario = TelegramBot::SCENARIO_UPDATE_DELIVERY_PRICES;
+        $bot->delivery_price = $delivery_price;
+        $bot->min_order_price = $min_delivery_price;
+        $bot->save();
+
+
+        return $bot;
+
+    }
+
+    public function actionUpdateSettingAbout()
+    {
+
+        $bot = TelegramBot::findOne(\Yii::$app->controller->module->bot->id);
+
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+        $bot->scenario = TelegramBot::SCENARIO_UPDATE_BOT_ABOUT;
+
+        if ($about_image = UploadedFile::getInstanceByName('about_image')) {
+
+            $filename = "uploads/bot/about/" . \Yii::$app->security->generateRandomString(25) . "." . $about_image->extension;
+            $about_image->saveAs($filename);
+            $bot->about_image = "/" . $filename;
+
+        }
+
+        $about_text = \Yii::$app->request->post('about_description');
+        $bot->about_text = $about_text;
+        $bot->save();
+
+//        $bot->scenario = TelegramBot::SCENARIO_UPDATE_DELIVERY_PRICES;
+//        $bot->delivery_price = $delivery_price;
+//        $bot->min_order_price = $min_delivery_price;
+//        $bot->save();
+
+
+        return $bot;
 
     }
 

@@ -21,6 +21,10 @@ use Yii;
  * @property string $name
  * @property string $webhook
  * @property int|null $status
+ * @property string $about_image
+ * @property string $about_text
+ * @property int|null $min_order_price
+ * @property int|null $delivery_price
  *
  * @property User $user
  */
@@ -33,6 +37,10 @@ class TelegramBot extends BaseActiveRecord
     const SCENARIO_UPDATE = 'scenario_update';
     const SCENARIO_SETWEBHOOK = 'scenario_setwebhook';
     const SCENARIO_CHANGE_STATE = 'scenario_changestate';
+    const SCENARIO_UPDATE_DELIVERY_PRICES = 'updateDeliveryPrices';
+    const SCENARIO_UPDATE_BOT_ABOUT = 'updateBotAbout';
+
+
 
     /**
      * {@inheritdoc}
@@ -46,6 +54,8 @@ class TelegramBot extends BaseActiveRecord
     public function scenarios()
     {
         return [
+            self::SCENARIO_UPDATE_BOT_ABOUT => ['about_text', 'about_image'],
+            self::SCENARIO_UPDATE_DELIVERY_PRICES => ['delivery_price', 'min_order_price'],
             self::SCENARIO_CREATE => ['token', 'type', 'status'],
             self::SCENARIO_UPDATE => ['token', 'name', 'type', 'status'],
             self::SCENARIO_SETWEBHOOK => ['webhook'],
@@ -59,10 +69,10 @@ class TelegramBot extends BaseActiveRecord
     public function rules()
     {
         return [
-            [['user_id', 'status'], 'integer'],
+            [['user_id', 'status', 'active_to', 'delivery_price', 'min_order_price', 'is_active'], 'integer'],
             ['webhook', 'required'],
             [['type'], 'required'],
-            [['token', 'bot_username', 'bot_id', 'type'], 'string', 'max' => 255],
+            [['token', 'bot_username', 'bot_id', 'type', 'about_image', 'about_text'], 'string', 'max' => 255],
             [['token'], 'unique'],
             [['name', 'webhook'], 'string'],
             [['user_id'], 'exist', 'skipOnError' => true, 'targetClass' => User::className(), 'targetAttribute' => ['user_id' => 'id']],
