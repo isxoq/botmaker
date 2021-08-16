@@ -91,10 +91,8 @@ class BotSettingController extends \yii\web\Controller
 
         $bot->scenario = TelegramBot::SCENARIO_UPDATE_BOT_ABOUT;
 
-        $old_image = $bot->about_image;
-
         if ($about_image = UploadedFile::getInstanceByName('about_image')) {
-            unlink($old_image);
+
             $filename = "uploads/bot/about/" . \Yii::$app->security->generateRandomString(25) . "." . $about_image->extension;
             $about_image->saveAs($filename);
             $bot->about_image = "/" . $filename;
