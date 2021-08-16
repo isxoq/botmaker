@@ -30,7 +30,7 @@ class BotSettingController extends \yii\web\Controller
         $behaviors['corsFilter'] = [
             'class' => Cors::className(),
             'cors' => [
-                'Origin' => ['*'],
+                'Access-Control-Allow-Origin' => ['*'],
                 'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
                 'Access-Control-Request-Headers' => ['*'],
                 'Access-Control-Allow-Credentials' => true,
