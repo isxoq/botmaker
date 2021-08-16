@@ -285,7 +285,7 @@ $js = <<<JS
                       }
                     return $.ajax({
                     url:'{$apiUrlDelete}',
-                    type:'POST',
+                    type:'GET',
                     success:function(data) {
                       return data
                     },
