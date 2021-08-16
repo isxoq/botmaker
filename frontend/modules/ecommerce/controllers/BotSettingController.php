@@ -93,6 +93,10 @@ class BotSettingController extends \yii\web\Controller
 
         if ($about_image = UploadedFile::getInstanceByName('about_image')) {
 
+            if (is_file($bot->about_image)) {
+                unlink($bot->about_image);
+            }
+
             $filename = "uploads/bot/about/" . \Yii::$app->security->generateRandomString(25) . "." . $about_image->extension;
             $about_image->saveAs($filename);
             $bot->about_image = "/" . $filename;
