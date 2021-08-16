@@ -287,7 +287,7 @@ $js = <<<JS
                         return ;
                       }
                     return fetch(`{$apiUrlDelete}`,{
-                         method: "POST",
+                         method: "GET",
                            credentials: 'same-origin',
                           headers: {
                               "X-CSRFToken": $('#token').val()

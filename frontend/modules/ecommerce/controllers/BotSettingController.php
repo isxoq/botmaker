@@ -117,7 +117,6 @@ class BotSettingController extends \yii\web\Controller
     public function actionDelete()
     {
 
-        $this->enableCsrfValidation = false;
 
         $bot = TelegramBot::findOne(\Yii::$app->controller->module->bot->id);
         $bot->delete();
