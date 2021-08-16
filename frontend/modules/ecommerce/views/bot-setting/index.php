@@ -144,6 +144,8 @@ Date Time: 8/13/2021 4:27 PM
 
                 <div class="col-lg-6">
                     <div class="card">
+                        <input type="hidden" id="token" name="<?= Yii::$app->request->csrfParam; ?>"
+                               value="<?= Yii::$app->request->getCsrfToken(); ?>"/>
                         <div class="card-header">
                             <strong class="card-title"><?= t("Delete Bot") ?></strong>
                         </div>
@@ -265,20 +267,7 @@ $js = <<<JS
         
         })
 
-            function getCookie(name) {
-            var cookieValue = null;
-            if (document.cookie && document.cookie !== '') {
-                var cookies = document.cookie.split(';');
-                for (var i = 0; i < cookies.length; i++) {
-                    var cookie = jQuery.trim(cookies[i]);
-                    // Does this cookie string begin with the name we want?
-                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
-                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
-                        break;
-                    }
-                }
-            }
-            return cookieValue;}
+         
 
         $(document).on('click','#delete_bot',function() {
             Swal.fire({
@@ -301,7 +290,7 @@ $js = <<<JS
                          method: "POST",
                            credentials: 'same-origin',
                           headers: {
-                              "X-CSRFToken": getCookie("_csrf-frontend")
+                              "X-CSRFToken": $('#token').val()
                           }
                     })
                       .then(response => {
