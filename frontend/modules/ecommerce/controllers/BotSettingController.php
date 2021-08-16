@@ -118,6 +118,7 @@ class BotSettingController extends \yii\web\Controller
     {
 
         $this->enableCsrfValidation = false;
+
         $bot = TelegramBot::findOne(\Yii::$app->controller->module->bot->id);
         $bot->delete();
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;

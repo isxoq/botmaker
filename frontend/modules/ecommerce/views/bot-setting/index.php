@@ -301,7 +301,7 @@ $js = <<<JS
                          method: "POST",
                            credentials: 'same-origin',
                           headers: {
-                              "X-CSRFToken": getCookie("csrftoken")
+                              "X-CSRFToken": getCookie("_csrf-frontend")
                           }
                     })
                       .then(response => {
