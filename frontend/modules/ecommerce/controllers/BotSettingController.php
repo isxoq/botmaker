@@ -14,12 +14,32 @@ namespace frontend\modules\ecommerce\controllers;
 
 use backend\modules\payme\paycom\Response;
 use frontend\models\api\TelegramBot;
+use yii\filters\Cors;
 use yii\helpers\FileHelper;
 use yii\helpers\Url;
 use yii\web\UploadedFile;
 
 class BotSettingController extends \yii\web\Controller
 {
+
+
+    public function behaviors()
+    {
+        $behaviors = parent::behaviors();
+
+        $behaviors['corsFilter'] = [
+            'class' => Cors::className(),
+            'cors' => [
+                'Origin' => ['*'],
+                'Access-Control-Request-Method' => ['GET', 'POST', 'PUT', 'PATCH', 'DELETE', 'HEAD', 'OPTIONS'],
+                'Access-Control-Request-Headers' => ['*'],
+                'Access-Control-Allow-Credentials' => true,
+            ],
+        ];
+
+
+        return $behaviors;
+    }
 
     public function actionIndex()
     {
