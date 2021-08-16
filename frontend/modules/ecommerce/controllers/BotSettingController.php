@@ -31,7 +31,7 @@ class BotSettingController extends \yii\web\Controller
         $bot = TelegramBot::findOne(\Yii::$app->controller->module->bot->id);
 
         $bot->scenario = TelegramBot::SCENARIO_SETWEBHOOK;
-        $bot->webhook = Url::to(['ecommerce-api/hook', 'bot_id' => $bot->bot_id], true);
+        $bot->webhook = Url::to(['/ecommerce-api/hook', 'bot_id' => $bot->bot_id], true);
         $bot->save();
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
         $token = \Yii::$app->request->post('botToken');
