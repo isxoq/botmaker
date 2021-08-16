@@ -145,7 +145,7 @@ Date Time: 8/13/2021 4:27 PM
                 <div class="col-lg-6">
                     <div class="card">
                         <div class="card-header">
-                            <strong class="card-title"><?= t("About Bot") ?></strong>
+                            <strong class="card-title"><?= t("Delete Bot") ?></strong>
                         </div>
                         <div class="card-body">
                             <!-- Credit Card -->
