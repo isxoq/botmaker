@@ -41,6 +41,12 @@
                                 class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Posting') ?>
                     </a>
                 </li>
+
+                <li class="<?= Yii::$app->controller->route == "ecommerce/bot-setting" ? "active" : "" ?>">
+                    <a href="<?= \yii\helpers\Url::to(['/ecommerce/bot-setting', 'bot_id' => Yii::$app->request->get('bot_id')]) ?>"><i
+                                class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Settings') ?>
+                    </a>
+                </li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </nav>
