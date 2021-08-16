@@ -141,6 +141,23 @@ Date Time: 8/13/2021 4:27 PM
                         </div>
                     </div> <!-- .card -->
                 </div>
+
+                <div class="col-lg-6">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong class="card-title"><?= t("About Bot") ?></strong>
+                        </div>
+                        <div class="card-body">
+                            <!-- Credit Card -->
+                            <div id="pay-invoice">
+                                <p class="text-danger"><?= t('Danger ZONE!') ?></p>
+                            </div>
+
+                            <button class="btn btn-danger" id="delete_bot"><?= t('DELETE BOT') ?></button>
+
+                        </div>
+                    </div> <!-- .card -->
+                </div>
             </div>
 
 
@@ -151,6 +168,9 @@ Date Time: 8/13/2021 4:27 PM
 $apiUrlBot = \yii\helpers\Url::to(['bot-setting/update-setting', 'bot_id' => Yii::$app->controller->module->bot->id]);
 $apiUrlDelivery = \yii\helpers\Url::to(['bot-setting/update-setting-delivery', 'bot_id' => Yii::$app->controller->module->bot->id]);
 $apiUrlAbout = \yii\helpers\Url::to(['bot-setting/update-setting-about', 'bot_id' => Yii::$app->controller->module->bot->id]);
+$apiUrlDelete = \yii\helpers\Url::to(['bot-setting/delete', 'bot_id' => Yii::$app->controller->module->bot->id]);
+$apiBots = \yii\helpers\Url::to(['/telegram-bot/index'], true);
+
 
 $js = <<<JS
         $(document).on('click','#update-bot-settings',function() {
@@ -244,6 +264,50 @@ $js = <<<JS
         });
         
         })
+
+
+        $(document).on('click','#delete_bot',function() {
+            Swal.fire({
+                  title: "Tasdiqlash uchun yes so'zini kiriting",
+                  input: 'text',
+                  inputAttributes: {
+                    autocapitalize: 'off'
+                  },
+                  showCancelButton: true,
+                  confirmButtonText: 'Delete',
+                  showLoaderOnConfirm: true,
+                  preConfirm: (text) => {
+                      if (text!="yes"){
+                          Swal.showValidationMessage(
+                          `Tasdiqlanmadi`
+                        )
+                        return ;
+                      }
+                    return fetch(`{$apiUrlDelete}`)
+                      .then(response => {
+                        if (!response.ok) {
+                          throw new Error(response.statusText)
+                        }
+                        return response.json()
+                      })
+                      .catch(error => {
+                        Swal.showValidationMessage(
+                          `Request failed`
+                        )
+                      })
+                  },
+                  allowOutsideClick: () => !Swal.isLoading()
+                }).then((result) => {
+                    console.log(result)
+                  if (result.value.deleted) {
+                    
+                    window.location= '{$apiBots}'
+                  }
+                })
+        
+        })
+
+
 JS;
 
 

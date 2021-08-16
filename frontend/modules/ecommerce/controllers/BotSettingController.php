@@ -113,5 +113,19 @@ class BotSettingController extends \yii\web\Controller
 
     }
 
+    public function actionDelete()
+    {
+
+        $bot = TelegramBot::findOne(\Yii::$app->controller->module->bot->id);
+        $bot->delete();
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+
+
+        return [
+            'deleted' => true
+        ];
+
+    }
+
 }
 
