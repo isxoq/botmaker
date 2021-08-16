@@ -283,7 +283,13 @@ $js = <<<JS
                         )
                         return ;
                       }
-                    return fetch(`{$apiUrlDelete}`)
+                    return fetch(`{$apiUrlDelete}`,{
+                         method: "POST",
+                           credentials: 'same-origin',
+                          headers: {
+                              "X-CSRFToken": getCookie("csrftoken")
+                          }
+                    })
                       .then(response => {
                         if (!response.ok) {
                           throw new Error(response.statusText)
