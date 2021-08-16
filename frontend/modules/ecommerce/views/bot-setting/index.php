@@ -283,20 +283,18 @@ $js = <<<JS
                         )
                         return ;
                       }
-                    return $.ajax({
-                    url:'{$apiUrlDelete}',
-                    type:'GET',
-                    success:function(data) {
-                      return data
-                    },
-                    error:function(data) {
-                       Swal.showValidationMessage(
+                    return fetch(`{$apiUrlDelete}`)
+                      .then(response => {
+                        if (!response.ok) {
+                          throw new Error(response.statusText)
+                        }
+                        return response.json()
+                      })
+                      .catch(error => {
+                        Swal.showValidationMessage(
                           `Request failed`
                         )
-                    }
-                    })
-                    
-                  
+                      })
                   },
                   allowOutsideClick: () => !Swal.isLoading()
                 }).then((result) => {
