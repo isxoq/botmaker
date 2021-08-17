@@ -42,6 +42,24 @@ use backend\models\SiteSetting;
             </div>
         </div>
         <div class="row our-services">
+
+            <?php foreach (\backend\models\SiteService::find()->all() as $service): ?>
+                <div class="col-12 col-md-6 s-cards">
+                    <div class="service-card text-center wow fadeInLeft" data-wow-duration="1s">
+                        <a href="#">
+                            <div class="image-holder">
+                                <i class="<?= $service->icon ?>"></i>
+                            </div>
+                            <h3 class="service-card-heading"><?= $service->title ?></h3>
+                            <p class="service-card-detail">
+                                <?= $service->description ?>
+                            </p>
+                        </a>
+                    </div>
+
+                </div>
+            <?php endforeach ?>
+
             <div class="col-12 col-md-6 s-cards">
                 <div class="service-card text-center wow fadeInLeft" data-wow-duration="1s">
                     <a href="portfolio/standard-blog.html">
@@ -111,18 +129,11 @@ use backend\models\SiteSetting;
             </div>
         </div>
         <div class="app-clips-slider owl-carousel owl-theme">
-            <div class="item">
-                <img src="/blog/vapp-landing/img/screen1.jpg">
-            </div>
-            <div class="item">
-                <img src="/blog/vapp-landing/img/screen2.jpg">
-            </div>
-            <div class="item">
-                <img src="/blog/vapp-landing/img/screen3.jpg">
-            </div>
-            <div class="item">
-                <img src="/blog/vapp-landing/img/screen4.jpg">
-            </div>
+            <?php foreach (\backend\models\SiteAppClips::find()->all() as $app): ?>
+                <div class="item">
+                    <img src="<?= $app->image ?>">
+                </div>
+            <?php endforeach ?>
         </div>
     </div>
 </section>
@@ -147,6 +158,13 @@ use backend\models\SiteSetting;
         <div class="row align-items-center text-center app-features-list">
 
             <div class="col-lg-4 mb-5 mb-lg-0 wow fadeInLeft">
+                <?php foreach (\backend\models\SiteFeature::find()->limit(2)->all() as $feature): ?>
+                    <div class="app-feature">
+                        <i class="<?= $feature->icon ?>" aria-hidden="true"></i>
+                        <h4 class="mb-3"><?= $feature->title ?></h4>
+                        <p><?= $feature->description ?></p>
+                    </div>
+                <?php endforeach ?>
                 <!--App deatil item-->
                 <div class="app-feature">
                     <i class="las la-hippo" aria-hidden="true"></i>
@@ -168,9 +186,11 @@ use backend\models\SiteSetting;
                 <div class="app-image">
                     <img src="/blog/vapp-landing/img/iphone-img.png" alt="image">
                     <div id="app-slider" class="owl-carousel owl-theme">
-                        <div class="item">
-                            <img src="/blog/vapp-landing/img/img1.png" alt="">
-                        </div>
+                        <?php foreach (\backend\models\SiteFeatureImage::find()->all() as $image): ?>
+                            <div class="item">
+                                <img src="<?= $image->image ?>" alt="">
+                            </div>
+                        <?php endforeach ?>
                         <div class="item">
                             <img src="/blog/vapp-landing/img/img2.png" alt="">
                         </div>
@@ -182,6 +202,14 @@ use backend\models\SiteSetting;
             </div>
 
             <div class="col-lg-4 wow fadeInRight">
+
+                <?php foreach (\backend\models\SiteFeature::find()->offset(2)->all() as $feature): ?>
+                    <div class="app-feature">
+                        <i class="<?= $feature->icon ?>" aria-hidden="true"></i>
+                        <h4 class="mb-3"><?= $feature->title ?></h4>
+                        <p><?= $feature->description ?></p>
+                    </div>
+                <?php endforeach ?>
                 <!--App deatil item-->
                 <div class="app-feature">
                     <i class="las la-laptop-code" aria-hidden="true"></i>
