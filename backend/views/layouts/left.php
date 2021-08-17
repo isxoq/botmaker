@@ -29,6 +29,33 @@
                                 class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Site Settings') ?>
                     </a>
                 </li>
+
+
+                <li class="<?= Yii::$app->controller->route == "site-service/index" ? "active" : "" ?>">
+                    <a href="<?= \yii\helpers\Url::to(['site-service/index']) ?>"><i
+                                class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Site Services') ?>
+                    </a>
+                </li>
+
+
+                <li class="<?= Yii::$app->controller->route == "site-app-clips/index" ? "active" : "" ?>">
+                    <a href="<?= \yii\helpers\Url::to(['site-app-clips/index']) ?>"><i
+                                class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Site App Clips') ?>
+                    </a>
+                </li>
+
+
+                <li class="<?= Yii::$app->controller->route == "site-feature/index" ? "active" : "" ?>">
+                    <a href="<?= \yii\helpers\Url::to(['site-feature/index']) ?>"><i
+                                class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Site Feature') ?>
+                    </a>
+                </li>
+
+                <li class="<?= Yii::$app->controller->route == "site-feature-image/index" ? "active" : "" ?>">
+                    <a href="<?= \yii\helpers\Url::to(['site-feature-image/index']) ?>"><i
+                                class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Site Feature Images') ?>
+                    </a>
+                </li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </nav>
