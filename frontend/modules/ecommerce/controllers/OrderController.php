@@ -71,6 +71,14 @@ class OrderController extends Controller
         $order = $this->findModel($order_id);
         $order->payment_status = $status_id;
         if ($order->save()) {
+
+            telegram_core([
+                'token' => Yii::$app->controller->module->bot->token,
+            ])->sendMessage([
+                'chat_id' => $order->user->user_id,
+                'text' => t('Your {number} payment status is') . $order->getOrderPaymentStatus()
+            ]);
+
             return [
                 'success' => true
             ];
