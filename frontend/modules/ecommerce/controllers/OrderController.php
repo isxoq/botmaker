@@ -46,7 +46,9 @@ class OrderController extends Controller
                 'token' => Yii::$app->controller->module->bot->token,
             ])->sendMessage([
                 'chat_id' => $order->user->user_id,
-                'text' => t('Your {number} status is') . $order->getOrderStatus()
+                'text' => t('Your {number} status is', [
+                        'number' => $order->id
+                    ]) . $order->getOrderStatus()
             ]);
 
             return [
@@ -76,7 +78,9 @@ class OrderController extends Controller
                 'token' => Yii::$app->controller->module->bot->token,
             ])->sendMessage([
                 'chat_id' => $order->user->user_id,
-                'text' => t('Your {number} payment status is') . $order->getOrderPaymentStatus()
+                'text' => t('Your {number} payment status is', [
+                        'number' => $order->id
+                    ]) . $order->getOrderPaymentStatus()
             ]);
 
             return [
