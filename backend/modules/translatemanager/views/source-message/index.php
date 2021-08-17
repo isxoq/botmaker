@@ -20,7 +20,17 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="table-stats order-table ov-h">
             <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
+
             <?= GridView::widget([
+                'pager' => [
+                    'linkContainerOptions' => [
+                        'class' => 'page-item'
+                    ],
+                    'linkOptions' => [
+                        'class' => 'page-link'
+                    ],
+                    'prevPageLabel' => "<a href='#'>&laquo;</a>"
+                ],
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
                 'columns' => [

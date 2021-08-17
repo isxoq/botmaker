@@ -18,7 +18,9 @@ use yii\widgets\ActiveForm;
                     <?= $form->errorSummary($model); ?>
 
                     <?= $form->field($model, 'token')->textInput(['maxlength' => true, 'data-href' => \yii\helpers\Url::to(['telegram-bot/get-me'], true)]) ?>
-
+                    <a style="font-size: 11px; top: 71px!important;    position: absolute;" class="bot-link" href=""
+                       id="bot_name"><b
+                                id="bot_username"></b></a>
                     <?= $form->field($model, 'type')->dropDownList(\frontend\models\TelegramBot::getTypes()) ?>
 
                     <?= $form->field($model, 'status')->dropDownList([
@@ -36,8 +38,9 @@ use yii\widgets\ActiveForm;
                 </div>
 
                 <div class="col-md-6">
-                    <p><?= t('Bot nomi') ?> <b id="bot_name"></b></p>
-                    <p><?= t('Bot foydalanuvchi nomi') ?> <b id="bot_username"></b></p>
+                    <div class="row">
+                        <p><?=t('Bot Create Help')?></p>
+                    </div>
                 </div>
             </diw>
         </div>
@@ -55,6 +58,7 @@ $('#telegrambot-token').on('keyup',function() {
     },
     'success':function(data) {
       $('#bot_name').text(data.result.first_name)
+      $('.bot-link').attr('href',data.result.username)
       $('#bot_username').text(data.result.username)
     }
   })
