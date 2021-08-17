@@ -19,13 +19,8 @@ use backend\models\SiteSetting;
         <div class="row no-gutters">
             <div class="col-12 col-lg-6 banner-details text-center text-lg-left">
                 <div class="banner-inner-content">
-                    <h4 class="banner-heading"><?= SiteSetting::get('Banner Heading') ?>Incredible
-                        <span>Landing Page</span></h4>
-                    <p class="banner-text"><?= SiteSetting::get('Banner Text') ?>Lorem Ipsum is simply dummy text of the
-                        printing and typesetting industry.
-                        Lorem Ipsum has been the industry's standard </p> <?= SiteSetting::get('Banner Link') ?><a
-                            href="#"
-                            class="btn banner-btn">Learn</a>
+                    <h4 class="banner-heading"><?= SiteSetting::get('Banner Heading') ?></h4>
+                    <p class="banner-text"><?= SiteSetting::get('Banner Text') ?></p> <?= SiteSetting::get('Banner Link') ?>
                 </div>
             </div>
             <div class="col-12 col-lg-6 banner-img">
@@ -41,14 +36,9 @@ use backend\models\SiteSetting;
     <div class="container">
         <div class="row services-details text-center">
             <div class="col-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2">
-                <p class="sub-heading text-center"><?= SiteSetting::get('Services Sub Heading') ?>- Most flexible one
-                    page -</p>
-                <h3 class="heading text-center"><?= SiteSetting::get('Services Heading') ?>Exclusive Features</h3>
-                <p class="detail-text text-center"><?= SiteSetting::get('Services Detail') ?>Lorem ipsum dolor sit amet,
-                    consectetur adipiscing elit. Ut posuere
-                    nisi est, sed ullamcorper nibh volutpat at. In rutrum, metus ut posuere gravida, tellus lacus
-                    faucibus lectus, sed cursused eros ligula non odio. Suspendisse volutpat sagittis sapien. Curabitur
-                    quis malesuada ipsum.</p>
+                <p class="sub-heading text-center"><?= SiteSetting::get('Services Sub Heading') ?></p>
+                <h3 class="heading text-center"><?= SiteSetting::get('Services Heading') ?></h3>
+                <p class="detail-text text-center"><?= SiteSetting::get('Services Detail') ?></p>
             </div>
         </div>
         <div class="row our-services">
@@ -115,14 +105,9 @@ use backend\models\SiteSetting;
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 app-clips-details">
-                <p class="sub-heading text-center"><?= SiteSetting::get('App Clips Sub Heading') ?>- Most flexible one
-                    page -</p>
-                <h3 class="heading text-center"><?= SiteSetting::get('App Clips Heading') ?>Mobile App ScreenShots</h3>
-                <p class="detail-text text-center"><?= SiteSetting::get('App Clips Detail') ?>Lorem ipsum dolor sit
-                    amet, consectetur adipiscing elit. Ut posuere
-                    nisi est, sed ullamcorper nibh volutpat at. In rutrum, metus ut posuere gravida, tellus lacus
-                    faucibus lectus, sed cursused eros ligula non odio. Suspendisse volutpat sagittis sapien. Curabitur
-                    quis malesuada ipsum.</p>
+                <p class="sub-heading text-center"><?= SiteSetting::get('App Clips Sub Heading') ?></p>
+                <h3 class="heading text-center"><?= SiteSetting::get('App Clips Heading') ?></h3>
+                <p class="detail-text text-center"><?= SiteSetting::get('App Clips Detail') ?></p>
             </div>
         </div>
         <div class="app-clips-slider owl-carousel owl-theme">
@@ -151,14 +136,9 @@ use backend\models\SiteSetting;
         <div class="row">
             <div class="col-md-12 text-center wow fadeIn app-details">
                 <div class="col-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2">
-                    <p class="sub-heading text-center"><?= SiteSetting::get('App Sec Sub Heading') ?>- Most flexible one
-                        page -</p>
-                    <h3 class="heading text-center"><?= SiteSetting::get('App Sec Heading') ?>Mobile App Design</h3>
-                    <p class="detail-text text-center"><?= SiteSetting::get('App Sec Detail') ?>Lorem ipsum dolor sit
-                        amet, consectetur adipiscing elit. Ut
-                        posuere nisi est, sed ullamcorper nibh volutpat at. In rutrum, metus ut posuere gravida, tellus
-                        lacus faucibus lectus, sed cursused eros ligula non odio. Suspendisse volutpat sagittis sapien.
-                        Curabitur quis malesuada ipsum.</p>
+                    <p class="sub-heading text-center"><?= SiteSetting::get('App Sec Sub Heading') ?></p>
+                    <h3 class="heading text-center"><?= SiteSetting::get('App Sec Heading') ?></h3>
+                    <p class="detail-text text-center"><?= SiteSetting::get('App Sec Detail') ?></p>
                 </div>
             </div>
         </div>
@@ -231,12 +211,9 @@ use backend\models\SiteSetting;
     <div class="container">
         <div class="row">
             <div class="col-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 get-app-details text-center">
-                <p class="sub-heading text-center"><?= SiteSetting::get('Get App Sub Heading') ?>- Most flexible one
-                    page -</p>
-                <h3 class="heading text-center"><?= SiteSetting::get('Get App Heading') ?>Get Mobile App</h3>
-                <p class="detail-text text-center"><?= SiteSetting::get('Get App Detail') ?>Lorem ipsum dolor sit amet,
-                    consectetur adipiscing elit. Ut posuere
-                    nisi est tellus lacus faucibus lectus, sed cursused eros ligula non odio. </p>
+                <p class="sub-heading text-center"><?= SiteSetting::get('Get App Sub Heading') ?></p>
+                <h3 class="heading text-center"><?= SiteSetting::get('Get App Heading') ?></h3>
+                <p class="detail-text text-center"><?= SiteSetting::get('Get App Detail') ?></p>
             </div>
         </div>
     </div>
