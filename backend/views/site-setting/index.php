@@ -35,9 +35,9 @@ $this->params['breadcrumbs'][] = $this->title;
                         'class' => 'yii\grid\ActionColumn',
                         'headerOptions' => ['style' => 'width:130px'],
                         'icons' => [
-                            'eye-open' => Html::a("<i class='fa fa-eye'></i>", ['create'], ['class' => 'btn-sm btn-success']),
-                            'pencil' => Html::a("<i class='fa fa-edit'></i>", ['create'], ['class' => 'btn-sm btn-primary']),
-                            'trash' => Html::a("<i class='fa fa-trash'></i>", ['create'], ['class' => 'btn-sm btn-danger']),
+                            'eye-open' => Html::a("<i class='fa fa-eye'></i>", ['view'], ['class' => 'btn-sm btn-success']),
+                            'pencil' => Html::a("<i class='fa fa-edit'></i>", ['update'], ['class' => 'btn-sm btn-primary']),
+                            'trash' => Html::a("<i class='fa fa-trash'></i>", ['delete'], ['class' => 'btn-sm btn-danger']),
 
                         ]
                     ],
