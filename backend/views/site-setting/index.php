@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Html;
+use common\components\Html;
 use yii\grid\GridView;
 
 /* @var $this yii\web\View */
@@ -34,10 +34,21 @@ $this->params['breadcrumbs'][] = $this->title;
                     [
                         'class' => 'yii\grid\ActionColumn',
                         'headerOptions' => ['style' => 'width:130px'],
-                        'icons' => [
-                            'eye-open' => Html::a("<i class='fa fa-eye'></i>", ['view'], ['class' => 'btn-sm btn-success']),
-                            'pencil' => Html::a("<i class='fa fa-edit'></i>", ['update'], ['class' => 'btn-sm btn-primary']),
-                            'trash' => Html::a("<i class='fa fa-trash'></i>", ['delete'], ['class' => 'btn-sm btn-danger']),
+                        'buttons' => [
+                            'view' => function ($url, $model) {
+                                return Html::a("<i class='fa fa-eye'></i>", ['view', 'id' => $model->id], ['class' => 'btn-sm btn-success']);
+                            },
+
+                            'update' => function ($url, $model) {
+                                return Html::a("<i class='fa fa-edit'></i>", ['update', 'id' => $model->id], ['class' => 'btn-sm btn-primary']);
+                            },
+
+                            'delete' => function ($url, $model) {
+                                return Html::a("<i class='fa fa-trash'></i>", ['delete', 'id' => $model->id], ['class' => 'btn-sm btn-danger',
+                                    'data-confirm' => Yii::t('yii', 'Are you sure you want to delete?'),
+                                    'data-method' => 'post', 'data-pjax' => '0',
+                                ]);
+                            },
 
                         ]
                     ],
