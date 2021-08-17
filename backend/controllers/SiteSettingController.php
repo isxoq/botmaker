@@ -73,7 +73,7 @@ class SiteSettingController extends Controller
 
                 $filename = "@frontend/web/uploads/site/" . \Yii::$app->security->generateRandomString(25) . "." . $image->extension;
                 $image->saveAs($filename);
-                $model->image = str_replace('@', '', $filename);
+                $model->image = str_replace('@frontend/web', '', $filename);
 
             }
 
