@@ -31,6 +31,7 @@ $this->params['breadcrumbs'][] = $this->title;
 //                    'user_id',
                     'month',
                     'amount',
+                    'stateLabel',
                     [
                         'class' => 'yii\grid\ActionColumn',
 //                        'headerOptions' => ['style' => 'width:270px'],

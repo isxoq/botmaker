@@ -21,6 +21,11 @@ $this->registerJsFile("frontend/web/js/dashboard.js", ['depends' => 'frontend\as
 
 $total_users_count = \frontend\models\api\BotUser::find()->joinWith('bot')->andWhere(['telegram_bot.user_id' => Yii::$app->user->identity->id])->count();
 $total_bot_count = \frontend\models\api\TelegramBot::find()->andWhere(['user_id' => Yii::$app->user->identity->id])->count();
+
+$total_revenue = \frontend\models\api\Order::find()->joinWith('bot')->andWhere(['telegram_bot.user_id' => Yii::$app->user->id])->sum('order.total_price');
+$total_sales = \frontend\models\api\Order::find()->joinWith('bot')->andWhere(['order.status' => \frontend\models\api\Order::STATUS_SUCCESS])->andWhere(['telegram_bot.user_id' => Yii::$app->user->id])->count();
+
+
 ?>
 <!-- Animated -->
 <div class="animated fadeIn">
@@ -71,8 +76,8 @@ $total_bot_count = \frontend\models\api\TelegramBot::find()->andWhere(['user_id'
                         </div>
                         <div class="stat-content">
                             <div class="text-left dib">
-                                <div class="stat-text">$<span class="count">23569</span></div>
-                                <div class="stat-heading">Revenue</div>
+                                <div class="stat-text"><span class="count"><?= $total_revenue ?></span></div>
+                                <div class="stat-heading"><?= t('Total Revenue') ?></div>
                             </div>
                         </div>
                     </div>
@@ -89,8 +94,8 @@ $total_bot_count = \frontend\models\api\TelegramBot::find()->andWhere(['user_id'
                         </div>
                         <div class="stat-content">
                             <div class="text-left dib">
-                                <div class="stat-text"><span class="count">3435</span></div>
-                                <div class="stat-heading">Sales</div>
+                                <div class="stat-text"><span class="count"><?= $total_sales ?></span></div>
+                                <div class="stat-heading"><?= t('Total Sales') ?></div>
                             </div>
                         </div>
                     </div>

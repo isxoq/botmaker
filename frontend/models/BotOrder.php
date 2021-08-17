@@ -86,4 +86,18 @@ class BotOrder extends \yii\db\ActiveRecord
     {
         return $this->hasOne(User::className(), ['id' => 'user_id']);
     }
+
+    public static function getStates()
+    {
+        return [
+            self::STATE_WAITING_PAYMENT => t('Waiting Payment'),
+            self::STATE_PAYMENT_SUCCESSFULLY => t('Payment Success'),
+            self::STATE_CANCELLED => t('Cancelled'),
+        ];
+    }
+
+    public function getStateLabel()
+    {
+        return self::getStates()[$this->state];
+    }
 }
