@@ -106,6 +106,6 @@ $total_sales = \frontend\models\api\Order::find()->joinWith('bot')->andWhere(['o
 
     </div>
     <!-- /Widgets -->
-
+    <?= t('help_video') ?>
 </div>
 <!-- .animated -->

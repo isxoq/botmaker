@@ -2,6 +2,7 @@
 
 namespace frontend\controllers;
 
+use backend\models\BotPriceTable;
 use Yii;
 use frontend\models\BotOrder;
 use frontend\models\BotOrderSearch;
@@ -105,7 +106,9 @@ class BotOrderController extends Controller
 
     public function getAmount($bot_id, $month)
     {
-        $monthlyPrice = 1000;
+        $monthPrice = BotPriceTable::findOne(['month' => $month]);
+
+        $monthlyPrice = $monthPrice->price;
         return $month * $monthlyPrice;
     }
 
