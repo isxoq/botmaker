@@ -23,6 +23,12 @@
                                 class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Eskiz SMS') ?>
                     </a>
                 </li>
+
+                <li class="<?= Yii::$app->controller->route == "site-setting/index" ? "active" : "" ?>">
+                    <a href="<?= \yii\helpers\Url::to(['site-setting/index']) ?>"><i
+                                class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Site Settings') ?>
+                    </a>
+                </li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </nav>

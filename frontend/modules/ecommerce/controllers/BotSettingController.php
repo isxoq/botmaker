@@ -118,7 +118,10 @@ class BotSettingController extends \yii\web\Controller
     {
 
 
-        $bot = TelegramBot::findOne(\Yii::$app->controller->module->bot->id);
+        $bot = TelegramBot::findOne(['id' => \Yii::$app->controller->module->bot->id, 'user_id' => \Yii::$app->user->id]);
+        if (!$bot) {
+            notFound();
+        }
         $bot->delete();
         \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
 

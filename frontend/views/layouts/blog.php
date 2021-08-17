@@ -10,6 +10,7 @@ use yii\bootstrap\NavBar;
 use yii\widgets\Breadcrumbs;
 use frontend\assets\AppAsset;
 use common\widgets\Alert;
+use backend\models\SiteSetting;
 
 \frontend\assets\BlogAsset::register($this);
 ?>
@@ -42,21 +43,21 @@ use common\widgets\Alert;
     <div class="container">
         <div class="top-navigation">
             <nav class="navbar navbar-expand-lg nav-up">
-                <a class="navbar-brand" href="#"><img width="200" src="/images/logo2.svg" alt="logo"/></a>
+                <a class="navbar-brand" href="#"><img width="200" src="<?= SiteSetting::get('logo') ?>" alt="logo"/></a>
 
                 <div class="collapse navbar-collapse d-none d-lg-block" id="navbarNav">
                     <ul class="navbar-nav horizontal-nav ml-auto">
                         <li class="nav-item">
-                            <a class="nav-link scroll" href="#home">Home</a>
+                            <a class="nav-link scroll" href="#home"><?= SiteSetting::get('Home') ?></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link scroll" href="#services-sec">Services</a>
+                            <a class="nav-link scroll" href="#services-sec"><?= SiteSetting::get('Services') ?></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link scroll" href="#app-clips">Screen Shots</a>
+                            <a class="nav-link scroll" href="#app-clips"><?= SiteSetting::get('Screen Shoots') ?></a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link scroll" href="#app">Features</a>
+                            <a class="nav-link scroll" href="#app"><?= SiteSetting::get('Features') ?></a>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link scroll"
@@ -87,22 +88,25 @@ use common\widgets\Alert;
 
                 <ul class="navbar-nav">
                     <li class="nav-item">
-                        <a class="nav-link scroll" href="#home"><i class="las la-angle-double-right"></i> Home</a>
+                        <a class="nav-link scroll" href="#home"><i
+                                    class="las la-angle-double-right"></i> <?= SiteSetting::get('Home') ?></a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link scroll" href="#services-sec"><i class="las la-angle-double-right"></i>
-                            Services</a>
+                            <?= SiteSetting::get('Services') ?></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link scroll" href="#app-clips"><i class="las la-angle-double-right"></i> Screen
-                            Shots</a>
+                        <a class="nav-link scroll" href="#app-clips"><i
+                                    class="las la-angle-double-right"></i> <?= SiteSetting::get('Screen Shoots') ?></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link scroll" href="#app"><i class="las la-angle-double-right"></i> Features</a>
+                        <a class="nav-link scroll" href="#app"><i
+                                    class="las la-angle-double-right"></i> <?= SiteSetting::get('Features') ?></a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link scroll" href="#get-app-sec"><i class="las la-angle-double-right"></i>
-                            Download</a>
+                        <a class="nav-link scroll" href="#<?= \yii\helpers\Url::to(['site/index']) ?>"><i
+                                    class="las la-angle-double-right"></i>
+                            <?= SiteSetting::get('Login') ?></a>
                     </li>
                 </ul>
             </nav>
