@@ -38,8 +38,8 @@ use yii\widgets\ActiveForm;
                 </div>
 
                 <div class="col-md-6">
-                    <div class="row">
-                        <p><?=t('Bot Create Help')?></p>
+                    <div style="margin-left: 20px" class="row">
+                        <p><?= t('Bot Create Help') ?></p>
                     </div>
                 </div>
             </diw>
