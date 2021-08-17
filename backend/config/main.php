@@ -29,14 +29,14 @@ return [
 
                 [
                     'class' => 'mihaildev\elfinder\volume\UserPath',
-                    'path' => '@frontend/web/files/user_{id}',
+                    'path' => 'files/user_{id}',
                     'name' => 'My Documents'
                 ],
 
                 [
                     'baseUrl' => '@web',
                     'basePath' => '@webroot',
-                    'path' => '@frontend/web/files/global',
+                    'path' => 'files/global',
                     'name' => 'Global'
                 ],
 
