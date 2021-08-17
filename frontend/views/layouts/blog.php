@@ -43,7 +43,7 @@ use backend\models\SiteSetting;
     <div class="container">
         <div class="top-navigation">
             <nav class="navbar navbar-expand-lg nav-up">
-                <a class="navbar-brand" href="#"><img width="200" src="<?= SiteSetting::get('logo') ?>" alt="logo"/></a>
+                <a class="navbar-brand" href="/"><img width="200" src="<?= SiteSetting::get('logo') ?>" alt="logo"/></a>
 
                 <div class="collapse navbar-collapse d-none d-lg-block" id="navbarNav">
                     <ul class="navbar-nav horizontal-nav ml-auto">
