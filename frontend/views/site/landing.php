@@ -60,59 +60,6 @@ use backend\models\SiteSetting;
                 </div>
             <?php endforeach ?>
 
-            <div class="col-12 col-md-6 s-cards">
-                <div class="service-card text-center wow fadeInLeft" data-wow-duration="1s">
-                    <a href="portfolio/standard-blog.html">
-                        <div class="image-holder">
-                            <i class="las la-motorcycle"></i>
-                        </div>
-                        <h3 class="service-card-heading">Branding Design</h3>
-                        <p class="service-card-detail">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit augue diam, accumsan.
-                        </p>
-                    </a>
-                </div>
-
-            </div>
-            <div class="col-12 col-md-6 s-cards">
-                <div class="service-card text-center wow fadeInRight" data-wow-duration="1s">
-                    <a href="portfolio/standard-blog.html">
-                        <div class="image-holder">
-                            <i class="las la-lightbulb"></i>
-                        </div>
-                        <h3 class="service-card-heading">Easy To Use</h3>
-                        <p class="service-card-detail">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit augue diam, accumsan.
-                        </p>
-                    </a>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 s-cards">
-                <div class="service-card text-center wow fadeInLeft" data-wow-duration="1s">
-                    <a href="portfolio/standard-blog.html">
-                        <div class="image-holder">
-                            <i class="las la-pencil-ruler"></i>
-                        </div>
-                        <h3 class="service-card-heading">Web Development</h3>
-                        <p class="service-card-detail">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit augue diam, accumsan.
-                        </p>
-                    </a>
-                </div>
-            </div>
-            <div class="col-12 col-md-6 s-cards">
-                <div class="service-card text-center wow fadeInRight" data-wow-duration="1s">
-                    <a href="portfolio/standard-blog.html">
-                        <div class="image-holder">
-                            <i class="las la-fighter-jet"></i>
-                        </div>
-                        <h3 class="service-card-heading">Fast Builder</h3>
-                        <p class="service-card-detail">
-                            Lorem ipsum dolor sit amet, consectetur adipiscing elit augue diam, accumsan.
-                        </p>
-                    </a>
-                </div>
-            </div>
         </div>
     </div>
 </div>
@@ -165,20 +112,6 @@ use backend\models\SiteSetting;
                         <p><?= $feature->description ?></p>
                     </div>
                 <?php endforeach ?>
-                <!--App deatil item-->
-                <div class="app-feature">
-                    <i class="las la-hippo" aria-hidden="true"></i>
-                    <h4 class="mb-3">Theme Options</h4>
-                    <p>This is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel velit Suspendisse in orci enim
-                        gravida nibh.</p>
-                </div>
-                <!--App deatil item-->
-                <div class="app-feature">
-                    <i class="las la-cog" aria-hidden="true"></i>
-                    <h4 class="mb-3">Customization</h4>
-                    <p>This is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel velit Suspendisse in orci enim
-                        gravida nibh.</p>
-                </div>
             </div>
             <!--app slider-->
             <div class="col-lg-4 mb-5 mb-lg-0 wow fadeInUp">
@@ -191,12 +124,7 @@ use backend\models\SiteSetting;
                                 <img src="<?= $image->image ?>" alt="">
                             </div>
                         <?php endforeach ?>
-                        <div class="item">
-                            <img src="/blog/vapp-landing/img/img2.png" alt="">
-                        </div>
-                        <div class="item">
-                            <img src="/blog/vapp-landing/img/img3.png" alt="">
-                        </div>
+
                     </div>
                 </div>
             </div>
@@ -210,20 +138,7 @@ use backend\models\SiteSetting;
                         <p><?= $feature->description ?></p>
                     </div>
                 <?php endforeach ?>
-                <!--App deatil item-->
-                <div class="app-feature">
-                    <i class="las la-laptop-code" aria-hidden="true"></i>
-                    <h4 class="mb-3">Powerful Code</h4>
-                    <p>This is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel velit Suspendisse in orci enim
-                        gravida nibh.</p>
-                </div>
-                <!--App deatil item-->
-                <div class="app-feature">
-                    <i class="las la-folder-open" aria-hidden="true"></i>
-                    <h4 class="mb-3">Documentation</h4>
-                    <p>This is Photoshop's version of Lorem Ipsum. Proin gravida nibh vel velit Suspendisse in orci enim
-                        gravida nibh.</p>
-                </div>
+
             </div>
 
         </div>

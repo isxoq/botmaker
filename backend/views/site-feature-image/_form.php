@@ -12,7 +12,15 @@ use yii\widgets\ActiveForm;
 
     <?php $form = ActiveForm::begin(); ?>
 
-    <?= $form->field($model, 'image')->textInput(['maxlength' => true]) ?>
+    <?php echo $form->field($model, 'image')->widget(\mihaildev\elfinder\InputFile::className(), ['language' => 'ru',
+        'controller' => 'elfinder', // вставляем название контроллера, по умолчанию равен elfinder
+        'path' => 'features', // будет открыта папка из настроек контроллера с добавлением указанной под деритории
+        'filter' => 'image/jpeg',    // фильтр файлов, можно задать массив фильтров https://github.com/Studio-42/elFinder/wiki/Client-configuration-options#wiki-onlyMimes
+        'template' => '<div class="input-group">{input}<span class="input-group-btn">{button}</span></div>',
+        'options' => ['class' => 'form-control'],
+        'buttonOptions' => ['class' => 'btn btn-primary'],
+        'multiple' => false       // возможность выбора нескольких файлов
+    ]); ?>
 
     <div class="form-group">
         <?= Html::submitButton(Yii::t('app', 'Save'), ['class' => 'btn btn-success']) ?>
