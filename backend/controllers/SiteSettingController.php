@@ -101,9 +101,9 @@ class SiteSettingController extends Controller
 
             if ($image = UploadedFile::getInstance($model, 'image')) {
 
-                $filename = "@frontend/web/uploads/site/" . \Yii::$app->security->generateRandomString(25) . "." . $image->extension;
+                $filename = "@frontend/web/uploads/site_about/" . \Yii::$app->security->generateRandomString(25) . "." . $image->extension;
                 $image->saveAs($filename);
-                $model->image = str_replace('@', '', $filename);
+                $model->image = str_replace('@', '/', $filename);
             }
             $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
