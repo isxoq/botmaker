@@ -46,7 +46,7 @@ class OrderController extends Controller
                 'token' => Yii::$app->controller->module->bot->token,
             ])->sendMessage([
                 'chat_id' => $order->user->user_id,
-                'text' => $order->orderDtatus
+                'text' => $order->getOrderStatus()
             ]);
 
             return [
