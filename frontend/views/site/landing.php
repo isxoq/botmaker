@@ -10,6 +10,7 @@ Date Time: 8/13/2021 11:03 AM
 
 use backend\models\SiteSetting;
 
+$this->title = t('Site Title');
 ?>
 
 

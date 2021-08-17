@@ -19,6 +19,9 @@ $this->params['breadcrumbs'][] = $this->title;
         <div class="table-stats order-table ov-h">
             <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
+            <?php
+//            $dataProvider->setPagination()
+            ?>
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
