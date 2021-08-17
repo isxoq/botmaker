@@ -30,7 +30,8 @@ class SiteSetting extends \yii\db\ActiveRecord
     {
         return [
             [['value_uz', 'value_ru'], 'string'],
-            [['key', 'image'], 'string', 'max' => 255],
+            [['key'], 'string', 'max' => 255],
+            ['image','file']
         ];
     }
 

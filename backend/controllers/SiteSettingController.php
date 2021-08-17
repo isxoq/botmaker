@@ -8,6 +8,7 @@ use backend\models\SiteSettingSearch;
 use yii\web\Controller;
 use yii\web\NotFoundHttpException;
 use yii\filters\VerbFilter;
+use yii\web\UploadedFile;
 
 /**
  * SiteSettingController implements the CRUD actions for SiteSetting model.
@@ -66,7 +67,17 @@ class SiteSettingController extends Controller
     {
         $model = new SiteSetting();
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+
+            if ($image = UploadedFile::getInstance($model, 'image')) {
+
+                $filename = "@frontend/web/uploads/site/" . \Yii::$app->security->generateRandomString(25) . "." . $image->extension;
+                $image->saveAs($filename);
+                $model->image = str_replace('@', '', $filename);
+
+            }
+
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
@@ -86,7 +97,15 @@ class SiteSettingController extends Controller
     {
         $model = $this->findModel($id);
 
-        if ($model->load(Yii::$app->request->post()) && $model->save()) {
+        if ($model->load(Yii::$app->request->post())) {
+
+            if ($image = UploadedFile::getInstance($model, 'image')) {
+
+                $filename = "@frontend/web/uploads/site/" . \Yii::$app->security->generateRandomString(25) . "." . $image->extension;
+                $image->saveAs($filename);
+                $model->image = str_replace('@', '', $filename);
+            }
+            $model->save();
             return $this->redirect(['view', 'id' => $model->id]);
         }
 
