@@ -163,12 +163,87 @@ Date Time: 8/13/2021 4:27 PM
             </div>
 
 
+            <div class="row">
+                <div class="col-lg-8">
+                    <div class="card">
+                        <div class="card-header">
+                            <strong class="card-title"><?= t("Click Merchant") ?></strong>
+                        </div>
+                        <div class="card-body">
+                            <p><?= t('Prepare URL') ?> <b><?= \yii\helpers\Url::to(['/bot-click/prepare'], true) ?></b>
+                            </p>
+                            <p><?= t('Complete URL') ?> <b><?= \yii\helpers\Url::to(['/bot-click/complete'], true) ?></b>
+                            </p>
+                            <!-- Credit Card -->
+                            <div id="pay-invoice">
+                                <div class="card-body">
+                                    <form action="#" id="">
+                                        <div class="form-group has-success">
+                                            <label for="cc-name"
+                                                   class="control-label mb-1"><?= t('Click Merchant ID') ?></label>
+                                            <input id="click_merchant_id" name="click_merchant_id"
+                                                   value="<?= Yii::$app->controller->module->bot->click_merchant_id ?>"
+                                                   type="text"
+                                                   class="form-control cc-name valid"
+                                                   aria-required="true" aria-invalid="false" aria-describedby="cc-name">
+                                            <span class="help-block field-validation-valid" data-valmsg-for="cc-name"
+                                                  data-valmsg-replace="true"></span>
+                                        </div>
+
+                                        <div class="form-group has-success">
+                                            <label for="cc-name"
+                                                   class="control-label mb-1"><?= t('Click Merchant User ID') ?></label>
+                                            <input id="click_merchant_user_id" name="click_merchant_user_id"
+                                                   value="<?= Yii::$app->controller->module->bot->click_merchant_user_id ?>"
+                                                   type="text"
+                                                   class="form-control cc-name valid"
+                                                   aria-required="true" aria-invalid="false" aria-describedby="cc-name">
+                                            <span class="help-block field-validation-valid" data-valmsg-for="cc-name"
+                                                  data-valmsg-replace="true"></span>
+                                        </div>
+
+                                        <div class="form-group has-success">
+                                            <label for="cc-name"
+                                                   class="control-label mb-1"><?= t('Click Merchant Service ID') ?></label>
+                                            <input id="click_service_id" name="click_service_id"
+                                                   value="<?= Yii::$app->controller->module->bot->click_service_id ?>"
+                                                   type="text"
+                                                   class="form-control cc-name valid"
+                                                   aria-required="true" aria-invalid="false" aria-describedby="cc-name">
+                                            <span class="help-block field-validation-valid" data-valmsg-for="cc-name"
+                                                  data-valmsg-replace="true"></span>
+                                        </div>
+
+                                        <div class="form-group has-success">
+                                            <label for="cc-name"
+                                                   class="control-label mb-1"><?= t('Click Secret Key') ?></label>
+                                            <input id="click_secret_key" name="click_secret_key"
+                                                   value="<?= Yii::$app->controller->module->bot->click_secret_key ?>"
+                                                   type="text"
+                                                   class="form-control cc-name valid"
+                                                   aria-required="true" aria-invalid="false" aria-describedby="cc-name">
+                                            <span class="help-block field-validation-valid" data-valmsg-for="cc-name"
+                                                  data-valmsg-replace="true"></span>
+                                        </div>
+
+                                    </form>
+                                    <div class="btn btn-primary"
+                                         id="update-click-settings"><?= t('Update Settings') ?></div>
+                                </div>
+                            </div>
+
+                        </div>
+                    </div> <!-- .card -->
+                </div>
+            </div>
+
         </div><!-- .animated -->
     </div>
 
 <?php
 $apiUrlBot = \yii\helpers\Url::to(['bot-setting/update-setting', 'bot_id' => Yii::$app->controller->module->bot->id]);
 $apiUrlDelivery = \yii\helpers\Url::to(['bot-setting/update-setting-delivery', 'bot_id' => Yii::$app->controller->module->bot->id]);
+$apiUrlClick = \yii\helpers\Url::to(['bot-setting/update-setting-click', 'bot_id' => Yii::$app->controller->module->bot->id]);
 $apiUrlAbout = \yii\helpers\Url::to(['bot-setting/update-setting-about', 'bot_id' => Yii::$app->controller->module->bot->id]);
 $apiUrlDelete = \yii\helpers\Url::to(['bot-setting/delete', 'bot_id' => Yii::$app->controller->module->bot->id]);
 $apiBots = \yii\helpers\Url::to(['/telegram-bot/index'], true);
@@ -316,6 +391,34 @@ $js = <<<JS
         
         })
 
+         $(document).on('click','#update-click-settings',function() {
+            Swal.showLoading()
+            $.ajax({
+                url:'{$apiUrlClick}',
+                type:'POST',
+                data:{
+                    'click_merchant_id':$('#click_merchant_id').val(),
+                    'click_merchant_user_id':$('#click_merchant_user_id').val(),
+                    'click_service_id':$('#click_service_id').val(),
+                    'click_secret_key':$('#click_secret_key').val(),
+                },
+                success:function(data) {
+                   Swal.hideLoading()
+                    Swal.fire(
+                      'OK!',
+                      "Muvaffaqiyatli o'zgartirildi",
+                      'success'
+                    )
+                },
+                error:function(data) {
+                  Swal.fire(
+                      'Error!',
+                      "Xatolik!",
+                      'error'
+                    )
+                }
+            })
+        })
 
 JS;
 

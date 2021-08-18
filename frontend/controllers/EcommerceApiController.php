@@ -266,11 +266,28 @@ class EcommerceApiController extends \yii\web\Controller
                 $order->payment_status = Order::STATUS_PAYMENT_NO_PAY;
                 $order->total_price = $this->getCartTotal();
                 $order->save();
-                $this->telegram()->sendMessage([
-                    'text' => t('Order saved'),
-                    'parse_mode' => "html",
-                    'chat_id' => $this->bot_user->user_id,
-                ]);
+
+                if ($order->payment_type == Order::PAYMENT_TYPE_TERMINAL) {
+                    $this->telegram()->sendMessage([
+                        'text' => t('Order saved'),
+                        'parse_mode' => "html",
+                        'chat_id' => $this->bot_user->user_id,
+                        'reply_markup' => json_encode([
+                            'inline_keyboard' => [
+                                [['text' => t('Pay with Click'), 'url' => $this->generateClickPayUrl($order->id, $order->total_price)]]
+//                                [['text' => t('Pay with Payme'), 'url' => $this->generateClickPayUrl($order->id, $order->total_price)]]
+                            ]
+                        ])
+                    ]);
+                } else {
+                    $this->telegram()->sendMessage([
+                        'text' => t('Order saved'),
+                        'parse_mode' => "html",
+                        'chat_id' => $this->bot_user->user_id,
+                    ]);
+                }
+
+
                 $this->clearCart();
                 $this->mainMenu();
             }
@@ -1401,6 +1418,15 @@ class EcommerceApiController extends \yii\web\Controller
                 ])->one();
             $cart->delete();
         }
+    }
+
+    protected function generateClickPayUrl($order_id, $amount)
+    {
+
+        $service_id = $this->bot->click_service_id;
+        $merchant_id = $this->bot->click_merchant_id;
+
+        return "https://my.click.uz/services/pay?service_id={$service_id}&merchant_id={$merchant_id}&amount={$amount}&transaction_param={$order_id}";
     }
 
 }

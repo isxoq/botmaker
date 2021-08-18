@@ -39,7 +39,7 @@ class TelegramBot extends BaseActiveRecord
     const SCENARIO_CHANGE_STATE = 'scenario_changestate';
     const SCENARIO_UPDATE_DELIVERY_PRICES = 'updateDeliveryPrices';
     const SCENARIO_UPDATE_BOT_ABOUT = 'updateBotAbout';
-
+    const SCENARIO_UPDATE_CLICK = 'updateClick';
 
 
     /**
@@ -60,6 +60,7 @@ class TelegramBot extends BaseActiveRecord
             self::SCENARIO_UPDATE => ['token', 'name', 'type', 'status'],
             self::SCENARIO_SETWEBHOOK => ['webhook'],
             self::SCENARIO_CHANGE_STATE => ['active_to'],
+            self::SCENARIO_UPDATE_CLICK => ['click_merchant_id', 'click_merchant_user_id', 'click_service_id', 'click_secret_key'],
         ];
     }
 
@@ -69,6 +70,7 @@ class TelegramBot extends BaseActiveRecord
     public function rules()
     {
         return [
+            [['click_merchant_id', 'click_merchant_user_id', 'click_service_id', 'click_secret_key'], 'string'],
             [['user_id', 'status', 'active_to', 'delivery_price', 'min_order_price', 'is_active'], 'integer'],
             ['webhook', 'required'],
             [['type'], 'required'],

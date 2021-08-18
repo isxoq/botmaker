@@ -132,5 +132,29 @@ class BotSettingController extends \yii\web\Controller
 
     }
 
+
+    public function actionUpdateSettingClick()
+    {
+
+        \Yii::$app->response->format = \yii\web\Response::FORMAT_JSON;
+        $bot = TelegramBot::findOne(\Yii::$app->controller->module->bot->id);
+
+        $bot->scenario = TelegramBot::SCENARIO_UPDATE_CLICK;
+
+        $click_merchant_id = \Yii::$app->request->post('click_merchant_id');
+        $click_merchant_user_id = \Yii::$app->request->post('click_merchant_user_id');
+        $click_service_id = \Yii::$app->request->post('click_service_id');
+        $click_secret_key = \Yii::$app->request->post('click_secret_key');
+
+        $bot->click_merchant_id = $click_merchant_id;
+        $bot->click_merchant_user_id = $click_merchant_user_id;
+        $bot->click_service_id = $click_service_id;
+        $bot->click_secret_key = $click_secret_key;
+        $bot->save();
+
+        return $bot;
+
+    }
+
 }
 
