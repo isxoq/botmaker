@@ -123,7 +123,7 @@ class BotClickController extends Controller
                         }
                         $db_transaction->commit();
 
-                        $order = Order::findOne($transaction->user_id);        // if pay success -> Change Order status to 2
+                        $order = \frontend\models\api\Order::findOne($transaction->user_id);        // if pay success -> Change Order status to 2
                         if (!empty($order)) {
                             $order->state = Order::STATE_PAYMENT_SUCCESSFULLY;
                             $order->save(false);
@@ -225,7 +225,7 @@ class BotClickController extends Controller
         }
 
         //
-        $this->user = User::findOne($this->reqData['merchant_trans_id']);
+        $this->user = \frontend\models\api\Order::findOne($this->reqData['merchant_trans_id']);
         if ($this->user === NULL) {
             // User does not exist
             die(json_encode(ClickData::getMessage('5')));
