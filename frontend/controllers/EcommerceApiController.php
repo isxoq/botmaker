@@ -127,6 +127,10 @@ class EcommerceApiController extends \yii\web\Controller
     protected function messageHandler($message)
     {
 
+        if ($message->text == t('About US')) {
+            $this->sendAboutUs();
+            return;
+        }
         if ($message->text == t('My Orders')) {
             $this->sendUserOrders();
             return;
@@ -453,6 +457,30 @@ class EcommerceApiController extends \yii\web\Controller
 
 
         $this->mainMenu();
+    }
+
+
+    protected function sendAboutUs()
+    {
+        if ($this->bot->about_text) {
+            if ($this->bot->about_image) {
+                $this->telegram()->sendPhoto([
+                    'caption' => $this->bot->about_text,
+                    'chat_id' => $this->bot_user->user_id,
+                    'photo' => yii\helpers\Url::to($this->bot->about_image, true)
+                ]);
+            } else {
+                $this->telegram()->sendMessage([
+                    'text' => $this->bot->about_text,
+                    'chat_id' => $this->bot_user->user_id,
+                ]);
+            }
+        } else {
+            $this->telegram()->sendMessage([
+                'text' => t('E commerce bot'),
+                'chat_id' => $this->bot_user->user_id,
+            ]);
+        }
     }
 
     protected function settingHandler()
