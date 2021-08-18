@@ -77,12 +77,28 @@ $this->title = t('Site Title');
                 <p class="detail-text text-center"><?= SiteSetting::get('App Clips Detail') ?></p>
             </div>
         </div>
-        <div class="app-clips-slider owl-carousel owl-theme">
-            <?php foreach (\backend\models\SiteAppClips::find()->all() as $app): ?>
-                <div class="item">
-                    <img src="<?= $app->image ?>">
+        <div class="row justify-content-center">
+            <div class="col-md-4">
+                <ul>
+                    <h4 class="mb-3"><i class="fa fa-check"></i> <?= t('Control Panel') ?></h4>
+                    <h4 class="mb-3"><i class="fa fa-check"></i> <?= t('Products Orders') ?></h4>
+                    <h4 class="mb-3"><i class="fa fa-check"></i> <?= t('Analysts') ?></h4>
+                    <h4 class="mb-3"><i class="fa fa-check"></i> <?= t('Smart Push') ?></h4>
+                    <h4 class="mb-3"><i class="fa fa-check"></i> <?= t('Payment Systems') ?></h4>
+                </ul>
+            </div>
+            <div class="col-md-4">
+                <div class="box price align-items-center">
+                    <h2>
+                        <?= \backend\models\BotPriceTable::find()->where(['month' => 1])->one()->price ?> <?= t('UZS') ?>
+                    </h2>
+                    <p><?= t('Start first month') ?></p>
+                    <a href="<?= \yii\helpers\Url::to(['site/index']) ?>"
+                       class="sotib_olish_btn">
+                        <?= t('Podklyuchitsya') ?>
+                    </a>
                 </div>
-            <?php endforeach ?>
+            </div>
         </div>
     </div>
 </section>
@@ -151,7 +167,8 @@ $this->title = t('Site Title');
 
 
 <!--Get App Banner Start-->
-<section id="get-app-sec" class="get-app-sec" style="background: url('/blog//blog/vapp-landing/img/banner2.jpg');">
+<section id="get-app-sec" class="get-app-sec"
+         style="background: url('<?= \yii\helpers\Url::to('/blog/vapp-landing/img/banner2.jpg', true) ?>');">
     <div class="overlay"></div>
     <div class="container">
         <div class="row">

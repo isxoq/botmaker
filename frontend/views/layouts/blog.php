@@ -44,6 +44,20 @@ use backend\models\SiteSetting;
             color: #1f1f1f;
             border: solid 1px #FFFFFF;
         }
+
+
+        .price {
+            /*background: #fff;*/
+            /*color: #fff;*/
+            text-align: center;
+            box-shadow: none;
+            /*padding: 4rem;*/
+            border-radius: 25px;
+        }
+
+        .price p {
+            opacity: .8;
+        }
     </style>
 
 
