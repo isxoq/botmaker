@@ -21,7 +21,7 @@ $this->title = t('Site Title');
             <div class="col-12 col-lg-6 banner-details text-center text-lg-left">
                 <div class="banner-inner-content">
                     <h4 class="banner-heading"><?= SiteSetting::get('Banner Heading') ?></h4>
-                    <p class="banner-text"><?= SiteSetting::get('Banner Text') ?></p><a class="btn banner-btn"
+                    <p class="banner-text"><?= SiteSetting::get('Banner Text') ?></p><a class="sotib_olish_btn"
                                                                                         href="<?= \yii\helpers\Url::to(['site/index']) ?>"> <?= SiteSetting::get('Banner Link') ?></a>
                 </div>
             </div>
@@ -158,7 +158,8 @@ $this->title = t('Site Title');
             <div class="col-12 col-md-10 col-lg-8 offset-md-1 offset-lg-2 get-app-details text-center">
                 <p class="sub-heading text-center"><?= SiteSetting::get('Get App Sub Heading') ?></p>
                 <h3 class="heading text-center"><?= SiteSetting::get('Get App Heading') ?></h3>
-                <p class="detail-text text-center"><?= SiteSetting::get('Get App Detail') ?></p>
+                <a class="sotib_olish_btn"
+                   href="<?= \yii\helpers\Url::to(['site/index']) ?>"> <?= SiteSetting::get('Banner Link') ?></a>
             </div>
         </div>
     </div>

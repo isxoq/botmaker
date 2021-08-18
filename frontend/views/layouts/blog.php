@@ -24,6 +24,20 @@ use backend\models\SiteSetting;
     <?php $this->registerCsrfMetaTags() ?>
     <title><?= Html::encode($this->title) ?></title>
     <?php $this->head() ?>
+    <style>
+        .sotib_olish_btn {
+            padding: 10px 40px;
+            font-family: 'Montserrat', sans-serif;
+            font-weight: 500;
+            background-color: #ff4f5a;
+            color: #fff;
+            border-radius: 0;
+            text-decoration: none;
+            font-size: 14px;
+            transition: .8s ease;
+            border: solid 1px #ff4f5a;
+        }
+    </style>
 
 
 </head>
