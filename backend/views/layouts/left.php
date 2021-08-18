@@ -19,7 +19,7 @@
                     </a>
                 </li>
                 <li class="<?= Yii::$app->controller->route == "eskizsms/default/index" ? "active" : "" ?>">
-                    <a href="<?= \yii\helpers\Url::to(['/default/index']) ?>"><i
+                    <a href="<?= \yii\helpers\Url::to(['/eskizsms/default/index']) ?>"><i
                                 class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Eskiz SMS') ?>
                     </a>
                 </li>
