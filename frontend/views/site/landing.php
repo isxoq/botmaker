@@ -21,7 +21,8 @@ $this->title = t('Site Title');
             <div class="col-12 col-lg-6 banner-details text-center text-lg-left">
                 <div class="banner-inner-content">
                     <h4 class="banner-heading"><?= SiteSetting::get('Banner Heading') ?></h4>
-                    <p class="banner-text"><?= SiteSetting::get('Banner Text') ?></p> <?= SiteSetting::get('Banner Link') ?>
+                    <p class="banner-text"><?= SiteSetting::get('Banner Text') ?></p><a class="btn banner-btn"
+                                                                                        href="<?= \yii\helpers\Url::to(['site/index']) ?>"> <?= SiteSetting::get('Banner Link') ?></a>
                 </div>
             </div>
             <div class="col-12 col-lg-6 banner-img">
