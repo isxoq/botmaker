@@ -124,12 +124,12 @@ use backend\models\SiteSetting;
         <div class="row">
             <div class="col-12 d-flex justify-content-center">
                 <div class="footer-icons d-flex">
-                    <a href="javascript:void(0)" class="wow fadeInUp"><i class="lab la-facebook-f"></i> </a>
-                    <a href="javascript:void(0)" class="wow fadeInDown"><i class="lab la-twitter"></i> </a>
-                    <a href="javascript:void(0)" class="wow fadeInUp"><i class="lab la-google"></i> </a>
-                    <a href="javascript:void(0)" class="wow fadeInDown"><i class="lab la-linkedin-in"></i> </a>
-                    <a href="javascript:void(0)" class="wow fadeInUp"><i class="lab la-instagram"></i> </a>
-                    <a href="javascript:void(0)" class="wow fadeInDown"><i class="las la-envelope"></i> </a>
+                    <a href="<?= t("Facebook Url") ?>" class="wow fadeInUp"><i class="lab la-facebook-f"></i> </a>
+                    <a href="<?= t("Twitter Url") ?>" class="wow fadeInDown"><i class="lab la-twitter"></i> </a>
+                    <a href="<?= t("Google Url") ?>" class="wow fadeInUp"><i class="lab la-google"></i> </a>
+                    <a href="<?= t("Linkedin Url") ?>" class="wow fadeInDown"><i class="lab la-linkedin-in"></i> </a>
+                    <a href="<?= t("Instagram Url") ?>" class="wow fadeInUp"><i class="lab la-instagram"></i> </a>
+                    <a href="<?= t("Email Url") ?>" class="wow fadeInDown"><i class="las la-envelope"></i> </a>
                 </div>
             </div>
         </div>
