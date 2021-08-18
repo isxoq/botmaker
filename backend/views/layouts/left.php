@@ -56,6 +56,12 @@
                                 class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Site Feature Images') ?>
                     </a>
                 </li>
+
+                <li class="<?= Yii::$app->controller->route == "bot-price-table/index" ? "active" : "" ?>">
+                    <a href="<?= \yii\helpers\Url::to(['/bot-price-table/index']) ?>"><i
+                                class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Bot Price Table') ?>
+                    </a>
+                </li>
             </ul>
         </div><!-- /.navbar-collapse -->
     </nav>

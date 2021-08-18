@@ -109,7 +109,7 @@ class BotOrderController extends Controller
         $monthPrice = BotPriceTable::findOne(['month' => $month]);
 
         $monthlyPrice = $monthPrice->price;
-        return $month * $monthlyPrice;
+        return $monthlyPrice;
     }
 
     /**
@@ -151,10 +151,10 @@ class BotOrderController extends Controller
         Yii::$app->response->format = Response::FORMAT_JSON;
         $bot_id = Yii::$app->request->post('bot_id');
         $month = Yii::$app->request->post('month');
-        $monthlyPrice = 1000;
 
+        $monthPrice = BotPriceTable::findOne(['month' => $month]);
         return [
-            'total' => $month * $monthlyPrice
+            'total' => $monthPrice->price
         ];
     }
 
