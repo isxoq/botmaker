@@ -159,12 +159,26 @@ use backend\models\SiteSetting;
         <div class="row">
             <div class="col-12 d-flex justify-content-center">
                 <div class="footer-icons d-flex">
-                    <a href="<?= t("Facebook Url") ?>" class="wow fadeInUp"><i class="lab la-facebook-f"></i> </a>
-                    <a href="<?= t("Twitter Url") ?>" class="wow fadeInDown"><i class="lab la-twitter"></i> </a>
-                    <a href="<?= t("Google Url") ?>" class="wow fadeInUp"><i class="lab la-google"></i> </a>
-                    <a href="<?= t("Linkedin Url") ?>" class="wow fadeInDown"><i class="lab la-linkedin-in"></i> </a>
-                    <a href="<?= t("Instagram Url") ?>" class="wow fadeInUp"><i class="lab la-instagram"></i> </a>
-                    <a href="<?= t("Email Url") ?>" class="wow fadeInDown"><i class="las la-envelope"></i> </a>
+                    <?php if (t("Facebook Url")): ?>
+                        <a href="<?= t("Facebook Url") ?>" class="wow fadeInUp"><i class="lab la-facebook-f"></i> </a>
+                    <?php endif ?>
+
+                    <?php if (t("Twitter Url")): ?>
+                        <a href="<?= t("Twitter Url") ?>" class="wow fadeInDown"><i class="lab la-twitter"></i> </a>
+                    <?php endif ?>
+                    <?php if (t("Google Url")): ?>
+                        <a href="<?= t("Google Url") ?>" class="wow fadeInUp"><i class="lab la-google"></i> </a>
+                    <?php endif ?>
+                    <?php if (t("Linkedin Url")): ?>
+                        <a href="<?= t("Linkedin Url") ?>" class="wow fadeInDown"><i class="lab la-linkedin-in"></i>
+                        </a>
+                    <?php endif ?>
+                    <?php if (t("Instagram Url")): ?>
+                        <a href="<?= t("Instagram Url") ?>" class="wow fadeInUp"><i class="lab la-instagram"></i> </a>
+                    <?php endif ?>
+                    <?php if (t("Email Url")): ?>
+                        <a href="<?= t("Email Url") ?>" class="wow fadeInDown"><i class="las la-envelope"></i> </a>
+                    <?php endif ?>
                 </div>
             </div>
         </div>
