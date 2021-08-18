@@ -19,40 +19,40 @@
                     </a>
                 </li>
                 <li class="<?= Yii::$app->controller->route == "eskizsms/default/index" ? "active" : "" ?>">
-                    <a href="<?= \yii\helpers\Url::to(['eskizsms/default/index']) ?>"><i
+                    <a href="<?= \yii\helpers\Url::to(['/default/index']) ?>"><i
                                 class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Eskiz SMS') ?>
                     </a>
                 </li>
 
                 <li class="<?= Yii::$app->controller->route == "site-setting/index" ? "active" : "" ?>">
-                    <a href="<?= \yii\helpers\Url::to(['site-setting/index']) ?>"><i
+                    <a href="<?= \yii\helpers\Url::to(['/site-setting/index']) ?>"><i
                                 class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Site Settings') ?>
                     </a>
                 </li>
 
 
                 <li class="<?= Yii::$app->controller->route == "site-service/index" ? "active" : "" ?>">
-                    <a href="<?= \yii\helpers\Url::to(['site-service/index']) ?>"><i
+                    <a href="<?= \yii\helpers\Url::to(['/site-service/index']) ?>"><i
                                 class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Site Services') ?>
                     </a>
                 </li>
 
 
                 <li class="<?= Yii::$app->controller->route == "site-app-clips/index" ? "active" : "" ?>">
-                    <a href="<?= \yii\helpers\Url::to(['site-app-clips/index']) ?>"><i
+                    <a href="<?= \yii\helpers\Url::to(['/site-app-clips/index']) ?>"><i
                                 class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Site App Clips') ?>
                     </a>
                 </li>
 
 
                 <li class="<?= Yii::$app->controller->route == "site-feature/index" ? "active" : "" ?>">
-                    <a href="<?= \yii\helpers\Url::to(['site-feature/index']) ?>"><i
+                    <a href="<?= \yii\helpers\Url::to(['/site-feature/index']) ?>"><i
                                 class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Site Feature') ?>
                     </a>
                 </li>
 
                 <li class="<?= Yii::$app->controller->route == "site-feature-image/index" ? "active" : "" ?>">
-                    <a href="<?= \yii\helpers\Url::to(['site-feature-image/index']) ?>"><i
+                    <a href="<?= \yii\helpers\Url::to(['/site-feature-image/index']) ?>"><i
                                 class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Site Feature Images') ?>
                     </a>
                 </li>
