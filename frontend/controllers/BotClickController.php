@@ -198,11 +198,13 @@ class BotClickController extends Controller
             die(json_encode(ClickData::getMessage('n')));
         }
 
+        $key = \frontend\models\api\Order::findOne($this->reqData['merchant_trans_id'])->bot->click_secret_key;
+
         // Формирование ХЭШ подписи
         $sign_string_veryfied = md5(
             $this->reqData['click_trans_id'] .
             $this->reqData['service_id'] .
-            ClickData::SECRET_KEY .
+            $key .
             $this->reqData['merchant_trans_id'] .
             (($this->reqData['action'] == 1) ? $this->reqData['merchant_prepare_id'] : '') .
             $this->reqData['amount'] .
