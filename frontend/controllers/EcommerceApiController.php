@@ -498,10 +498,26 @@ class EcommerceApiController extends \yii\web\Controller
                 $text .= t('datetime') . date('d.m.Y h:i:s', $order->created_at) . PHP_EOL;
                 $text .= t('status') . $order->orderStatus . PHP_EOL;
                 $text .= t('payment status') . $order->orderPaymentStatus . PHP_EOL;
-                $this->telegram()->sendMessage([
-                    'text' => $text,
-                    'chat_id' => $this->bot_user->user_id,
-                ]);
+
+                if ($order->payment_status == Order::STATUS_PAYMENT_NO_PAY && $order->payment_type == Order::PAYMENT_TYPE_TERMINAL) {
+                    $this->telegram()->sendMessage([
+                        'text' => $text,
+                        'chat_id' => $this->bot_user->user_id,
+                        'parse_mode' => "html",
+                        'reply_markup' => json_encode([
+                            'inline_keyboard' => [
+                                [['text' => t('Pay with Click'), 'url' => $this->generateClickPayUrl($order->id, $order->total_price)]]
+                            ]
+                        ])
+                    ]);
+                } else {
+                    $this->telegram()->sendMessage([
+                        'text' => $text,
+                        'chat_id' => $this->bot_user->user_id,
+                    ]);
+
+                }
+
             }
         }
 
