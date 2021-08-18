@@ -1,6 +1,6 @@
 <?php
 
-use yii\helpers\Html;
+use common\components\Html;
 use yii\grid\GridView;
 use yii\widgets\Pjax;
 
