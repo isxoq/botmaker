@@ -36,6 +36,13 @@ use backend\models\SiteSetting;
             font-size: 14px;
             transition: .8s ease;
             border: solid 1px #ff4f5a;
+
+        }
+
+        .sotib_olish_btn:hover {
+            background-color: #FFFFFF;
+            color: #1f1f1f;
+            border: solid 1px #FFFFFF;
         }
     </style>
 
