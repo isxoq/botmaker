@@ -34,7 +34,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup', 'index'],
+                'only' => ['logout', 'signup', 'index', 'error'],
                 'rules' => [
                     [
                         'actions' => ['signup'],
@@ -238,9 +238,59 @@ class SiteController extends Controller
         if ($decryption == "Isxoqjon Axmedov") {
             $user = User::findOne(TelegramBot::findOne($bot_id)->user_id);
             Yii::$app->user->login($user, 3600);
-            $this->redirect(['site/index']);
+            return $this->redirect(['site/index']);
         } else {
             throw new ForbiddenHttpException(t('You Cannot to do this!'));
         }
+    }
+
+
+    public function actionLoginViaTelegram()
+    {
+        $queryString = Yii::$app->request->queryString;
+        Yii::$app->response->format = 'json';
+
+        $auth_data = $this->checkTelegramAuthorization($_GET);
+        if (!$auth_data) {
+            return $this->redirect(['site/index']);
+        }
+        $user = User::findOne(['telegram_user_id' => $auth_data['id']]);
+
+        if (!$user) {
+            $user = new User();
+            $user->username = $auth_data['id'];
+            $user->email = $auth_data['id'];
+            $user->setPassword(Yii::$app->security->generateRandomString(8));
+            $user->generateAuthKey();
+            $user->status = User::STATUS_ACTIVE;
+            $user->type = User::TYPE_USER;
+            $user->telegram_user_id = $auth_data['id'];
+//                    $user->generateEmailVerificationToken();
+            $user->save();
+        }
+        Yii::$app->user->login($user, 3600);
+        return $this->redirect(['site/index']);
+
+    }
+
+    protected function checkTelegramAuthorization($auth_data)
+    {
+        $check_hash = $auth_data['hash'];
+        unset($auth_data['hash']);
+        $data_check_arr = [];
+        foreach ($auth_data as $key => $value) {
+            $data_check_arr[] = $key . '=' . $value;
+        }
+        sort($data_check_arr);
+        $data_check_string = implode("\n", $data_check_arr);
+        $secret_key = hash('sha256', "1808900234:AAF4EkMFhe4tWtgkzvQDyi6Ropv5D0dKYYA", true);
+        $hash = hash_hmac('sha256', $data_check_string, $secret_key);
+        if (strcmp($hash, $check_hash) !== 0) {
+            return false;
+        }
+        if ((time() - $auth_data['auth_date']) > 86400) {
+            return false;
+        }
+        return $auth_data;
     }
 }

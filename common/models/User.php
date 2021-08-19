@@ -18,6 +18,7 @@ use yii\web\IdentityInterface;
  * @property string $password_reset_token
  * @property string $verification_token
  * @property string $email
+ * @property string $telegram_user_id
  * @property string $auth_key
  * @property integer $status
  * @property integer $created_at
@@ -56,6 +57,7 @@ class User extends ActiveRecord implements IdentityInterface
     public function rules()
     {
         return [
+            ['telegram_user_id', 'string'],
             ['status', 'default', 'value' => self::STATUS_INACTIVE],
             ['status', 'in', 'range' => [self::STATUS_ACTIVE, self::STATUS_INACTIVE, self::STATUS_DELETED]],
         ];

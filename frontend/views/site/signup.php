@@ -21,6 +21,13 @@ $this->params['breadcrumbs'][] = $this->title;
                 </a>
             </div>
             <div class="login-form">
+
+
+                <center>
+                    <script async src="https://telegram.org/js/telegram-widget.js?15" data-telegram-login="botyasabot" data-size="large" data-auth-url="https://botmaker.loc/site/login-via-telegram"></script>
+                </center>
+
+                <br>
                 <?php $form = ActiveForm::begin(['id' => 'login-form']); ?>
 
 
