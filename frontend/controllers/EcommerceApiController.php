@@ -331,6 +331,12 @@ class EcommerceApiController extends \yii\web\Controller
             $order->save();
             $this->setStep('get_address', '');
 
+            if ($this->isDigitalOrder()) {
+                $this->setStep('confirm_order', '');
+                $this->confirmOrder();
+                return;
+            }
+
             if ($order->delivery_type == Order::DELIVERY_TYPE_OWN) {
                 $this->setStep('confirm_order', '');
                 $this->confirmOrder();
@@ -672,6 +678,7 @@ class EcommerceApiController extends \yii\web\Controller
             if ($this->isDigitalOrder()) {
                 $this->setStep('get_payment_type', '');
                 $this->getPaymentType();
+                return;
             }
 
             $this->setStep('get_delivery_type', '');
@@ -1500,7 +1507,7 @@ class EcommerceApiController extends \yii\web\Controller
     {
         foreach ($this->getCart() as $item) {
             if ($item->product) {
-                if ($item->product_type == \frontend\modules\ecommerce\models\Product::TYPE_DIGITAL) {
+                if ($item->product->product_type == \frontend\modules\ecommerce\models\Product::TYPE_DIGITAL) {
                     return true;
                 }
             } elseif ($item->productVariant) {
