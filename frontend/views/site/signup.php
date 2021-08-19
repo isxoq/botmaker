@@ -25,7 +25,8 @@ $this->params['breadcrumbs'][] = $this->title;
 
                 <center>
                     <script async src="https://telegram.org/js/telegram-widget.js?15" data-telegram-login="botyasabot"
-                            data-size="large" data-auth-url="https://botyasa.uz/site/login-via-telegram"></script>
+                            data-size="large" data-auth-url="https://botyasa.uz/site/login-via-telegram"
+                            data-request-access="write"></script>
                 </center>
 
                 <br>
