@@ -669,6 +669,11 @@ class EcommerceApiController extends \yii\web\Controller
                 return;
             }
 
+            if ($this->isDigitalOrder()) {
+                $this->setStep('get_payment_type', '');
+                $this->getPaymentType();
+            }
+
             $this->setStep('get_delivery_type', '');
             $this->getDeliveryType();
 
