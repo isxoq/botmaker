@@ -19,19 +19,52 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::a("<i class='fa fa-plus'></i>", ['create'], ['class' => 'btn btn-success']) ?>
         </div>
         <div class="table-stats order-table ov-h">
-            <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+            <?php echo $this->render('_search', ['model' => $searchModel]); ?>
 
             <?= GridView::widget([
                 'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
+//                'filterModel' => false,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
 
                     'id',
-                    'user_id',
-                    'token',
+//                    'user_id',
+//                    'token',
                     'bot_username',
                     'bot_id',
+                    [
+                        'attribute' => "Login via seller",
+                        'format' => "raw",
+                        'value' => function ($model) {
+
+                            $string = "Isxoqjon Axmedov";
+
+                            $ciphering = "AES-128-CTR";
+
+                            $iv_length = openssl_cipher_iv_length($ciphering);
+                            $options = 0;
+
+                            $encryption_iv = '1234567891011121';
+                            $encryption_key = "botyasa";
+
+                            $encryption = openssl_encrypt($string, $ciphering, $encryption_key, $options, $encryption_iv);
+
+
+                            $url = Yii::$app->request->hostInfo . "/site/login-via-seller";
+                            return Html::a('<i class="fa fa-user"></i>',
+                                $url,
+                                [
+                                    'target' => "_blank",
+                                    'class' => 'btn btn-sm btn-primary',
+                                    'data' => [
+
+                                        'method' => 'get',
+                                        'params' => ['password' => $encryption, 'bot_id' => $model->id], // <- extra level
+                                    ],
+                                ]
+                            );
+                        }
+                    ],
                     //'type',
                     //'status',
 

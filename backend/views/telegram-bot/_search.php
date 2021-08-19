@@ -8,35 +8,44 @@ use yii\widgets\ActiveForm;
 /* @var $form yii\widgets\ActiveForm */
 ?>
 
-<div class="telegram-bot-search">
+<div class="container">
 
-    <?php $form = ActiveForm::begin([
-        'action' => ['index'],
-        'method' => 'get',
-        'options' => [
-            'data-pjax' => 1
-        ],
-    ]); ?>
+    <div class="row">
+        <div class="col-md-8">
+            <?php $form = ActiveForm::begin([
+                'action' => ['index'],
+                'method' => 'get',
+                'options' => [
+                    'data-pjax' => 1
+                ],
+            ]); ?>
+            <div class="row">
+                <div class="col-md-3">
+                    <?= $form->field($model, 'bot_username') ?>
+                </div>
 
-    <?= $form->field($model, 'id') ?>
+                <div class="col-md-3">
+                    <?= $form->field($model, 'bot_id') ?>
+                </div>
 
-    <?= $form->field($model, 'user_id') ?>
+                <div class="col-md-3">
 
-    <?= $form->field($model, 'token') ?>
+                    <div class="row" style="margin-top: 31px">
+                        <div class="col-md-6">
+                            <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
+                        </div>
+                        <div class="col-md-6">
+                            <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
+                        </div>
+                    </div>
 
-    <?= $form->field($model, 'bot_username') ?>
+                </div>
+            </div>
+        </div>
 
-    <?= $form->field($model, 'bot_id') ?>
 
-    <?php // echo $form->field($model, 'type') ?>
-
-    <?php // echo $form->field($model, 'status') ?>
-
-    <div class="form-group">
-        <?= Html::submitButton(Yii::t('app', 'Search'), ['class' => 'btn btn-primary']) ?>
-        <?= Html::resetButton(Yii::t('app', 'Reset'), ['class' => 'btn btn-outline-secondary']) ?>
+        <?php ActiveForm::end(); ?>
     </div>
-
-    <?php ActiveForm::end(); ?>
+</div>
 
 </div>
