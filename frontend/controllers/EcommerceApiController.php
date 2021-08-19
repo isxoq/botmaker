@@ -1491,5 +1491,22 @@ class EcommerceApiController extends \yii\web\Controller
         return "https://my.click.uz/services/pay?service_id={$service_id}&merchant_id={$merchant_id}&amount={$amount}&transaction_param={$order_id}";
     }
 
+    protected function isDigitalOrder()
+    {
+        foreach ($this->getCart() as $item) {
+            if ($item->product) {
+                if ($item->product_type == \frontend\modules\ecommerce\models\Product::TYPE_DIGITAL) {
+                    return true;
+                }
+            } elseif ($item->productVariant) {
+                if ($item->productVariant->product->product_type == \frontend\modules\ecommerce\models\Product::TYPE_DIGITAL) {
+                    return true;
+                }
+            }
+        }
+
+        return false;
+    }
+
 }
 
