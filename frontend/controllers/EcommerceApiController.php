@@ -18,6 +18,7 @@ use frontend\models\api\ProductVariant;
 use frontend\models\api\TelegramBot;
 use frontend\models\api\BotUser;
 use frontend\models\BotUserVisit;
+use frontend\models\OrderProduct;
 use Geocodio\Geocodio;
 use yii;
 use yii\base\BaseObject;
@@ -270,6 +271,23 @@ class EcommerceApiController extends \yii\web\Controller
                 $order->payment_status = Order::STATUS_PAYMENT_NO_PAY;
                 $order->total_price = $this->getCartTotal();
                 $order->save();
+
+                foreach ($this->getCart() as $cart) {
+
+                    if ($cart->product) {
+                        $price = $cart->product->price;
+                    } elseif ($cart->productVariant) {
+                        $price = $cart->productVariant->price;
+                    }
+
+                    $orderProduct = new OrderProduct;
+                    $orderProduct->order_id = $order->id;
+                    $orderProduct->product_id = $cart->product_id;
+                    $orderProduct->product_variant_id = $cart->product_variant_id;
+                    $orderProduct->price = $price;
+                    $orderProduct->quantity = $cart->quantity;
+                    $orderProduct->save();
+                }
 
                 if ($order->payment_type == Order::PAYMENT_TYPE_TERMINAL) {
                     $this->telegram()->sendMessage([

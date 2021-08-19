@@ -19,6 +19,7 @@ use Yii;
  * @property int|null $total_price
  * @property int|null $payment_status
  * @property int|null $payment_type
+ * @property int|null $is_digital
  * @property string|null $comment
  * // * @property int|null $paymentType
  * // * @property int|null $deliveryType
@@ -60,7 +61,7 @@ class Order extends \yii\db\ActiveRecord
     public function rules()
     {
         return [
-            ['delivery_type', 'integer'],
+            [['delivery_type', 'is_digital'], 'integer'],
             ['delivery_address', 'string'],
             [['bot_id', 'created_at', 'user_id', 'status', 'total_price', 'payment_status', 'payment_type'], 'integer'],
             [['comment'], 'string'],
