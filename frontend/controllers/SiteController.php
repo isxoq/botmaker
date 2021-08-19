@@ -92,7 +92,7 @@ class SiteController extends Controller
     {
         Yii::$app->user->logout();
 
-        return $this->redirect(['site/landing']);
+        return $this->redirect(['site/index']);
     }
 
     /**
