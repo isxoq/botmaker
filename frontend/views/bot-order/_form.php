@@ -17,21 +17,7 @@ use yii\widgets\ActiveForm;
 
                 <?= $form->field($model, 'bot_id')->dropDownList(\yii\helpers\ArrayHelper::map(\frontend\models\api\TelegramBot::find()->andWhere(['user_id' => Yii::$app->user->id])->all(), 'id', 'name')) ?>
 
-                <?= $form->field($model, 'month')->dropDownList([
-                    1 => t('1 month'),
-                    2 => t('2 month'),
-                    3 => t('3 month'),
-                    4 => t('4 month'),
-                    5 => t('5 month'),
-                    6 => t('6 month'),
-                    7 => t('7 month'),
-                    8 => t('8 month'),
-                    9 => t('9 month'),
-                    10 => t('10 month'),
-                    11 => t('11 month'),
-                    12 => t('12 month'),
-                    24 => t('24 month'),
-                ], [
+                <?= $form->field($model, 'month')->dropDownList(\yii\helpers\ArrayHelper::map(\backend\models\BotPriceTable::find()->all(), 'month', 'month'), [
                     'prompt' => t('Select')
                 ]) ?>
 
