@@ -47,6 +47,10 @@
                                 class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Settings') ?>
                     </a>
                 </li>
+
+
+
+
             </ul>
         </div><!-- /.navbar-collapse -->
     </nav>
