@@ -194,7 +194,7 @@ $today_visit = BotUserVisit::find()->andWhere([
                                     <th><?= t('ID') ?></th>
                                     <th><?= t('Full name') ?></th>
                                     <th><?= t('Total Price') ?></th>
-                                    <th><?= t('Phone') ?></th>
+                                    <th><?= t('S Phone') ?></th>
                                     <th><?= t('Status') ?></th>
                                     <th><?= t('Payment Status') ?></th>
                                 </tr>
