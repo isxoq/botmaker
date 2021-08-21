@@ -54,7 +54,6 @@ $saleLabel = t(' chegirma');
 $url = "'" . \yii\helpers\Url::to(['bot-order/get-amount'], true) . "'";
 $js = <<<JS
         $(document).on('change','#botorder-month',function() {
-                                 $('#sale_block').addClass('hide')
 
             let month = $(this).val()
             let bot_id = $('#botorder-bot_id').val()
@@ -72,6 +71,8 @@ $js = <<<JS
                   if (data.sale>0){
                       $('#sale_block').removeClass('hide')
                       $('#sale_block').html("-"+data.sale+"% {$saleLabel} "+"( UZS "+data.salePrice+") <span>UZS <strike>"+data.oldPrice+"</strike></span>")
+                  }else{
+                                                       $('#sale_block').addClass('d-none')
                   }
                 }
             })  
