@@ -31,7 +31,7 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($model, 'amount')->textInput([
                     'readOnly' => true
                 ]) ?>
-                <div id="sale_block"></div>
+                <div class="d-none" id="sale_block"></div>
 
 
             </div>
@@ -69,7 +69,7 @@ $js = <<<JS
                   $('#botorder-amount').val(data.total)
                   
                   if (data.sale>0){
-                      $('#sale_block').removeClass('hide')
+                      $('#sale_block').removeClass('d-block')
                       $('#sale_block').html("-"+data.sale+"% {$saleLabel} "+"( UZS "+data.salePrice+") <span>UZS <strike>"+data.oldPrice+"</strike></span>")
                   }else{
                                                        $('#sale_block').addClass('d-none')
