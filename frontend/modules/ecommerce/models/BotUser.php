@@ -51,7 +51,7 @@ class BotUser extends \yii\db\ActiveRecord
             'bot_id' => Yii::t('app', 'Bot ID'),
             'user_id' => Yii::t('app', 'User ID'),
             'username' => Yii::t('app', 'Username'),
-            'phone' => Yii::t('app', 'Phone'),
+            'phone' => Yii::t('app', 'S Phone'),
             'full_name' => Yii::t('app', 'Full Name'),
             'last_action_date' => Yii::t('app', 'Last Action Date'),
             'status' => Yii::t('app', 'Status'),

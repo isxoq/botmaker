@@ -44,11 +44,9 @@
 
                 <li class="<?= Yii::$app->controller->route == "ecommerce/bot-setting" ? "active" : "" ?>">
                     <a href="<?= \yii\helpers\Url::to(['/ecommerce/bot-setting', 'bot_id' => Yii::$app->request->get('bot_id')]) ?>"><i
-                                class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Settings') ?>
+                                class="menu-icon fa fa-list"></i><?= Yii::t('app', 'S Settings') ?>
                     </a>
                 </li>
-
-
 
 
             </ul>
