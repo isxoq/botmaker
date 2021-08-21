@@ -83,6 +83,10 @@ AppAsset::register($this);
             margin: 20px;
         }
 
+        #sale_block span {
+            color: red;
+        }
+
 
     </style>
 </head>

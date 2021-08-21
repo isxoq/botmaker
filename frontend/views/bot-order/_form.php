@@ -45,6 +45,7 @@ use yii\widgets\ActiveForm;
                 <?= $form->field($model, 'amount')->textInput([
                     'readOnly' => true
                 ]) ?>
+                <div id="sale_block"></div>
 
 
             </div>
@@ -62,10 +63,13 @@ use yii\widgets\ActiveForm;
 
 <?php
 
+$saleLabel = t(' chegirma');
+
 $url = "'" . \yii\helpers\Url::to(['bot-order/get-amount'], true) . "'";
 $js = <<<JS
         $(document).on('change','#botorder-month',function() {
-           
+                                 $('#sale_block').addClass('hide')
+
             let month = $(this).val()
             let bot_id = $('#botorder-bot_id').val()
             
@@ -78,11 +82,16 @@ $js = <<<JS
                 },
                 success:function (data) {
                   $('#botorder-amount').val(data.total)
+                  
+                  if (data.sale>0){
+                      $('#sale_block').removeClass('hide')
+                      $('#sale_block').html(data.sale+"% "+"( UZS "+data.salePrice+") <span>UZS <strike>"+data.oldPrice+"</strike></span>")
+                  }
                 }
             })  
              
              
         })  
 JS;
-$this->registerJs($js)
+$this->registerJs($js);
 ?>

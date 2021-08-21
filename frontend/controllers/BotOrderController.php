@@ -148,14 +148,33 @@ class BotOrderController extends Controller
 
     public function actionGetAmount()
     {
+
+
         Yii::$app->response->format = Response::FORMAT_JSON;
         $bot_id = Yii::$app->request->post('bot_id');
         $month = Yii::$app->request->post('month');
 
+        $monthPrice1 = BotPriceTable::findOne(['month' => 1])->price;
+
+
         $monthPrice = BotPriceTable::findOne(['month' => $month]);
-        return [
-            'total' => $monthPrice->price
-        ];
+
+        if ($monthPrice->price != $month * $monthPrice1) {
+            $sale = ((1 - ($monthPrice->price) / ($month * $monthPrice1)) * 100);
+            $salePrice = round($monthPrice1 * $month * $sale / 100);
+            return [
+                'total' => $monthPrice->price,
+                'sale' => round($sale, 2),
+                'salePrice' => $salePrice,
+                'oldPrice' => $month * $monthPrice1
+            ];
+        } else {
+            return [
+                'total' => $monthPrice->price,
+            ];
+        }
+
+
     }
 
     /**
