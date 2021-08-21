@@ -181,7 +181,7 @@ $today_visit = BotUserVisit::find()->andWhere([
     <!-- Orders -->
     <div class="orders">
         <div class="row">
-            <div class="col-xl-8">
+            <div class="col-xl-12">
                 <div class="card">
                     <div class="card-body">
                         <h4 class="box-title"><?= t('Orders') ?> </h4>
