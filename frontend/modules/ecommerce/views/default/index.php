@@ -217,9 +217,9 @@ $today_visit = BotUserVisit::find()->andWhere([
                                         <td>
 
                                             <?php if ($order->status == \frontend\modules\ecommerce\models\Order::STATUS_PAYMENT_PAYED): ?>
-                                                <span class="badge badge-complete"><?= $order->paymentStatus ?></span>
+                                                <span class="badge badge-complete"><?= $order->orderPaymentStatus ?></span>
                                             <?php else: ?>
-                                                <span class="badge badge-pending"><?= $order->paymentStatus ?></span>
+                                                <span class="badge badge-pending"><?= $order->orderPaymentStatus ?></span>
                                             <?php endif ?>
                                         </td>
                                     </tr>
