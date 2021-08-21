@@ -85,7 +85,7 @@ $js = <<<JS
                   
                   if (data.sale>0){
                       $('#sale_block').removeClass('hide')
-                      $('#sale_block').html(data.sale+"% "+"( UZS "+data.salePrice+") <span>UZS <strike>"+data.oldPrice+"</strike></span>")
+                      $('#sale_block').html("-"+data.sale+"% {$saleLabel} "+"( UZS "+data.salePrice+") <span>UZS <strike>"+data.oldPrice+"</strike></span>")
                   }
                 }
             })  
