@@ -22,7 +22,7 @@ class m210812_045739_create_click_transactions_table extends Migration
             'service_id' => $this->integer(),
             'sign_time' => $this->string(),
             'status' => $this->tinyInteger(),
-            'created_at' => $this->integer()
+            'create_time' => $this->integer()
 
         ]);
     }
