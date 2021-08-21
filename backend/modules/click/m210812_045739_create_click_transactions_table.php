@@ -16,7 +16,7 @@ class m210812_045739_create_click_transactions_table extends Migration
 
             'id' => $this->primaryKey(),
             'user_id' => $this->integer(),
-            'click_trans_is' => $this->integer(),
+            'click_trans_id' => $this->integer(),
             'amount' => $this->integer(),
             'click_paydoc_id' => $this->integer(),
             'service_id' => $this->integer(),
