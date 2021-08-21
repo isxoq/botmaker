@@ -69,7 +69,7 @@ $js = <<<JS
                   $('#botorder-amount').val(data.total)
                   
                   if (data.sale>0){
-                      $('#sale_block').removeClass('d-block')
+                      $('#sale_block').removeClass('d-none')
                       $('#sale_block').html("-"+data.sale+"% {$saleLabel} "+"( UZS "+data.salePrice+") <span>UZS <strike>"+data.oldPrice+"</strike></span>")
                   }else{
                                                        $('#sale_block').addClass('d-none')
