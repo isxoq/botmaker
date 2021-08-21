@@ -25,8 +25,16 @@ $this->params['breadcrumbs'][] = $this->title;
 
 
             <?= GridView::widget([
+                'pager' => [
+                    'linkContainerOptions' => [
+                        'class' => 'page-item'
+                    ],
+                    'linkOptions' => [
+                        'class' => 'page-link'
+                    ],
+                    'prevPageLabel' => "<a href='#'>&laquo;</a>"
+                ],
                 'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
 

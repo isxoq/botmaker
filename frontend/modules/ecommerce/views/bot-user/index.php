@@ -24,6 +24,15 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
             <?= GridView::widget([
+                'pager' => [
+                    'linkContainerOptions' => [
+                        'class' => 'page-item'
+                    ],
+                    'linkOptions' => [
+                        'class' => 'page-link'
+                    ],
+                    'prevPageLabel' => "<a href='#'>&laquo;</a>"
+                ],
                 'dataProvider' => $dataProvider,
                 'filterModel' => $searchModel,
                 'columns' => [
