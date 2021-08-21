@@ -5,7 +5,7 @@ namespace frontend\controllers;
 
 use backend\modules\click\components\ClickData;
 use backend\modules\click\models\ClickTransactions;
-use frontend\modules\ecommerce\models\Order;
+use frontend\models\api\Order;
 use common\models\User;
 
 use yii\web\Controller;
@@ -123,9 +123,9 @@ class BotClickController extends Controller
                         }
                         $db_transaction->commit();
 
-                        $order = \frontend\models\api\Order::findOne($transaction->user_id);        // if pay success -> Change Order status to 2
+                        $order = Order::findOne($transaction->user_id);        // if pay success -> Change Order status to 2
                         if (!empty($order)) {
-                            $order->state = Order::STATE_PAYMENT_SUCCESSFULLY;
+                            $order->payment_status = Order::STATUS_PAYMENT_PAYED;
                             $order->save(false);
                         }
                         $return_array = [
@@ -198,7 +198,7 @@ class BotClickController extends Controller
             die(json_encode(ClickData::getMessage('n')));
         }
 
-        $key = \frontend\models\api\Order::findOne($this->reqData['merchant_trans_id'])->bot->click_secret_key;
+        $key = Order::findOne($this->reqData['merchant_trans_id'])->bot->click_secret_key;
 
         // Формирование ХЭШ подписи
         $sign_string_veryfied = md5(
@@ -225,7 +225,7 @@ class BotClickController extends Controller
         }
 
         //
-        $this->user = \frontend\models\api\Order::findOne($this->reqData['merchant_trans_id']);
+        $this->user = Order::findOne($this->reqData['merchant_trans_id']);
         if ($this->user === NULL) {
             // User does not exist
             die(json_encode(ClickData::getMessage('5')));
