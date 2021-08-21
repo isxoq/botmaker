@@ -39,16 +39,9 @@ return [
             'disabledCommands' => ['netmount'], //отключение ненужных команд https://github.com/Studio-42/elFinder/wiki/Client-configuration-options#commands
             'roots' => [
                 [
-                    'baseUrl' => '@web',
-                    'basePath' => '@webroot',
-                    'path' => 'files/global',
-                    'name' => 'Global'
-                ],
-
-                [
                     'class' => 'mihaildev\elfinder\volume\UserPath',
                     'path' => 'files/user_{id}',
-                    'name' => 'My Documents'
+                    'name' => t('My Documents')
                 ],
 
             ],
