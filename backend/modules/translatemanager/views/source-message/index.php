@@ -18,7 +18,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?= Html::a("<i class='fa fa-plus'></i>", ['create'], ['class' => 'btn btn-success']) ?>
         </div>
         <div class="table-stats order-table ov-h">
-            <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+            <?php  echo $this->render('_search', ['model' => $searchModel]); ?>
 
 
             <?= GridView::widget([
@@ -32,7 +32,6 @@ $this->params['breadcrumbs'][] = $this->title;
                     'prevPageLabel' => "<a href='#'>&laquo;</a>"
                 ],
                 'dataProvider' => $dataProvider,
-                'filterModel' => $searchModel,
                 'columns' => [
                     ['class' => 'yii\grid\SerialColumn'],
 
