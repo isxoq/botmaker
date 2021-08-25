@@ -18,6 +18,12 @@
                     </a>
                 </li>
 
+                <li class="<?= Yii::$app->controller->route == "/tiket/index" ? "active" : "" ?>">
+                    <a href="<?= \yii\helpers\Url::to(['/tiket/index']) ?>"><i
+                                class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Tiket Center') ?>
+                    </a>
+                </li>
+
             </ul>
         </div><!-- /.navbar-collapse -->
     </nav>

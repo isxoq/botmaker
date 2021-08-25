@@ -36,6 +36,7 @@ return [
     ],
 
     'controllerMap' => [
+        'file' => 'mdm\\upload\\FileController', // use to show or download file
         'elfinder' => [
             'class' => 'mihaildev\elfinder\Controller',
             'access' => ['@'], //глобальный доступ к фаил менеджеру @ - для авторизорованных , ? - для гостей , чтоб открыть всем ['@', '?']

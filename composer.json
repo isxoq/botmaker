@@ -28,7 +28,8 @@
     "johnitvn/yii2-ajaxcrud": "~2.1",
     "mihaildev/yii2-elfinder": "*",
     "kartik-v/yii2-dynagrid": "dev-master",
-    "vxm/yii2-async": "^1.0"
+    "vxm/yii2-async": "^1.0",
+    "mdmsoft/yii2-upload-file": "dev-master"
   },
   "require-dev": {
     "yiisoft/yii2-debug": "~2.1.0",
