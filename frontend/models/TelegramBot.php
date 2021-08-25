@@ -33,6 +33,7 @@ class TelegramBot extends BaseActiveRecord
 {
 
     const TYPE_ECOMMERCE = 1;
+    const TYPE_GET_NUMBER = 2;
 
     const SCENARIO_CREATE = 'scenario_create';
     const SCENARIO_UPDATE = 'scenario_update';
@@ -119,7 +120,8 @@ class TelegramBot extends BaseActiveRecord
     public static function getTypes()
     {
         return [
-            self::TYPE_ECOMMERCE => t('E Commerce')
+            self::TYPE_ECOMMERCE => t('E Commerce'),
+            self::TYPE_GET_NUMBER => t('Getter Number')
         ];
     }
 
@@ -145,6 +147,24 @@ class TelegramBot extends BaseActiveRecord
     public function getavailableDays()
     {
         return ceil(($this->active_to - time()) / 3600 / 24);
+    }
+
+    public function getDashboardUrl()
+    {
+        switch ($this->type) {
+            case self::TYPE_ECOMMERCE:
+            {
+                return \yii\helpers\Url::to(['/ecommerce/default/index', 'bot_id' => $this->id]);
+            }
+            case self::TYPE_GET_NUMBER:
+            {
+                return \yii\helpers\Url::to(['/info/default/index', 'bot_id' => $this->id]);
+            }
+            default:
+            {
+                return "#";
+            }
+        }
     }
 
 }

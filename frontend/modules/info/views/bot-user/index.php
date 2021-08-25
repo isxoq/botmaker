@@ -5,7 +5,7 @@ use yii\grid\GridView;
 use yii\widgets\Pjax;
 
 /* @var $this yii\web\View */
-/* @var $searchModel frontend\modules\ecommerce\models\search\BotUserSearch */
+/* @var $searchModel frontend\modules\info\models\search\BotUserSearch */
 /* @var $dataProvider yii\data\ActiveDataProvider */
 
 $this->title = Yii::t('app', 'Bot Users');
@@ -21,7 +21,7 @@ $this->params['breadcrumbs'][] = $this->title;
             <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
             <?php Pjax::begin(); ?>
-            <?php // echo $this->render('_search', ['model' => $searchModel]); ?>
+<!--            --><?php // echo $this->render('_search', ['model' => $searchModel]); ?>
 
             <?= GridView::widget([
                 'pager' => [

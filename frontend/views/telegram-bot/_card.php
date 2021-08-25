@@ -13,7 +13,7 @@ Date Time: 7/26/2021 2:41 PM
  */;
 
 ?>
-<a href="<?= \yii\helpers\Url::to(['/ecommerce/default/index', 'bot_id' => $model->id]) ?>">
+<a href="<?= $model->dashboardUrl ?>">
     <div class="card-header">
         <strong class="card-title pl-2"><?= $model->name ?></strong>
     </div>

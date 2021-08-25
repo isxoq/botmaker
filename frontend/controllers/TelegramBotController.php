@@ -93,7 +93,7 @@ class TelegramBotController extends Controller
             $model->user_id = user()->id;
             $model->bot_id = strval($bot->result->id);
             $model->active_to = strtotime('+14 days');
-            $model->webhook = Url::to(['ecommerce-api/hook', 'bot_id' => $model->bot_id], true);
+            $model->webhook = $this->webhookUrl($model);
             if (!$model->save()) {
                 dd($model->errors);
             }
@@ -113,6 +113,25 @@ class TelegramBotController extends Controller
         return $this->render('create', [
             'model' => $model,
         ]);
+    }
+
+    public function webhookUrl($model)
+    {
+        switch ($model->type) {
+            case TelegramBot::TYPE_ECOMMERCE:
+            {
+                return Url::to(['/ecommerce-api/hook', 'bot_id' => $model->bot_id], true);
+            }
+
+            case TelegramBot::TYPE_GET_NUMBER:
+            {
+                return Url::to(['/info-bot-api/hook', 'bot_id' => $model->bot_id], true);
+            }
+            default:
+            {
+                return "";
+            }
+        }
     }
 
     /**

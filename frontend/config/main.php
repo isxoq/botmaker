@@ -30,6 +30,9 @@ return [
         'ecommerce' => [
             'class' => 'frontend\modules\ecommerce\Module',
         ],
+        'info' => [
+            'class' => 'frontend\modules\info\Module',
+        ],
     ],
 
     'controllerMap' => [
