@@ -58,6 +58,28 @@ use backend\models\SiteSetting;
         .price p {
             opacity: .8;
         }
+
+        @media only screen and (max-width: 767px) {
+            .imkoniyatlar h4 {
+                font-size: 15px !important;
+            }
+
+            .imkoniyatlar ul {
+                text-align: center;
+            }
+
+            .box {
+                margin-top: 35px !important;
+            }
+
+            .box h2 {
+                font-size: 20px;
+            }
+
+            .box p {
+                margin: 0 0 10px;
+            }
+        }
     </style>
 
 

@@ -78,7 +78,7 @@ $this->title = t('Site Title');
             </div>
         </div>
         <div class="row justify-content-center">
-            <div class="col-md-4">
+            <div class="col-md-4 imkoniyatlar ">
                 <ul>
                     <h4 class="mb-3"><i class="fa fa-check"></i> <?= t('Control Panel') ?></h4>
                     <h4 class="mb-3"><i class="fa fa-check"></i> <?= t('Products Orders') ?></h4>
