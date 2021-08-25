@@ -90,7 +90,7 @@ Date Time: 8/13/2021 4:27 PM
                                     <form action="#" id="fileUploadForm">
                                         <div class="form-group has-success">
                                             <label for="cc-name"
-                                                   class="control-label mb-1"><?= t('Min Order Price For Free Delivery') ?></label>
+                                                   class="control-label mb-1"><?= t('Bot About Image') ?></label>
                                             <input id="about_image" name="about_image"
                                                    value="<?= Yii::$app->controller->module->bot->about_image ?>"
                                                    type="file"
