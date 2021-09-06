@@ -1147,24 +1147,23 @@ class InfoBotApiController extends \yii\web\Controller
      */
     protected function mainMenu()
     {
-
-        $this->setStep('');
-
-        $this->telegram()->sendMessage([
-            'text' => t('Welcome {name}', [
-                'name' => $this->bot_user->full_name
-            ]),
+        $this->setStep('setPhone', '');
+        $this->telegram()->sendPhoto([
+            'caption' => t('Welcome {name}!', [
+                    'name' => $this->bot_user->full_name
+                ]) . PHP_EOL . $this->bot->about_text,
+            'photo' => yii\helpers\Url::to([$this->bot->about_image], true),
             'chat_id' => $this->bot_user->user_id,
             'parse_mode' => "html",
             'reply_markup' => json_encode([
                 'keyboard' => [
-                    [['text' => t('Buyurtma berish')]],
-                    [['text' => t('My Orders')], ['text' => t('Settings')]],
-                    [['text' => t('About US')], ['text' => t('Make Comment')]],
+                    [['text' => t('get info about service'), 'request_contact' => true]]
                 ],
                 'resize_keyboard' => true
             ])
         ]);
+        $this->setUserPhoneOnEnter();
+        return;
     }
 
 

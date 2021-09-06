@@ -3,6 +3,7 @@
 namespace frontend\controllers;
 
 use backend\models\BotPriceTable;
+use backend\models\Coupon;
 use Yii;
 use frontend\models\BotOrder;
 use frontend\models\BotOrderSearch;
@@ -151,17 +152,32 @@ class BotOrderController extends Controller
 
 
         Yii::$app->response->format = Response::FORMAT_JSON;
+
         $bot_id = Yii::$app->request->post('bot_id');
         $month = Yii::$app->request->post('month');
+        $coupon = Yii::$app->request->post('coupon');
+
+        if ($coupon) {
+            $couponP = Coupon::findOne(['code' => $coupon]);
+        }
+
 
         $monthPrice1 = BotPriceTable::findOne(['month' => 1])->price;
-
-
         $monthPrice = BotPriceTable::findOne(['month' => $month]);
 
         if ($monthPrice->price != $month * $monthPrice1) {
             $sale = ((1 - ($monthPrice->price) / ($month * $monthPrice1)) * 100);
             $salePrice = round($monthPrice1 * $month * $sale / 100);
+            if ($couponP) {
+                return [
+                    'total' => $monthPrice->price,
+                    'sale' => round($sale, 2),
+                    'coupon_sale' => $couponP->amount,
+                    'coupon_error' => "",
+                    'salePrice' => $salePrice - $couponP->amount,
+                    'oldPrice' => $month * $monthPrice1
+                ];
+            }
             return [
                 'total' => $monthPrice->price,
                 'sale' => round($sale, 2),

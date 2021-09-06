@@ -24,6 +24,12 @@
                     </a>
                 </li>
 
+                <li class="<?= Yii::$app->controller->route == "coupon/index" ? "active" : "" ?>">
+                    <a href="<?= \yii\helpers\Url::to(['/coupon/index']) ?>"><i
+                                class="menu-icon fa fa-list"></i><?= Yii::t('app', 'Coupon system') ?>
+                    </a>
+                </li>
+
                 <li class="menu-item-has-children dropdown">
                     <a href="#" class="dropdown-toggle" data-toggle="dropdown" aria-haspopup="true"
                        aria-expanded="false"> <i class="menu-icon fa fa-cogs"></i><?= t('Site Settings') ?></a>

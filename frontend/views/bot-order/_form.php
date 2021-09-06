@@ -53,30 +53,37 @@ $saleLabel = t(' chegirma');
 
 $url = "'" . \yii\helpers\Url::to(['bot-order/get-amount'], true) . "'";
 $js = <<<JS
+
+         function updateBotOrder(bot_id,month,coupon) {
+                         $.ajax({
+                            url:$url,
+                            type:"POST",
+                            data:{
+                                bot_id:bot_id,
+                                month:month,
+                                coupon:coupon
+                            },
+                            success:function (data) {
+                              $('#botorder-amount').val(data.total)
+                              
+                              if (data.sale>0){
+                                  $('#sale_block').removeClass('d-none')
+                                  $('#sale_block').html("-"+data.sale+"% {$saleLabel} "+"( UZS "+data.salePrice+") <span>UZS <strike>"+data.oldPrice+"</strike></span>")
+                              }else{
+                                                                   $('#sale_block').addClass('d-none')
+                              }
+                            }
+                        })  
+                    }
         $(document).on('change','#botorder-month',function() {
 
+            
             let month = $(this).val()
             let bot_id = $('#botorder-bot_id').val()
+            let coupon = $('#botorder-coupon').val()
             
-            $.ajax({
-                url:$url,
-                type:"POST",
-                data:{
-                    bot_id:bot_id,
-                    month:month
-                },
-                success:function (data) {
-                  $('#botorder-amount').val(data.total)
-                  
-                  if (data.sale>0){
-                      $('#sale_block').removeClass('d-none')
-                      $('#sale_block').html("-"+data.sale+"% {$saleLabel} "+"( UZS "+data.salePrice+") <span>UZS <strike>"+data.oldPrice+"</strike></span>")
-                  }else{
-                                                       $('#sale_block').addClass('d-none')
-                  }
-                }
-            })  
-             
+           updateBotOrder(bot_id,month,coupon)
+           
              
         })  
 JS;
